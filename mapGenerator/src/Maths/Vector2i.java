@@ -1,4 +1,4 @@
-package mapGenerator;
+package Maths;
 
 public class Vector2i {
 	public int x;

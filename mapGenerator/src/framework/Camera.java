@@ -1,6 +1,8 @@
-package mapGenerator;
+package framework;
 
 import java.util.Vector;
+
+import Maths.Vector2i;
 	
 public class Camera {
 	Vector2i pos;

@@ -1,4 +1,4 @@
-package mapGenerator;
+/*package mapGenerator;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -7,6 +7,8 @@ import java.awt.event.KeyListener;
 import java.util.Random;
 
 import javax.swing.JFrame;
+
+import framework.Camera;
 
 public class SimplexTest extends JFrame implements KeyListener {
 	//-----------------------------Global vars--------------------------//
@@ -43,9 +45,9 @@ public class SimplexTest extends JFrame implements KeyListener {
     	//--Affected by the camera--//
     	g2d.translate(-cam.pos.x, -cam.pos.y);
     	cam.pos.x--;
-    	System.out.println(cam.pos.x);
+    	System.out.println(cam.pos.x);*/
     	
-    }
+    /*}
     
     void updateTiles(Graphics2D g){
     	  for(int i = 0; i < chunk;i++){
@@ -242,5 +244,5 @@ public class SimplexTest extends JFrame implements KeyListener {
 		
 		
 	}
-}
+}*/
 

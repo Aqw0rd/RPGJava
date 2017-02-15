@@ -1,7 +1,7 @@
 package mapGenerator;
 
 public class Tiles {
-	  private int type=0;
+	  private int id=0;
 	  private int up=0;
 	  private float down=0;
 	  private int left=0;
@@ -15,11 +15,11 @@ public class Tiles {
 	  private int end=0;
 	  private int biome = 0;
 	  
-	  public int getType() {
-	    return type;
+	  public int getId() {
+	    return id;
 	  }
-	  public void setType(int type) {
-	    this.type = type;
+	  public void setId(int id) {
+	    this.id = id;
 	  }
 	  public int getUp() {
 	    return up;

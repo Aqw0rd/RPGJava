@@ -4,6 +4,8 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+import framework.Game;
+
 public class Window {
 	public Window(int w, int h, String title, Game game){
 		game.setPreferredSize(new Dimension(w,h));
@@ -14,7 +16,7 @@ public class Window {
 		frame.add(game);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		game.start();
