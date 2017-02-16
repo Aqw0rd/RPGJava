@@ -94,6 +94,7 @@ public class Game extends Canvas implements Runnable {
 			if(System.currentTimeMillis() - timer > 1000){
 				timer += 1000;
 				System.out.println("FPS: " + frames + " TICKS: " + updates);
+				System.out.println("X: " + x + "Y: " + y);
 				frames = 0;
 				updates = 0;
 			}
@@ -102,8 +103,15 @@ public class Game extends Canvas implements Runnable {
 	
 	private void tick(){
 		cam.tick(x, y);
-		x--;
-    	y--;
+		if(x<=-16000){
+			x=0;
+			y-=800;
+		}
+		if(y<=-16000 && x<=-16000){
+			
+		}else{
+		x-=10;
+		}
 	}
 	
 	private void render(){
@@ -145,7 +153,21 @@ public class Game extends Canvas implements Runnable {
 	
 	void updateTiles(Graphics2D g,int w0, int h0,int w, int h,double s){		
 		
-		for(int i = 0; i < chunk;i++){
+		for (int i = 0; i < chunk*mapArray.length; i++) {
+			for (int j = 0; j <  chunk*mapArray.length; j++) {
+				int x1 = (int) (j*32*s);
+				int y1 = (int) (i*32*s);
+				if(x1 < w && y1 < h && x1 > w0 && y1 > h0){
+					int mx = (int) map(j*32,0,chunk*32*mapArray.length,0,9);
+					int my = (int) map(i*32,0,chunk*32*mapArray.length,0,9);
+					int id = (int)mapArray[mx][my];
+					//BiomeLayer
+		    		g.drawImage(biome_images[1][1+(id*3)], null, x1,y1);
+				}
+			}
+		}
+		
+		/*for(int i = 0; i < chunk;i++){
 			for(int j = 0; j < chunk;j++){
 				int x1 = (int) (j*32*s);
 				int y1 = (int) (i*32*s);
@@ -154,16 +176,14 @@ public class Game extends Canvas implements Runnable {
 					int id = tiles[i][j].getId();
 					int y = (int) (tiles[i][j].getUp() * tiles[i][j].getDown());
   	    			int x = (int) (tiles[i][j].getLeft() * tiles[i][j].getRight());
-  	    			int mx = (int) map(x1,0,chunk*32*mapArray.length,0,9);
-  	    			int my = (int) map(y1,0,chunk*32*mapArray.length,0,9);
-  	    			int b = (int) mapArray[mx][my];
-  	    			//BiomeLayer
-  	    			g.drawImage(biome_images[1][1+(b*2)], null, x1, y1);
+  	    			
+  	    			
+  	    			
   	    			//Detail Layer
 					//g.drawImage(biome_images[x][y+(id*3)],null, x1, y1);
 	  	    	}
 	  	    }
-		}
+		}*/
 	}
   
     public void addTiles(){
