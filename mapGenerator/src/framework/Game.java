@@ -14,18 +14,19 @@ import mapGenerator.Window;
 
 public class Game extends Canvas implements Runnable {
 	//-----------------------------Global vars--------------------------//
-		float[][] noiseDetail;
-		float[][] noiseEl;
-		float[][] mapArray;
+		//float[][] noiseDetail;
+		//float[][] noiseEl;
+		int[][] mapArray;
 		Tiles[][] tiles;
-		Tiles[][] biomes;
 		BufferedImage[][] biome_images;
+		BufferedImage[] baseImages;
+		BufferedImage[][] transitions;
 		Camera cam;
-		int chunk;
-		int biomeSize;
 		int mapSize;
 	    TileSets surface = new TileSets();
+	    TileSets baseTiles = new TileSets();
 	    TileSets biome = new TileSets();
+	    TileSets transitionTiles = new TileSets();
 	    int x,y;
 	    boolean update = true;
 	//-----------------------------------||----------------------------//
@@ -48,20 +49,20 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public void setUp(){
-    	chunk = 50;
-    	biomeSize = 10;
-    	mapSize = 10;
+    	mapSize = 500;
     	
     	x = 0;
     	y = 0;
+    	
     	cam = new Camera();
-    	tiles = new Tiles[chunk][chunk];
-    	biomes = new Tiles[chunk][chunk];
-    	surface.setImg("src/surface.png");	
-    	biome.setImg("src/biome.png");
-    	mapArray = generateNoise(10,10,0,2);
-    	noiseDetail = generateNoise(chunk,chunk,0,1);
-    	noiseEl = generateNoise(chunk,chunk,0,5);
+    	tiles = new Tiles[mapSize][mapSize];
+    	surface.setImg("src/resources/surface.png");	
+    	biome.setImg("src/resources/biome.png");
+    	baseTiles.setImg("src/resources/basetiles.png");
+    	transitionTiles.setImg("src/resources/transitions.png");
+    	mapArray = generateNoise(mapSize,mapSize,0,2);
+    	//noiseDetail = generateNoise(chunk,chunk,0,1);
+    	//noiseEl = generateNoise(chunk,chunk,0,5);
     	addTiles();
     	addProperties();
     	loadImages();
@@ -103,15 +104,8 @@ public class Game extends Canvas implements Runnable {
 	
 	private void tick(){
 		cam.tick(x, y);
-		if(x<=-16000){
-			x=0;
-			y-=800;
-		}
-		if(y<=-16000 && x<=-16000){
-			
-		}else{
-		x-=10;
-		}
+		x-=1;
+		y-=1;
 	}
 	
 	private void render(){
@@ -128,7 +122,7 @@ public class Game extends Canvas implements Runnable {
 		g2d.translate(cam.pos.x, cam.pos.y);
     	//--Affected by the camera--// 
 		
-    	updateTiles(g2d, Math.abs(cam.pos.x) - 32, Math.abs(cam.pos.y) - 32,
+    	updateTiles(g2d, Math.abs(cam.pos.x), Math.abs(cam.pos.y),
     				this.getWidth() + Math.abs(cam.pos.x), this.getHeight() + Math.abs(cam.pos.y),
     				1);
     	
@@ -141,75 +135,76 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public void loadImages(){
-		biome_images = new BufferedImage[biome.getImg().getWidth()/32][biome.getImg().getHeight()/32];
+		/*biome_images = new BufferedImage[biome.getImg().getWidth()/32][biome.getImg().getHeight()/32];
 		for (int i = 0; i < biome.getImg().getWidth()/32; i++) {
 			for (int j = 0; j < biome.getImg().getHeight()/32; j++) {
 				biome_images[i][j] = biome.getImg().getSubimage(i*32, j*32, 32, 32);
 			}
+		}*/
+		baseImages = new BufferedImage[baseTiles.getImg().getWidth()/32];
+		for (int i = 0; i < baseTiles.getImg().getWidth()/32; i++) {
+			baseImages[i] = baseTiles.getImg().getSubimage(i*32, 0, 32, 32);
 		}
 		
-	}
-	
-	
-	void updateTiles(Graphics2D g,int w0, int h0,int w, int h,double s){		
-		
-		for (int i = 0; i < chunk*mapArray.length; i++) {
-			for (int j = 0; j <  chunk*mapArray.length; j++) {
-				int x1 = (int) (j*32*s);
-				int y1 = (int) (i*32*s);
-				if(x1 < w && y1 < h && x1 > w0 && y1 > h0){
-					int mx = (int) map(j*32,0,chunk*32*mapArray.length,0,9);
-					int my = (int) map(i*32,0,chunk*32*mapArray.length,0,9);
-					int id = (int)mapArray[mx][my];
-					//BiomeLayer
-		    		g.drawImage(biome_images[1][1+(id*3)], null, x1,y1);
-				}
+		transitions = new BufferedImage[transitionTiles.getImg().getWidth()/32][transitionTiles.getImg().getHeight()/32];
+		for(int i = 0; i < transitionTiles.getImg().getWidth()/32; i++){
+			for (int j = 0; j < transitionTiles.getImg().getHeight()/32; j++){
+				transitions[i][j] = transitionTiles.getImg().getSubimage(i*32, j*32, 32, 32);
 			}
 		}
 		
-		/*for(int i = 0; i < chunk;i++){
-			for(int j = 0; j < chunk;j++){
-				int x1 = (int) (j*32*s);
-				int y1 = (int) (i*32*s);
-				if(x1 < w && y1 < h && x1 > w0 && y1 > h0){
-					
-					int id = tiles[i][j].getId();
-					int y = (int) (tiles[i][j].getUp() * tiles[i][j].getDown());
-  	    			int x = (int) (tiles[i][j].getLeft() * tiles[i][j].getRight());
-  	    			
-  	    			
-  	    			
-  	    			//Detail Layer
-					//g.drawImage(biome_images[x][y+(id*3)],null, x1, y1);
-	  	    	}
-	  	    }
-		}*/
+		
+		
+	}
+	
+	void updateTiles(Graphics2D g,int w0, int h0,int w, int h,double s){		
+		int a = (int)Math.floor(map(w0,0,mapSize*32,0,mapSize));
+		int b = (int)Math.floor(map(w,0,mapSize*32,0,mapSize));;
+		int c = (int)Math.floor(map(h0,0,mapSize*32,0,mapSize));
+		int d = (int)Math.floor(map(h,0,mapSize*32,0,mapSize));;
+		
+		if(a>0) a--;
+		if(b<mapSize-1)b++;
+		if(c>0) c--;
+		if(d<mapSize-1)d++;
+		
+		for (int i = a; i < b; i++) {
+			for(int j = c; j < d; j++){
+				g.drawImage(baseImages[tiles[i][j].getId()], null, i*32,j*32);
+				if(tiles[i][j].isTransition() || tiles[i][j].isCorner()){
+					int dec = binaryToDec(tiles[i][j].getUp()+tiles[i][j].getDown()+tiles[i][j].getLeft()+tiles[i][j].getRight());
+					g.drawImage(transitions[dec-1][tiles[i][j].getTransitionId()-1], null, i*32,j*32);
+				}
+			}
+		}
 	}
   
     public void addTiles(){
-  	  for(int i = 0; i < chunk; i++){
-  	    for(int j = 0; j < chunk; j++){
+  	  for(int i = 0; i < mapSize; i++){
+  	    for(int j = 0; j < mapSize; j++){
   	      tiles[i][j] = new Tiles();
-  	      tiles[i][j].setId((int) noiseDetail[i][j]);
-  	      tiles[i][j].setElevation((int) noiseEl[i][j]);
+  	      if(mapArray[i][j]<2) tiles[i][j].setId(1);
+  	      else tiles[i][j].setId(0);
+  	      //tiles[i][j].setElevation((int) noiseEl[i][j]);
   	    }
   	  }
   	}
   
-    private float[][] generateNoise(int width, int height,int a, int b) {
+    private int[][] generateNoise(int width, int height,int a, int b) {
 	    new SimplexNoise(new Random().nextInt(10000));
-	    float[][] noise = new float[width][height];
+	    int[][] noise = new int[width][height];
 	    //Frequency = features. Higher = more features
 	    float layerF = 0.003f;
 	    //Weight = smoothness. Higher frequency = more smoothness
-	    float weight = 0.5f;
-	   
+	    float weight = 1f;
+	    
 	    for(int i = 0; i < 3; i++) {
+	    	float ns=0.f;
 	        for(int x = 0; x < width; x++) {
               for(int y = 0; y < height; y++) { 	
-                  noise[x][y] += (float) SimplexNoise.noise(x * layerF, y * layerF) * weight;
-                  noise[x][y] = clamp(noise[x][y], -1.0f, 1.0f);
-                  noise[x][y] = (float) Math.abs(Math.floor(map(noise[x][y],0,1,a,b)));
+                  ns += (float) SimplexNoise.noise(x * layerF, y * layerF) * weight;
+                  ns = clamp(ns, -1.0f, 1.0f);
+                  noise[x][y] = (int) Math.abs(Math.floor(map(ns,-1.0f,1.0f,a,b)));
               }
 	        }
 	        layerF *= 3.5f;
@@ -220,20 +215,56 @@ public class Game extends Canvas implements Runnable {
 	}
 	
     public void addProperties(){
-		  for(int i = 1; i < chunk-1; i++){
-		    for(int j = 1; j < chunk-1; j++){
+		  for(int i = 1; i < mapSize-1; i++){
+		    for(int j = 1; j < mapSize-1; j++){
 		      //Checking if tiles next to itself are equal to itself
-		      if(tiles[i][j].getId() == tiles[i-1][j].getId()) tiles[i][j].setUp(2);
-		      else tiles[i][j].setUp(0);
+		      if(tiles[i][j].getId() == tiles[i][j-1].getId()) tiles[i][j].setUp(0);
+		      else{
+		    	  tiles[i][j].setUp(10);
+		    	  if(tiles[i][j].getId() < tiles[i][j-1].getId()){
+		    		  tiles[i][j].setTransition(true);
+		    		  tiles[i][j].setTransitionId(tiles[i][j-1].getId());
+		    	  }else{
+		    		  tiles[i][j].setTransition(false);
+		    		  tiles[i][j].setTransitionId(-1);
+		    	  }
+		      }
 		      
-		      if(tiles[i][j].getId() == tiles[i+1][j].getId()) tiles[i][j].setDown(0.5f);
-		      else tiles[i][j].setDown(1);
+		      if(tiles[i][j].getId() == tiles[i][j+1].getId()) tiles[i][j].setDown(0);
+		      else{
+		    	  tiles[i][j].setDown(1000);
+		    	  if(tiles[i][j].getId() < tiles[i][j+1].getId()){
+		    		  tiles[i][j].setTransition(true);
+		    		  tiles[i][j].setTransitionId(tiles[i][j+1].getId());
+		    	  }else{
+		    		  tiles[i][j].setTransition(false);
+		    		  tiles[i][j].setTransitionId(-1);
+		    	  }
+		      }
 		      
-		      if(tiles[i][j].getId() == tiles[i][j-1].getId()) tiles[i][j].setLeft(2);
-		      else tiles[i][j].setLeft(0);
+		      if(tiles[i][j].getId() == tiles[i-1][j].getId()) tiles[i][j].setLeft(0);
+		      else{
+		    	  tiles[i][j].setLeft(1);
+		    	  if(tiles[i][j].getId() < tiles[i-1][j].getId()){
+		    		  tiles[i][j].setTransition(true);
+		    		  tiles[i][j].setTransitionId(tiles[i-1][j].getId());
+		    	  }else{
+		    		  tiles[i][j].setTransition(false);
+		    		  tiles[i][j].setTransitionId(-1);
+		    	  }
+		      }
 		      
-		      if(tiles[i][j].getId() == tiles[i][j+1].getId()) tiles[i][j].setRight(0.5f);
-		      else tiles[i][j].setRight(1);
+		      if(tiles[i][j].getId() == tiles[i+1][j].getId()) tiles[i][j+1].setRight(0);
+		      else{
+		    	  tiles[i][j].setRight(100);
+		    	  if(tiles[i][j].getId() < tiles[i+1][j].getId()){
+		    		  tiles[i][j].setTransition(true);
+		    		  tiles[i][j].setTransitionId(tiles[i+1][j].getId());
+		    	  }else{
+		    		  tiles[i][j].setTransition(false);
+		    		  tiles[i][j].setTransitionId(-1);
+		    	  }
+		      }
 		      
 		      //----------------ELEVATION--------------------//
 		      
@@ -245,7 +276,7 @@ public class Game extends Canvas implements Runnable {
 		        tiles[i][j].setlCorner(10);
 		      else tiles[i][j].setlCorner(0);
 		      
-		      if(j != chunk-1 || tiles[i][j].getElevation() > tiles[i][j+1].getElevation()) 
+		      if(j != mapSize-1 || tiles[i][j].getElevation() > tiles[i][j+1].getElevation()) 
 		        tiles[i][j].setrCorner(100);
 		      else tiles[i][j].setrCorner(0);
 		      
@@ -253,7 +284,7 @@ public class Game extends Canvas implements Runnable {
 		        tiles[i][j].setlEdge(1000);
 		      else tiles[i][j].setlEdge(0);
 		      
-		      if(j != chunk-1 || tiles[i][j].getElevation() > tiles[i][j+1].getElevation()) 
+		      if(j != mapSize-1 || tiles[i][j].getElevation() > tiles[i][j+1].getElevation()) 
 		        tiles[i][j].setrEdge(10000);
 		      else tiles[i][j].setrEdge(0);
 		      
@@ -264,60 +295,102 @@ public class Game extends Canvas implements Runnable {
 		      
 		      //EDGES
 		      if(i-1 == 0){ 
-		       if(tiles[i-1][j].getId() == tiles[i+1][j].getId()) tiles[i-1][j].setDown(0.5f);
+		       if(tiles[i-1][j].getId() == tiles[i+1][j].getId()) tiles[i-1][j].setDown(1000);
 		       else tiles[i-1][j].setDown(1);
 		       
-		       if(tiles[i-1][j].getId() == tiles[i][j-1].getId()) tiles[i-1][j].setLeft(2);
+		       if(tiles[i-1][j].getId() == tiles[i][j-1].getId()) tiles[i-1][j].setLeft(1);
 		       else tiles[i-1][j].setLeft(0);
 		      
-		       if(tiles[i-1][j].getId() == tiles[i][j+1].getId()) tiles[i-1][j].setRight(0.5f);
+		       if(tiles[i-1][j].getId() == tiles[i][j+1].getId()) tiles[i-1][j].setRight(100);
 		       else tiles[i-1][j].setRight(1);
 		       
-		       tiles[i-1][j].setUp(2);
+		       tiles[i-1][j].setUp(10);
 		      
 		      }
-		      if(i+1 == chunk-1){
-		        if(tiles[i+1][j].getId() == tiles[i-1][j].getId()) tiles[i+1][j].setUp(2);
+		      if(i+1 == mapSize-1){
+		        if(tiles[i+1][j].getId() == tiles[i-1][j].getId()) tiles[i+1][j].setUp(10);
 		        else tiles[i+1][j].setUp(0);
 		        
-		        if(tiles[i+1][j].getId() == tiles[i][j-1].getId()) tiles[i+1][j].setLeft(2);
+		        if(tiles[i+1][j].getId() == tiles[i][j-1].getId()) tiles[i+1][j].setLeft(1);
 		        else tiles[i+1][j].setLeft(0);
 		      
-		        if(tiles[i+1][j].getId() == tiles[i][j+1].getId()) tiles[i+1][j].setRight(0.5f);
-		        else tiles[i+1][j].setRight(1);
+		        if(tiles[i+1][j].getId() == tiles[i][j+1].getId()) tiles[i+1][j].setRight(100);
+		        else tiles[i+1][j].setRight(0);
 		        
-		        tiles[i+1][j].setDown(0.5f);
+		        tiles[i+1][j].setDown(1000);
 		      }
 		      if(j-1 == 0){ 
-		        if(tiles[i][j-1].getId() == tiles[i-1][j].getId()) tiles[i][j-1].setUp(2);
+		        if(tiles[i][j-1].getId() == tiles[i-1][j].getId()) tiles[i][j-1].setUp(10);
 		        else tiles[i][j-1].setUp(0);
 		      
-		        if(tiles[i][j-1].getId() == tiles[i+1][j].getId()) tiles[i][j-1].setDown(0.5f);
-		        else tiles[i][j-1].setDown(1);
+		        if(tiles[i][j-1].getId() == tiles[i+1][j].getId()) tiles[i][j-1].setDown(1000);
+		        else tiles[i][j-1].setDown(0);
 		      
-		        if(tiles[i][j-1].getId() == tiles[i][j+1].getId()) tiles[i][j-1].setRight(0.5f);
-		        else tiles[i][j-1].setRight(1);
+		        if(tiles[i][j-1].getId() == tiles[i][j+1].getId()) tiles[i][j-1].setRight(100);
+		        else tiles[i][j-1].setRight(0);
 		        
-		        tiles[i][j-1].setLeft(2);
+		        tiles[i][j-1].setLeft(1);
 		      }
-		      if(j+1 == chunk-1){ 
+		      if(j+1 == mapSize-1){ 
 		        
-		        if(tiles[i][j+1].getId() == tiles[i-1][j].getId()) tiles[i][j+1].setUp(2);
+		        if(tiles[i][j+1].getId() == tiles[i-1][j].getId()) tiles[i][j+1].setUp(10);
 		        else tiles[i][j+1].setUp(0);
 		      
-		        if(tiles[i][j+1].getId() == tiles[i+1][j].getId()) tiles[i][j+1].setDown(0.5f);
-		        else tiles[i][j+1].setDown(1);
+		        if(tiles[i][j+1].getId() == tiles[i+1][j].getId()) tiles[i][j+1].setDown(1000);
+		        else tiles[i][j+1].setDown(0);
 		      
-		        if(tiles[i][j+1].getId() == tiles[i][j-1].getId()) tiles[i][j+1].setLeft(2);
+		        if(tiles[i][j+1].getId() == tiles[i][j-1].getId()) tiles[i][j+1].setLeft(1);
 		        else tiles[i][j+1].setLeft(0);
 		        
-		        tiles[i][j+1].setRight(0.5f);
+		        tiles[i][j+1].setRight(100);
 		      
 		      }
 		      
 		    }
 		  }
-		}		
+		  
+		  //Corners
+		  for(int i = 1; i < mapSize-1; i++){
+		    for(int j = 1; j < mapSize-1; j++){
+		    	if(!tiles[i][j].isTransition() && !tiles[i][j].isCorner() && tiles[i][j].getId()==0){
+		    		if((tiles[i][j+1].isTransition() && tiles[i-1][j].isTransition()) || (tiles[i][j+1].isTransition() && tiles[i+1][j].isTransition()) 
+		    		|| (tiles[i][j-1].isTransition() && tiles[i-1][j].isTransition()) || (tiles[i][j-1].isTransition() && tiles[i+1][j].isTransition())){
+		    			tiles[i][j].setCorner(true);
+		    			tiles[i][j].setTransition(false);  			
+		    			
+		    			if(tiles[i][j-1].isTransition() && tiles[i-1][j].isTransition() && !tiles[i-1][j-1].isTransition() ){ //NORTHWEST
+		    				tiles[i][j].setTransitionId(tiles[i][j-1].getTransitionId()+1);
+		    				tiles[i][j].setUp(1);
+						}
+						else{
+							tiles[i][j].setUp(0);
+						}
+						  
+						if(tiles[i][j-1].isTransition() && tiles[i+1][j].isTransition() && !tiles[i+1][j-1].isTransition()){ //NORTHEAST
+							tiles[i][j].setTransitionId(tiles[i][j-1].getTransitionId()+1);
+							tiles[i][j].setDown(10);
+						}else{
+							tiles[i][j].setDown(0);
+						}
+						  
+						if(tiles[i][j+1].isTransition() && tiles[i-1][j].isTransition() && !tiles[i-1][j+1].isTransition()){	//SOUTWEST
+							tiles[i][j].setTransitionId(tiles[i][j+1].getTransitionId()+1);
+							tiles[i][j].setLeft(1000);
+						}else{
+							tiles[i][j].setLeft(0);
+						}
+						  
+						if(tiles[i][j+1].isTransition() && tiles[i+1][j].isTransition() && !tiles[i+1][j+1].isTransition()){	//SOUTHEAST
+							tiles[i][j].setTransitionId(tiles[i][j+1].getTransitionId()+1);
+							tiles[i][j].setRight(100);
+						}else{
+							tiles[i][j].setRight(0);
+						}
+		    		}
+		    	}				
+		    }
+		  }
+	}		
 	
     public float clamp(float x, float min, float max){
   	if(x < min)			return min;
@@ -328,8 +401,17 @@ public class Game extends Canvas implements Runnable {
     public float map(float x, float a, float b, float c, float d){
   	return (x-a)/(b-a)*(d-c);
   }
-	
-	
+
+    public int binaryToDec(int bin){
+    	int dec = 0;
+    	String str = Integer.toString(bin);
+    	for (int i = 0; i < str.length(); i++) {
+    		int a = Integer.parseInt(String.valueOf(str.charAt(i)));
+    		dec = dec * 2 + a;			
+		}
+    	return dec;
+    }
+    
 	public static void main(String args[]){
 		new Window(800,800, "Map generator", new Game());
 	}
