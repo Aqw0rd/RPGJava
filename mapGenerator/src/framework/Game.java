@@ -173,6 +173,7 @@ public class Game extends Canvas implements Runnable {
 				g.drawImage(baseImages[tiles[i][j].getId()], null, i*32,j*32);
 				if(tiles[i][j].isTransition() || tiles[i][j].isCorner()){
 					int dec = binaryToDec(tiles[i][j].getUp()+tiles[i][j].getDown()+tiles[i][j].getLeft()+tiles[i][j].getRight());
+					System.out.println("UP: " + tiles[i][j].getUp() + " DOWN: " + tiles[i][j].getDown() + " LEFT: " + tiles[i][j].getLeft() + " RIGHT: " + tiles[i][j].getRight() + " CORNER: " + tiles[i][j].isCorner() + " TRANSITION: " + tiles[i][j].isTransition());
 					g.drawImage(transitions[dec-1][tiles[i][j].getTransitionId()-1], null, i*32,j*32);
 				}
 			}
@@ -223,9 +224,12 @@ public class Game extends Canvas implements Runnable {
 		    	  tiles[i][j].setUp(10);
 		    	  if(tiles[i][j].getId() < tiles[i][j-1].getId()){
 		    		  tiles[i][j].setTransition(true);
+		    		  tiles[i][j-1].setTransition(false);
+		    		  tiles[i][j-1].setEdge(true);
 		    		  tiles[i][j].setTransitionId(tiles[i][j-1].getId());
 		    	  }else{
 		    		  tiles[i][j].setTransition(false);
+		    		  tiles[i][j-1].setEdge(false);
 		    		  tiles[i][j].setTransitionId(-1);
 		    	  }
 		      }
@@ -235,9 +239,12 @@ public class Game extends Canvas implements Runnable {
 		    	  tiles[i][j].setDown(1000);
 		    	  if(tiles[i][j].getId() < tiles[i][j+1].getId()){
 		    		  tiles[i][j].setTransition(true);
+		    		  tiles[i][j-1].setTransition(false);
+		    		  tiles[i][j+1].setEdge(true);
 		    		  tiles[i][j].setTransitionId(tiles[i][j+1].getId());
 		    	  }else{
 		    		  tiles[i][j].setTransition(false);
+		    		  tiles[i][j+1].setEdge(false);
 		    		  tiles[i][j].setTransitionId(-1);
 		    	  }
 		      }
@@ -247,21 +254,27 @@ public class Game extends Canvas implements Runnable {
 		    	  tiles[i][j].setLeft(1);
 		    	  if(tiles[i][j].getId() < tiles[i-1][j].getId()){
 		    		  tiles[i][j].setTransition(true);
+		    		  tiles[i-1][j].setTransition(false);
+		    		  tiles[i-1][j].setEdge(true);
 		    		  tiles[i][j].setTransitionId(tiles[i-1][j].getId());
 		    	  }else{
 		    		  tiles[i][j].setTransition(false);
+		    		  tiles[i-1][j].setEdge(false);
 		    		  tiles[i][j].setTransitionId(-1);
 		    	  }
 		      }
 		      
-		      if(tiles[i][j].getId() == tiles[i+1][j].getId()) tiles[i][j+1].setRight(0);
+		      if(tiles[i][j].getId() == tiles[i+1][j].getId()) tiles[i][j].setRight(0);
 		      else{
 		    	  tiles[i][j].setRight(100);
 		    	  if(tiles[i][j].getId() < tiles[i+1][j].getId()){
 		    		  tiles[i][j].setTransition(true);
+		    		  tiles[i+1][j].setTransition(false);
+		    		  tiles[i+1][j].setEdge(true);
 		    		  tiles[i][j].setTransitionId(tiles[i+1][j].getId());
 		    	  }else{
 		    		  tiles[i][j].setTransition(false);
+		    		  tiles[i+1][j].setEdge(false);
 		    		  tiles[i][j].setTransitionId(-1);
 		    	  }
 		      }
@@ -352,41 +365,39 @@ public class Game extends Canvas implements Runnable {
 		  //Corners
 		  for(int i = 1; i < mapSize-1; i++){
 		    for(int j = 1; j < mapSize-1; j++){
-		    	if(!tiles[i][j].isTransition() && !tiles[i][j].isCorner() && tiles[i][j].getId()==0){
-		    		if((tiles[i][j+1].isTransition() && tiles[i-1][j].isTransition()) || (tiles[i][j+1].isTransition() && tiles[i+1][j].isTransition()) 
-		    		|| (tiles[i][j-1].isTransition() && tiles[i-1][j].isTransition()) || (tiles[i][j-1].isTransition() && tiles[i+1][j].isTransition())){
-		    			tiles[i][j].setCorner(true);
-		    			tiles[i][j].setTransition(false);  			
-		    			
-		    			if(tiles[i][j-1].isTransition() && tiles[i-1][j].isTransition() && !tiles[i-1][j-1].isTransition() ){ //NORTHWEST
-		    				tiles[i][j].setTransitionId(tiles[i][j-1].getTransitionId()+1);
-		    				tiles[i][j].setUp(1);
-						}
-						else{
-							tiles[i][j].setUp(0);
-						}
-						  
-						if(tiles[i][j-1].isTransition() && tiles[i+1][j].isTransition() && !tiles[i+1][j-1].isTransition()){ //NORTHEAST
-							tiles[i][j].setTransitionId(tiles[i][j-1].getTransitionId()+1);
-							tiles[i][j].setDown(10);
-						}else{
-							tiles[i][j].setDown(0);
-						}
-						  
-						if(tiles[i][j+1].isTransition() && tiles[i-1][j].isTransition() && !tiles[i-1][j+1].isTransition()){	//SOUTWEST
-							tiles[i][j].setTransitionId(tiles[i][j+1].getTransitionId()+1);
-							tiles[i][j].setLeft(1000);
-						}else{
-							tiles[i][j].setLeft(0);
-						}
-						  
-						if(tiles[i][j+1].isTransition() && tiles[i+1][j].isTransition() && !tiles[i+1][j+1].isTransition()){	//SOUTHEAST
-							tiles[i][j].setTransitionId(tiles[i][j+1].getTransitionId()+1);
-							tiles[i][j].setRight(100);
-						}else{
-							tiles[i][j].setRight(0);
-						}
-		    		}
+		    	if(tiles[i][j].isEdge()){	
+	    			if(tiles[i][j-1].getId() < tiles[i][j].getId() && tiles[i-1][j].getId() < tiles[i][j].getId()){ 	//SOUTHEAST(100)
+	    				tiles[i-1][j-1].setTransitionId(tiles[i][j].getId()+1);
+	    				tiles[i-1][j-1].setUp(100);
+	    				tiles[i-1][j-1].setCorner(true);
+					}
+					else{
+						tiles[i-1][j-1].setUp(0);
+					}
+	    			
+					if(tiles[i][j-1].getId() < tiles[i][j].getId() && tiles[i+1][j].getId() < tiles[i][j].getId()){ 	//SOUTHWEST(1000)
+						tiles[i+1][j-1].setTransitionId(tiles[i][j].getId()+1);
+						tiles[i+1][j-1].setDown(1000);
+						tiles[i+1][j-1].setCorner(true);
+					}else{
+						tiles[i+1][j-1].setDown(0);
+					}
+					
+					if(tiles[i][j+1].getId() < tiles[i][j].getId() && tiles[i-1][j].getId() < tiles[i][j].getId()){	//NORTHEAST(10)
+						tiles[i-1][j+1].setTransitionId(tiles[i][j].getId()+1);
+						tiles[i-1][j+1].setLeft(10);
+						tiles[i-1][j+1].setCorner(true);
+					}else{
+						tiles[i-1][j+1].setLeft(0);
+					}
+					
+					if(tiles[i][j+1].getId() < tiles[i][j].getId() && tiles[i+1][j].getId() < tiles[i][j].getId()){	//NORTHWEST(1)
+						tiles[i+1][j+1].setTransitionId(tiles[i][j].getId()+1);
+						tiles[i+1][j+1].setRight(1);
+						tiles[i+1][j+1].setCorner(true);
+					}else{
+						tiles[i+1][j+1].setRight(0);
+					}
 		    	}				
 		    }
 		  }

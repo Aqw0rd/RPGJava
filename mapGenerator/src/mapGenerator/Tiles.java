@@ -13,12 +13,19 @@ public class Tiles {
 	  private int lEdge=0;
 	  private int rEdge=0;
 	  private int end=0;
-	  private boolean transition;
+	  private boolean transition = false;
 	  private int transitionId;
 	  private boolean corner=false;
+	  private boolean edge = false;
 	  
 
-	  public boolean isCorner() {
+	public boolean isEdge() {
+		return edge;
+	}
+	public void setEdge(boolean edge) {
+		this.edge = edge;
+	}
+	public boolean isCorner() {
 		return corner;
 	}
 	public void setCorner(boolean corner) {
