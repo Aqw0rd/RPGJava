@@ -91,10 +91,9 @@ public class Game extends Canvas implements Runnable {
 				tick();
 				updates++;
 				delta--;
+				render();
+				frames++;	
 			}
-			render();
-			frames++;
-
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 				System.out.println("FPS: " + frames + " TICKS: " + updates);
@@ -115,7 +114,7 @@ public class Game extends Canvas implements Runnable {
 		BufferStrategy bs = this.getBufferStrategy();
 
 		if (bs == null) {
-			this.createBufferStrategy(4); // doubleebuffering
+			this.createBufferStrategy(3); // triplebuffering
 			return;
 		}
 
@@ -171,38 +170,50 @@ public class Game extends Canvas implements Runnable {
 	void updateTiles(Graphics2D g, int w0, int h0, int w, int h, double s) {
 		int a = (int) Math.floor(map(w0, 0, mapSize * 32, 0, mapSize));
 		int b = (int) Math.floor(map(w, 0, mapSize * 32, 0, mapSize));
-		;
+
 		int c = (int) Math.floor(map(h0, 0, mapSize * 32, 0, mapSize));
 		int d = (int) Math.floor(map(h, 0, mapSize * 32, 0, mapSize));
-		;
 
-		if (a > 0)
-			a--;
-		if (b < mapSize - 1)
-			b++;
-		if (c > 0)
-			c--;
-		if (d < mapSize - 1)
-			d++;
+
+		if (a > 0) a--;
+		if (b < mapSize - 1) b++;
+		if (c > 0) c--;
+		if (d < mapSize - 1)d++;
 
 		for (int i = a; i < b; i++) {
 			for (int j = c; j < d; j++) {
 				g.drawImage(baseImages[tiles[i][j].getId()], null, i * 32, j * 32);
-				if (tiles[i][j].isTransition() || tiles[i][j].isCorner()) {
-					int dec = binaryToDec(tiles[i][j].getUp() + tiles[i][j].getDown() + tiles[i][j].getLeft()
-							+ tiles[i][j].getRight());
-					// System.out.println("UP: " + tiles[i][j].getUp() + " DOWN:
-					// " + tiles[i][j].getDown() + " LEFT: " +
-					// tiles[i][j].getLeft() + " RIGHT: " +
-					// tiles[i][j].getRight() + " CORNER: " +
-					// tiles[i][j].isCorner() + " TRANSITION: " +
-					// tiles[i][j].isTransition());
-					g.drawImage(transitions[dec - 1][tiles[i][j].getTransitionId() - 1], null, i * 32, j * 32);
+				
+				int dec = binaryToDec(tiles[i][j].getUp() + tiles[i][j].getDown() + tiles[i][j].getLeft()
+						+ tiles[i][j].getRight());
+				int elDec = binaryToDec(tiles[i][j].getElUp() + tiles[i][j].getElDown() + tiles[i][j].getElLeft()
+						+ tiles[i][j].getElRight());
+				// System.out.println("UP: " + tiles[i][j].getUp() + " DOWN:
+				// " + tiles[i][j].getDown() + " LEFT: " +
+				// tiles[i][j].getLeft() + " RIGHT: " +
+				// tiles[i][j].getRight() + " CORNER: " +
+				// tiles[i][j].isCorner() + " TRANSITION: " +
+				// tiles[i][j].isTransition());
+				
+				//Draw Elevation transition
+				if (tiles[i][j].isElTransition()){
+					g.drawImage(elevation[elDec - 1][tiles[i][j].getTransitionId()], null, i * 32, j * 32);
 				}
-				if (tiles[i][j].isElTransition()) {
-					int dec = binaryToDec(tiles[i][j].getElUp() + tiles[i][j].getElDown() + tiles[i][j].getElLeft()
-							+ tiles[i][j].getElRight());
-					g.drawImage(elevation[dec - 1][tiles[i][j].getTransitionId() - 1], null, i * 32, j * 32);
+				
+				
+				//Draw transitions
+				else if (tiles[i][j].isTransition()){
+					g.drawImage(transitions[dec - 1][tiles[i][j].getTransitionId() -1], null, i * 32, j * 32);
+				}
+				
+				//Draw Corners
+				if (tiles[i][j].isCorner()){
+					if (tiles[i][j].getCornerType() == 0){
+						g.drawImage(transitions[elDec - 1][tiles[i][j].getCornerId()], null, i * 32, j * 32);
+					}
+					else if(tiles[i][j].getCornerType() == 1) {
+						g.drawImage(elevation[elDec - 1][tiles[i][j].getCornerId()], null, i * 32, j * 32);
+					}
 				}
 			}
 		}
@@ -214,7 +225,7 @@ public class Game extends Canvas implements Runnable {
 				tiles[i][j] = new Tiles();
 				if (mapArray[i][j] < 2) {
 					tiles[i][j].setId(1);
-					tiles[i][j].setElevation(noiseEl[i][j]);
+					//tiles[i][j].setElevation(noiseEl[i][j]);
 				} else {
 					tiles[i][j].setId(0);
 					tiles[i][j].setElevation(0);
@@ -318,7 +329,8 @@ public class Game extends Canvas implements Runnable {
 				if (tiles[i][j].getElevation() < tiles[i][j - 1].getElevation()) {
 					tiles[i][j].setElUp(10);
 					tiles[i][j].setElTransition(true);
-					tiles[i][j].setTransitionId(1);
+					tiles[i][j].setTransitionId(0);
+					tiles[i][j - 1].setElEdge(true);
 				} else {
 					tiles[i][j].setElUp(0);
 				}
@@ -326,7 +338,8 @@ public class Game extends Canvas implements Runnable {
 				if (tiles[i][j].getElevation() < tiles[i][j + 1].getElevation()) {
 					tiles[i][j].setElDown(1000);
 					tiles[i][j].setElTransition(true);
-					tiles[i][j].setTransitionId(1);
+					tiles[i][j].setTransitionId(0);
+					tiles[i][j + 1].setElEdge(true);
 				} else {
 					tiles[i][j].setElDown(0);
 				}
@@ -334,7 +347,8 @@ public class Game extends Canvas implements Runnable {
 				if (tiles[i][j].getElevation() < tiles[i - 1][j].getElevation()) {
 					tiles[i][j].setElLeft(1);
 					tiles[i][j].setElTransition(true);
-					tiles[i][j].setTransitionId(1);
+					tiles[i][j].setTransitionId(0);
+					tiles[i - 1][j].setElEdge(true);
 				} else {
 					tiles[i][j].setElLeft(0);
 				}
@@ -342,7 +356,8 @@ public class Game extends Canvas implements Runnable {
 				if (tiles[i][j].getElevation() < tiles[i + 1][j].getElevation()) {
 					tiles[i][j].setElRight(100);
 					tiles[i][j].setElTransition(true);
-					tiles[i][j].setTransitionId(1);
+					tiles[i][j].setTransitionId(0);
+					tiles[i + 1][j].setElEdge(true);
 				} else {
 					tiles[i][j].setElRight(0);
 				}
@@ -432,41 +447,74 @@ public class Game extends Canvas implements Runnable {
 			for (int j = 1; j < mapSize - 1; j++) {
 				if (tiles[i][j].isEdge()) {
 					if (tiles[i][j - 1].getId() < tiles[i][j].getId()
-							&& tiles[i - 1][j].getId() < tiles[i][j].getId()) { // SOUTHEAST(100)
-						tiles[i - 1][j - 1].setTransitionId(tiles[i][j].getId() + 1);
-						tiles[i - 1][j - 1].setUp(100);
+					&&  tiles[i - 1][j].getId() < tiles[i][j].getId()) { // SOUTHEAST(100)
+						tiles[i - 1][j - 1].setCornerId(tiles[i- 1][j - 1].getId()+1);
+						tiles[i - 1][j - 1].setElUp(100);
 						tiles[i - 1][j - 1].setCorner(true);
+						tiles[i - 1][j - 1].setCornerType(0);
 					}
-					/*
-					 * else{ tiles[i-1][j-1].setUp(0); }
-					 */
 
 					if (tiles[i][j - 1].getId() < tiles[i][j].getId()
 							&& tiles[i + 1][j].getId() < tiles[i][j].getId()) { // SOUTHWEST(1000)
-						tiles[i + 1][j - 1].setTransitionId(tiles[i][j].getId() + 1);
-						tiles[i + 1][j - 1].setDown(1000);
+						tiles[i + 1][j - 1].setCornerId(tiles[i + 1][j - 1].getId()+1);
+						tiles[i + 1][j - 1].setElDown(1000);
 						tiles[i + 1][j - 1].setCorner(true);
-					} /*
-						 * else{ tiles[i+1][j-1].setDown(0); }
-						 */
-
+						tiles[i + 1][j - 1].setCornerType(0);
+					}
+					
 					if (tiles[i][j + 1].getId() < tiles[i][j].getId()
 							&& tiles[i - 1][j].getId() < tiles[i][j].getId()) { // NORTHEAST(10)
-						tiles[i - 1][j + 1].setTransitionId(tiles[i][j].getId() + 1);
-						tiles[i - 1][j + 1].setLeft(10);
+						tiles[i - 1][j + 1].setCornerId(tiles[i-1][j+1].getId()+1);
+						tiles[i - 1][j + 1].setElLeft(10);
 						tiles[i - 1][j + 1].setCorner(true);
-					} /*
-						 * else{ tiles[i-1][j+1].setLeft(0); }
-						 */
-
+						tiles[i - 1][j + 1].setCornerType(0);
+					}
+					
 					if (tiles[i][j + 1].getId() < tiles[i][j].getId()
 							&& tiles[i + 1][j].getId() < tiles[i][j].getId()) { // NORTHWEST(1)
-						tiles[i + 1][j + 1].setTransitionId(tiles[i][j].getId() + 1);
-						tiles[i + 1][j + 1].setRight(1);
+						tiles[i + 1][j + 1].setCornerId(tiles[i+1][j+1].getId()+1);
+						tiles[i + 1][j + 1].setElRight(1);
 						tiles[i + 1][j + 1].setCorner(true);
-					} /*
-						 * else{ tiles[i+1][j+1].setRight(0); }
-						 */
+						tiles[i + 1][j + 1].setCornerType(0);
+					}
+				}
+				//Elevated Corners
+				if (tiles[i][j].isElEdge()) {
+					if (tiles[i][j - 1].getElevation() < tiles[i][j].getElevation()
+					&&  tiles[i - 1][j].getElevation() < tiles[i][j].getElevation()) { // SOUTHEAST(100)
+						tiles[i - 1][j - 1].setCornerId(tiles[i][j].getId());
+						tiles[i - 1][j - 1].setElUp(100);
+						tiles[i - 1][j - 1].setCorner(true);
+						tiles[i - 1][j + 1].setTransition(false);
+						tiles[i - 1][j - 1].setCornerType(1);
+					}
+
+					if (tiles[i][j - 1].getElevation() < tiles[i][j].getElevation()
+							&& tiles[i + 1][j].getElevation() < tiles[i][j].getElevation()) { // SOUTHWEST(1000)
+						tiles[i + 1][j - 1].setCornerId(tiles[i][j].getId());
+						tiles[i + 1][j - 1].setElDown(1000);
+						tiles[i + 1][j - 1].setCorner(true);
+						tiles[i - 1][j + 1].setTransition(false);
+						tiles[i + 1][j - 1].setCornerType(1);
+					}
+					
+					if (tiles[i][j + 1].getElevation() < tiles[i][j].getElevation()
+							&& tiles[i - 1][j].getElevation() < tiles[i][j].getElevation()) { // NORTHEAST(10)
+						tiles[i - 1][j + 1].setCornerId(tiles[i][j].getId());
+						tiles[i - 1][j + 1].setElLeft(10);
+						tiles[i - 1][j + 1].setCorner(true);
+						tiles[i - 1][j + 1].setTransition(false);
+						tiles[i - 1][j + 1].setCornerType(1);
+					}
+					
+					if (tiles[i][j + 1].getElevation() < tiles[i][j].getElevation()
+							&& tiles[i + 1][j].getElevation() < tiles[i][j].getElevation()) { // NORTHWEST(1)
+						tiles[i + 1][j + 1].setCornerId(tiles[i][j].getId());
+						tiles[i + 1][j + 1].setElRight(1);
+						tiles[i + 1][j + 1].setCorner(true);
+						tiles[i - 1][j + 1].setTransition(false);
+						tiles[i + 1][j + 1].setCornerType(1);
+					}
 				}
 			}
 		}
