@@ -1,12 +1,14 @@
 package framework;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.LinkedList;
 
 import Maths.Vector2f;
 import mapGenerator.ObjectId;
 
 public abstract class GameObject {
-	protected Vector2f pos;
+	protected Vector2f pos = new Vector2f(0,0);
 	protected ObjectId id;
 	protected Vector2f vel = new Vector2f(0,0);
 	
@@ -17,12 +19,24 @@ public abstract class GameObject {
 	}
 	
 	public abstract void render(Graphics g);
+	public abstract void tick(LinkedList<GameObject> object);
+	public abstract Rectangle getBounds();
 	
-	public abstract Vector2f getPos();
-	public abstract void setPos(Vector2f pos);
+	public  Vector2f getPos(){
+		return pos;
+	}
+	public  void setPos(Vector2f pos){
+		this.pos = pos;
+	}
 	
-	public abstract Vector2f getVel();
-	public abstract void setVel(Vector2f vel);
+	public  Vector2f getVel(){
+		return vel;
+	}
+	public  void setVel(Vector2f vel){
+		this.vel = vel;
+	}
 	
-	public abstract ObjectId getId();
+	public  ObjectId getId(){
+		return id;
+	}
 }

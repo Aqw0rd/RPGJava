@@ -7,6 +7,9 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import Object.Player;
+import mapGenerator.Handler;
+import mapGenerator.ObjectId;
 import mapGenerator.SimplexNoise;
 import mapGenerator.TileSets;
 import mapGenerator.Tiles;
@@ -18,24 +21,32 @@ public class Game extends Canvas implements Runnable {
 	int[][] noiseEl;
 	int[][] mapArray;
 	//Tiles[][] tiles;
+	
 	Tiles[][] tile_ground;
 	Tiles[][] tile_elevation;
 	Tiles[][] details;
 	Tiles[][] corners;
 	Tiles[][] transition;
+	
 	BufferedImage[][] biome_images;
 	BufferedImage[] baseImages;
 	BufferedImage[][] transitions;
 	BufferedImage[][] elevation;
+	
 	Camera cam;
 	int mapSize;
+	
 	TileSets surface = new TileSets();
 	TileSets baseTiles = new TileSets();
 	TileSets elTiles = new TileSets();
 	TileSets biome = new TileSets();
 	TileSets transitionTiles = new TileSets();
+	
 	int x, y;
 	boolean update = true;
+	Handler handler;
+	
+	public static int WIDTH, HEIGHT;
 	// -----------------------------------||----------------------------//
 
 	/**
@@ -60,8 +71,15 @@ public class Game extends Canvas implements Runnable {
 
 		x = 0;
 		y = 0;
-
+		
 		cam = new Camera();
+		handler = new Handler();
+		handler.addObject(new Player(100,100,ObjectId.Player));
+		this.addKeyListener(new KeyInput(handler));
+		
+		WIDTH = getWidth();
+		HEIGHT = getHeight();
+		
 		//tiles = new Tiles[mapSize][mapSize];
 		tile_ground = new Tiles[mapSize][mapSize];
 		tile_elevation = new Tiles[mapSize][mapSize];
@@ -86,6 +104,7 @@ public class Game extends Canvas implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		setUp();
+		this.requestFocus();
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
 		double ns = 1000000000 / amountOfTicks;
@@ -115,9 +134,12 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-		cam.tick(x, y);
-		x -= 1;
-		y -= 1;
+		for(int i = 0; i < handler.object.size(); i++){
+			GameObject temp = handler.object.get(i);
+			if(temp.getId() == ObjectId.Player) cam.tick(temp);
+		}
+		
+		handler.tick();
 	}
 
 	private void render() {
@@ -136,7 +158,7 @@ public class Game extends Canvas implements Runnable {
 
 		updateTiles(g2d, Math.abs(cam.pos.x), Math.abs(cam.pos.y), this.getWidth() + Math.abs(cam.pos.x),
 				this.getHeight() + Math.abs(cam.pos.y), 1);
-
+		handler.render(g);
 		// --Affected by the camera--//
 		g2d.translate(-cam.pos.x, -cam.pos.y);
 
@@ -276,8 +298,8 @@ public class Game extends Canvas implements Runnable {
 				if (tile_ground[i][j].getId() == tile_ground[i][j - 1].getId())
 					transition[i][j].setUp(0);
 				else {
-					transition[i][j].setUp(10);
 					if (tile_ground[i][j].getId() < tile_ground[i][j - 1].getId()) {
+						transition[i][j].setUp(10);
 						tile_ground[i][j - 1].setEdge(true);
 						transition[i][j].setId(tile_ground[i][j - 1].getId());
 						transition[i][j].setType(0);
@@ -289,8 +311,8 @@ public class Game extends Canvas implements Runnable {
 				if (tile_ground[i][j].getId() == tile_ground[i][j + 1].getId())
 					transition[i][j].setDown(0);
 				else {
-					transition[i][j].setDown(1000);
 					if (tile_ground[i][j].getId() < tile_ground[i][j + 1].getId()) {
+						transition[i][j].setDown(1000);
 						tile_ground[i][j + 1].setEdge(true);
 						transition[i][j].setId(tile_ground[i][j + 1].getId());
 						transition[i][j].setType(0);
@@ -302,8 +324,9 @@ public class Game extends Canvas implements Runnable {
 				if (tile_ground[i][j].getId() == tile_ground[i - 1][j].getId())
 					transition[i][j].setLeft(0);
 				else {
-					transition[i][j].setLeft(1);
+					
 					if (tile_ground[i][j].getId() < tile_ground[i - 1][j].getId()) {
+						transition[i][j].setLeft(1);
 						tile_ground[i - 1][j].setEdge(true);
 						transition[i][j].setId(tile_ground[i - 1][j].getId());
 						transition[i][j].setType(0);
@@ -315,11 +338,11 @@ public class Game extends Canvas implements Runnable {
 				if (tile_ground[i][j].getId() == tile_ground[i + 1][j].getId())
 					transition[i][j].setRight(0);
 				else {
-					transition[i][j].setRight(100);
 					if (tile_ground[i][j].getId() < tile_ground[i + 1][j].getId()) {
-						tile_ground[i + 1][j].setEdge(true);
-						tile_ground[i][j].setId(tile_ground[i + 1][j].getId());
+						transition[i][j].setRight(100);
 						transition[i][j].setType(0);
+						tile_ground[i + 1][j].setEdge(true);
+						transition[i][j].setId(tile_ground[i + 1][j].getId());
 					} else {
 						tile_ground[i + 1][j].setEdge(false);
 					}
