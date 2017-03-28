@@ -2,11 +2,17 @@ package mapGenerator;
 
 public class Tiles {
 	private int id = 0;
+	private int type = 0;
 	private int up = 0;
 	private int down = 0;
 	private int left = 0;
 	private int right = 0;
-	private int elevation = 0;
+	/*private boolean transition = false;
+	private int transitionId;
+	private boolean corner = false;
+	private int cornerId = 0;*/
+	private boolean edge = false;
+	/*private int elevation = 0;
 	private int elUp = 0;
 	private int elDown = 0;
 	private int elLeft = 0;
@@ -19,18 +25,19 @@ public class Tiles {
 	private int lEdge = 0;
 	private int rEdge = 0;
 	private int end = 0;
-	private boolean transition = false;
-	private int transitionId;
-	private boolean corner = false;
-	private boolean edge = false;
-	private boolean elEdge = false;
-	private int cornerId = 0;
+	private boolean elEdge = false;*/
 	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
 	}
 	public int getUp() {
 		return up;
@@ -56,102 +63,6 @@ public class Tiles {
 	public void setRight(int right) {
 		this.right = right;
 	}
-	public int getElevation() {
-		return elevation;
-	}
-	public void setElevation(int elevation) {
-		this.elevation = elevation;
-	}
-	public int getElUp() {
-		return elUp;
-	}
-	public void setElUp(int elUp) {
-		this.elUp = elUp;
-	}
-	public int getElDown() {
-		return elDown;
-	}
-	public void setElDown(int elDown) {
-		this.elDown = elDown;
-	}
-	public int getElLeft() {
-		return elLeft;
-	}
-	public void setElLeft(int elLeft) {
-		this.elLeft = elLeft;
-	}
-	public int getElRight() {
-		return elRight;
-	}
-	public void setElRight(int elRight) {
-		this.elRight = elRight;
-	}
-	public boolean isElTransition() {
-		return elTransition;
-	}
-	public void setElTransition(boolean elTransition) {
-		this.elTransition = elTransition;
-	}
-	public int getCornerType() {
-		return cornerType;
-	}
-	public void setCornerType(int cornerType) {
-		this.cornerType = cornerType;
-	}
-	public int getWall() {
-		return wall;
-	}
-	public void setWall(int wall) {
-		this.wall = wall;
-	}
-	public int getlCorner() {
-		return lCorner;
-	}
-	public void setlCorner(int lCorner) {
-		this.lCorner = lCorner;
-	}
-	public int getrCorner() {
-		return rCorner;
-	}
-	public void setrCorner(int rCorner) {
-		this.rCorner = rCorner;
-	}
-	public int getlEdge() {
-		return lEdge;
-	}
-	public void setlEdge(int lEdge) {
-		this.lEdge = lEdge;
-	}
-	public int getrEdge() {
-		return rEdge;
-	}
-	public void setrEdge(int rEdge) {
-		this.rEdge = rEdge;
-	}
-	public int getEnd() {
-		return end;
-	}
-	public void setEnd(int end) {
-		this.end = end;
-	}
-	public boolean isTransition() {
-		return transition;
-	}
-	public void setTransition(boolean transition) {
-		this.transition = transition;
-	}
-	public int getTransitionId() {
-		return transitionId;
-	}
-	public void setTransitionId(int transitionId) {
-		this.transitionId = transitionId;
-	}
-	public boolean isCorner() {
-		return corner;
-	}
-	public void setCorner(boolean corner) {
-		this.corner = corner;
-	}
 	public boolean isEdge() {
 		return edge;
 	}
@@ -159,16 +70,6 @@ public class Tiles {
 		this.edge = edge;
 	}
 	
-	public boolean isElEdge() {
-		return elEdge;
-	}
-	public void setElEdge(boolean elEdge) {
-		this.elEdge = elEdge;
-	}
-	public int getCornerId() {
-		return cornerId;
-	}
-	public void setCornerId(int cornerId) {
-		this.cornerId = cornerId;
-	}
+	
+	
 }

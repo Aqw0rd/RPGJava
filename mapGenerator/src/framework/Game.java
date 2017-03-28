@@ -17,7 +17,12 @@ public class Game extends Canvas implements Runnable {
 	// float[][] noiseDetail;
 	int[][] noiseEl;
 	int[][] mapArray;
-	Tiles[][] tiles;
+	//Tiles[][] tiles;
+	Tiles[][] tile_ground;
+	Tiles[][] tile_elevation;
+	Tiles[][] details;
+	Tiles[][] corners;
+	Tiles[][] transition;
 	BufferedImage[][] biome_images;
 	BufferedImage[] baseImages;
 	BufferedImage[][] transitions;
@@ -57,7 +62,12 @@ public class Game extends Canvas implements Runnable {
 		y = 0;
 
 		cam = new Camera();
-		tiles = new Tiles[mapSize][mapSize];
+		//tiles = new Tiles[mapSize][mapSize];
+		tile_ground = new Tiles[mapSize][mapSize];
+		tile_elevation = new Tiles[mapSize][mapSize];
+		details = new Tiles[mapSize][mapSize];
+		corners = new Tiles[mapSize][mapSize];
+		transition = new Tiles[mapSize][mapSize];
 		surface.setImg("src/resources/surface.png");
 		biome.setImg("src/resources/biome.png");
 		baseTiles.setImg("src/resources/basetiles.png");
@@ -182,53 +192,54 @@ public class Game extends Canvas implements Runnable {
 
 		for (int i = a; i < b; i++) {
 			for (int j = c; j < d; j++) {
-				g.drawImage(baseImages[tiles[i][j].getId()], null, i * 32, j * 32);
+				g.drawImage(baseImages[tile_ground[i][j].getId()], null, i * 32, j * 32);
 				
-				int dec = binaryToDec(tiles[i][j].getUp() + tiles[i][j].getDown() + tiles[i][j].getLeft()
-						+ tiles[i][j].getRight());
-				int elDec = binaryToDec(tiles[i][j].getElUp() + tiles[i][j].getElDown() + tiles[i][j].getElLeft()
-						+ tiles[i][j].getElRight());
-				// System.out.println("UP: " + tiles[i][j].getUp() + " DOWN:
-				// " + tiles[i][j].getDown() + " LEFT: " +
-				// tiles[i][j].getLeft() + " RIGHT: " +
-				// tiles[i][j].getRight() + " CORNER: " +
-				// tiles[i][j].isCorner() + " TRANSITION: " +
-				// tiles[i][j].isTransition());
+				int dec = binaryToDec(transition[i][j].getUp() + transition[i][j].getDown() + transition[i][j].getLeft()
+						+ transition[i][j].getRight());
+				int elDec = binaryToDec(tile_elevation[i][j].getUp() + tile_elevation[i][j].getDown() + tile_elevation[i][j].getLeft()
+						+ tile_elevation[i][j].getRight());
 				
-				//Draw Elevation transition
-				if (tiles[i][j].isElTransition()){
-					g.drawImage(elevation[elDec - 1][tiles[i][j].getTransitionId()], null, i * 32, j * 32);
+				if(transition[i][j].getId() >=0){
+					if(transition[i][j].getType() == 1)
+						g.drawImage(elevation[elDec - 1][transition[i][j].getId()], null, i * 32, j * 32);
+					if(transition[i][j].getType() == 0)
+						g.drawImage(transitions[dec - 1][transition[i][j].getId()-1], null, i * 32, j * 32);
 				}
 				
-				
-				//Draw transitions
-				else if (tiles[i][j].isTransition()){
-					g.drawImage(transitions[dec - 1][tiles[i][j].getTransitionId() -1], null, i * 32, j * 32);
-				}
+				elDec = binaryToDec(corners[i][j].getUp() + corners[i][j].getDown() + corners[i][j].getLeft()
+						+ corners[i][j].getRight());
 				
 				//Draw Corners
-				if (tiles[i][j].isCorner()){
-					if (tiles[i][j].getCornerType() == 0){
-						g.drawImage(transitions[elDec - 1][tiles[i][j].getCornerId()], null, i * 32, j * 32);
+				if (corners[i][j].getId() >=0){
+					if (corners[i][j].getType() == 0){
+						g.drawImage(transitions[elDec - 1][corners[i][j].getId()], null, i * 32, j * 32);
 					}
-					else if(tiles[i][j].getCornerType() == 1) {
-						g.drawImage(elevation[elDec - 1][tiles[i][j].getCornerId()], null, i * 32, j * 32);
+					else if(corners[i][j].getType() == 1) {
+						g.drawImage(elevation[elDec - 1][corners[i][j].getId()], null, i * 32, j * 32);
 					}
 				}
 			}
 		}
 	}
+	
 
 	public void addTiles() {
 		for (int i = 0; i < mapSize; i++) {
 			for (int j = 0; j < mapSize; j++) {
-				tiles[i][j] = new Tiles();
+				tile_ground[i][j] = new Tiles();
+				tile_elevation[i][j] = new Tiles();
+				details[i][j] = new Tiles();
+				corners[i][j] = new Tiles();
+				transition[i][j] = new Tiles();
+				transition[i][j].setId(-1);
+				corners[i][j].setId(-1);
 				if (mapArray[i][j] < 2) {
-					tiles[i][j].setId(1);
-					//tiles[i][j].setElevation(noiseEl[i][j]);
+					tile_ground[i][j].setId(1);
+					tile_elevation[i][j].setId(0
+							/*noiseEl[i][j]*/);
 				} else {
-					tiles[i][j].setId(0);
-					tiles[i][j].setElevation(0);
+					tile_ground[i][j].setId(0);
+					tile_elevation[i][j].setId(0);
 				}
 			}
 		}
@@ -257,185 +268,174 @@ public class Game extends Canvas implements Runnable {
 		return noise;
 	}
 
+	
 	public void addProperties() {
 		for (int i = 1; i < mapSize - 1; i++) {
 			for (int j = 1; j < mapSize - 1; j++) {
 				// Checking if tiles next to itself are equal to itself
-				if (tiles[i][j].getId() == tiles[i][j - 1].getId())
-					tiles[i][j].setUp(0);
+				if (tile_ground[i][j].getId() == tile_ground[i][j - 1].getId())
+					transition[i][j].setUp(0);
 				else {
-					tiles[i][j].setUp(10);
-					if (tiles[i][j].getId() < tiles[i][j - 1].getId()) {
-						tiles[i][j].setTransition(true);
-						tiles[i][j - 1].setTransition(false);
-						tiles[i][j - 1].setEdge(true);
-						tiles[i][j].setTransitionId(tiles[i][j - 1].getId());
+					transition[i][j].setUp(10);
+					if (tile_ground[i][j].getId() < tile_ground[i][j - 1].getId()) {
+						tile_ground[i][j - 1].setEdge(true);
+						transition[i][j].setId(tile_ground[i][j - 1].getId());
+						transition[i][j].setType(0);
 					} else {
-						tiles[i][j].setTransition(false);
-						tiles[i][j - 1].setEdge(false);
-						tiles[i][j].setTransitionId(-1);
+						tile_ground[i][j - 1].setEdge(false);
 					}
 				}
 
-				if (tiles[i][j].getId() == tiles[i][j + 1].getId())
-					tiles[i][j].setDown(0);
+				if (tile_ground[i][j].getId() == tile_ground[i][j + 1].getId())
+					transition[i][j].setDown(0);
 				else {
-					tiles[i][j].setDown(1000);
-					if (tiles[i][j].getId() < tiles[i][j + 1].getId()) {
-						tiles[i][j].setTransition(true);
-						tiles[i][j + 1].setTransition(false);
-						tiles[i][j + 1].setEdge(true);
-						tiles[i][j].setTransitionId(tiles[i][j + 1].getId());
+					transition[i][j].setDown(1000);
+					if (tile_ground[i][j].getId() < tile_ground[i][j + 1].getId()) {
+						tile_ground[i][j + 1].setEdge(true);
+						transition[i][j].setId(tile_ground[i][j + 1].getId());
+						transition[i][j].setType(0);
 					} else {
-						tiles[i][j].setTransition(false);
-						tiles[i][j + 1].setEdge(false);
-						tiles[i][j].setTransitionId(-1);
+						tile_ground[i][j + 1].setEdge(false);
 					}
 				}
 
-				if (tiles[i][j].getId() == tiles[i - 1][j].getId())
-					tiles[i][j].setLeft(0);
+				if (tile_ground[i][j].getId() == tile_ground[i - 1][j].getId())
+					transition[i][j].setLeft(0);
 				else {
-					tiles[i][j].setLeft(1);
-					if (tiles[i][j].getId() < tiles[i - 1][j].getId()) {
-						tiles[i][j].setTransition(true);
-						tiles[i - 1][j].setTransition(false);
-						tiles[i - 1][j].setEdge(true);
-						tiles[i][j].setTransitionId(tiles[i - 1][j].getId());
+					transition[i][j].setLeft(1);
+					if (tile_ground[i][j].getId() < tile_ground[i - 1][j].getId()) {
+						tile_ground[i - 1][j].setEdge(true);
+						transition[i][j].setId(tile_ground[i - 1][j].getId());
+						transition[i][j].setType(0);
 					} else {
-						tiles[i][j].setTransition(false);
-						tiles[i - 1][j].setEdge(false);
-						tiles[i][j].setTransitionId(-1);
+						transition[i - 1][j].setEdge(false);
 					}
 				}
 
-				if (tiles[i][j].getId() == tiles[i + 1][j].getId())
-					tiles[i][j].setRight(0);
+				if (tile_ground[i][j].getId() == tile_ground[i + 1][j].getId())
+					transition[i][j].setRight(0);
 				else {
-					tiles[i][j].setRight(100);
-					if (tiles[i][j].getId() < tiles[i + 1][j].getId()) {
-						tiles[i][j].setTransition(true);
-						tiles[i + 1][j].setTransition(false);
-						tiles[i + 1][j].setEdge(true);
-						tiles[i][j].setTransitionId(tiles[i + 1][j].getId());
+					transition[i][j].setRight(100);
+					if (tile_ground[i][j].getId() < tile_ground[i + 1][j].getId()) {
+						tile_ground[i + 1][j].setEdge(true);
+						tile_ground[i][j].setId(tile_ground[i + 1][j].getId());
+						transition[i][j].setType(0);
 					} else {
-						tiles[i][j].setTransition(false);
-						tiles[i + 1][j].setEdge(false);
-						tiles[i][j].setTransitionId(-1);
+						tile_ground[i + 1][j].setEdge(false);
 					}
 				}
 
 				// ----------------ELEVATION--------------------//
-				if (tiles[i][j].getElevation() < tiles[i][j - 1].getElevation()) {
-					tiles[i][j].setElUp(10);
-					tiles[i][j].setElTransition(true);
-					tiles[i][j].setTransitionId(0);
-					tiles[i][j - 1].setElEdge(true);
+				if (tile_elevation[i][j].getId() < tile_elevation[i][j - 1].getId()) {
+					tile_elevation[i][j].setUp(10);
+					transition[i][j].setId(0);
+					tile_elevation[i][j - 1].setEdge(true);
+					transition[i][j].setType(1);
 				} else {
-					tiles[i][j].setElUp(0);
+					tile_elevation[i][j].setUp(0);
 				}
 
-				if (tiles[i][j].getElevation() < tiles[i][j + 1].getElevation()) {
-					tiles[i][j].setElDown(1000);
-					tiles[i][j].setElTransition(true);
-					tiles[i][j].setTransitionId(0);
-					tiles[i][j + 1].setElEdge(true);
+				if (tile_elevation[i][j].getId() < tile_elevation[i][j + 1].getId()) {
+					tile_elevation[i][j].setDown(1000);
+					transition[i][j].setId(0);
+					tile_elevation[i][j + 1].setEdge(true);
+					transition[i][j].setType(1);
 				} else {
-					tiles[i][j].setElDown(0);
+					tile_elevation[i][j].setDown(0);
 				}
 
-				if (tiles[i][j].getElevation() < tiles[i - 1][j].getElevation()) {
-					tiles[i][j].setElLeft(1);
-					tiles[i][j].setElTransition(true);
-					tiles[i][j].setTransitionId(0);
-					tiles[i - 1][j].setElEdge(true);
+				if (tile_elevation[i][j].getId() < tile_elevation[i - 1][j].getId()) {
+					tile_elevation[i][j].setLeft(1);
+					transition[i][j].setId(0);
+					tile_elevation[i - 1][j].setEdge(true);
+					transition[i][j].setType(1);
 				} else {
-					tiles[i][j].setElLeft(0);
+					tile_elevation[i][j].setLeft(0);
 				}
 
-				if (tiles[i][j].getElevation() < tiles[i + 1][j].getElevation()) {
-					tiles[i][j].setElRight(100);
-					tiles[i][j].setElTransition(true);
-					tiles[i][j].setTransitionId(0);
-					tiles[i + 1][j].setElEdge(true);
+				if (tile_elevation[i][j].getId() < tile_elevation[i + 1][j].getId()) {
+					tile_elevation[i][j].setRight(100);
+					transition[i][j].setId(0);
+					tile_elevation[i + 1][j].setEdge(true);
+					transition[i][j].setType(1);
 				} else {
-					tiles[i][j].setElRight(0);
+					tile_elevation[i][j].setRight(0);
 				}
 
 				// EDGES
 				if (i - 1 == 0) {
-					if (tiles[i - 1][j].getId() == tiles[i][j + 1].getId())
-						tiles[i - 1][j].setDown(1000);
+					if (tile_ground[i - 1][j].getId() == tile_ground[i][j + 1].getId())
+						tile_ground[i - 1][j].setDown(1000);
 					else
-						tiles[i - 1][j].setDown(1);
+						tile_ground[i - 1][j].setDown(1);
 
-					if (tiles[i - 1][j].getId() == tiles[i + 1][j].getId())
-						tiles[i - 1][j].setRight(100);
+					if (tile_ground[i - 1][j].getId() == tile_ground[i + 1][j].getId())
+						tile_ground[i - 1][j].setRight(100);
 					else
-						tiles[i - 1][j].setRight(1);
+						tile_ground[i - 1][j].setRight(1);
 
-					if (tiles[i - 1][j].getId() == tiles[i][j - 1].getId())
-						tiles[i - 1][j].setUp(10);
+					if (tile_ground[i - 1][j].getId() == tile_ground[i][j - 1].getId())
+						tile_ground[i - 1][j].setUp(10);
 					else
-						tiles[i - 1][j].setUp(0);
+						tile_ground[i - 1][j].setUp(0);
 
-					tiles[i - 1][j].setLeft(1);
+					tile_ground[i - 1][j].setLeft(1);
 
 				}
 				if (i + 1 == mapSize - 1) {
-					if (tiles[i + 1][j].getId() == tiles[i][j - 1].getId())
-						tiles[i + 1][j].setUp(10);
+					if (tile_ground[i + 1][j].getId() == tile_ground[i][j - 1].getId())
+						tile_ground[i + 1][j].setUp(10);
 					else
-						tiles[i + 1][j].setUp(0);
+						tile_ground[i + 1][j].setUp(0);
 
-					if (tiles[i + 1][j].getId() == tiles[i - 1][j].getId())
-						tiles[i + 1][j].setLeft(1);
+					if (tile_ground[i + 1][j].getId() == tile_ground[i - 1][j].getId())
+						tile_ground[i + 1][j].setLeft(1);
 					else
-						tiles[i + 1][j].setLeft(0);
+						tile_ground[i + 1][j].setLeft(0);
 
-					if (tiles[i + 1][j].getId() == tiles[i][j + 1].getId())
-						tiles[i + 1][j].setDown(1000);
+					if (tile_ground[i + 1][j].getId() == tile_ground[i][j + 1].getId())
+						tile_ground[i + 1][j].setDown(1000);
 					else
-						tiles[i + 1][j].setDown(0);
+						tile_ground[i + 1][j].setDown(0);
 
-					tiles[i + 1][j].setRight(100);
+					tile_ground[i + 1][j].setRight(100);
 				}
 				if (j - 1 == 0) {
-					if (tiles[i][j - 1].getId() == tiles[i - 1][j].getId())
-						tiles[i][j - 1].setLeft(1);
+					if (tile_ground[i][j - 1].getId() == tile_ground[i - 1][j].getId())
+						tile_ground[i][j - 1].setLeft(1);
 					else
-						tiles[i][j - 1].setLeft(1);
+						tile_ground[i][j - 1].setLeft(1);
 
-					if (tiles[i][j - 1].getId() == tiles[i][j + 1].getId())
-						tiles[i][j - 1].setDown(1000);
+					if (tile_ground[i][j - 1].getId() == tile_ground[i][j + 1].getId())
+						tile_ground[i][j - 1].setDown(1000);
 					else
-						tiles[i][j - 1].setDown(0);
+						tile_ground[i][j - 1].setDown(0);
 
-					if (tiles[i][j - 1].getId() == tiles[i + 1][j].getId())
-						tiles[i][j - 1].setRight(100);
+					if (tile_ground[i][j - 1].getId() == tile_ground[i + 1][j].getId())
+						tile_ground[i][j - 1].setRight(100);
 					else
-						tiles[i][j - 1].setRight(0);
+						tile_ground[i][j - 1].setRight(0);
 
-					tiles[i][j - 1].setUp(10);
+					tile_ground[i][j - 1].setUp(10);
 				}
 				if (j + 1 == mapSize - 1) {
 
-					if (tiles[i][j + 1].getId() == tiles[i][j - 1].getId())
-						tiles[i][j + 1].setUp(10);
+					if (tile_ground[i][j + 1].getId() == tile_ground[i][j - 1].getId())
+						tile_ground[i][j + 1].setUp(10);
 					else
-						tiles[i][j + 1].setUp(0);
+						tile_ground[i][j + 1].setUp(0);
 
-					if (tiles[i][j + 1].getId() == tiles[i + 1][j].getId())
-						tiles[i][j + 1].setRight(100);
+					if (tile_ground[i][j + 1].getId() == tile_ground[i + 1][j].getId())
+						tile_ground[i][j + 1].setRight(100);
 					else
-						tiles[i][j + 1].setRight(100);
+						tile_ground[i][j + 1].setRight(100);
 
-					if (tiles[i][j + 1].getId() == tiles[i - 1][j].getId())
-						tiles[i][j + 1].setLeft(1);
+					if (tile_ground[i][j + 1].getId() == tile_ground[i - 1][j].getId())
+						tile_ground[i][j + 1].setLeft(1);
 					else
-						tiles[i][j + 1].setLeft(0);
+						tile_ground[i][j + 1].setLeft(0);
 
-					tiles[i][j + 1].setDown(1000);
+					tile_ground[i][j + 1].setDown(1000);
 
 				}
 
@@ -445,75 +445,63 @@ public class Game extends Canvas implements Runnable {
 		// Corners
 		for (int i = 1; i < mapSize - 1; i++) {
 			for (int j = 1; j < mapSize - 1; j++) {
-				if (tiles[i][j].isEdge()) {
-					if (tiles[i][j - 1].getId() < tiles[i][j].getId()
-					&&  tiles[i - 1][j].getId() < tiles[i][j].getId()) { // SOUTHEAST(100)
-						tiles[i - 1][j - 1].setCornerId(tiles[i- 1][j - 1].getId()+1);
-						tiles[i - 1][j - 1].setElUp(100);
-						tiles[i - 1][j - 1].setCorner(true);
-						tiles[i - 1][j - 1].setCornerType(0);
+				if (tile_ground[i][j].isEdge()) {
+					if (tile_ground[i][j - 1].getId() < tile_ground[i][j].getId()
+					&&  tile_ground[i - 1][j].getId() < tile_ground[i][j].getId()) { // SOUTHEAST(100)
+						corners[i - 1][j - 1].setId(tile_ground[i- 1][j - 1].getId()+1);
+						corners[i - 1][j - 1].setUp(100);
+						corners[i - 1][j - 1].setType(0);
 					}
 
-					if (tiles[i][j - 1].getId() < tiles[i][j].getId()
-							&& tiles[i + 1][j].getId() < tiles[i][j].getId()) { // SOUTHWEST(1000)
-						tiles[i + 1][j - 1].setCornerId(tiles[i + 1][j - 1].getId()+1);
-						tiles[i + 1][j - 1].setElDown(1000);
-						tiles[i + 1][j - 1].setCorner(true);
-						tiles[i + 1][j - 1].setCornerType(0);
+					if (tile_ground[i][j - 1].getId() < tile_ground[i][j].getId()
+							&& tile_ground[i + 1][j].getId() < tile_ground[i][j].getId()) { // SOUTHWEST(1000)
+						corners[i + 1][j - 1].setId(tile_ground[i + 1][j - 1].getId()+1);
+						corners[i + 1][j - 1].setDown(1000);
+						corners[i + 1][j - 1].setType(0);
 					}
 					
-					if (tiles[i][j + 1].getId() < tiles[i][j].getId()
-							&& tiles[i - 1][j].getId() < tiles[i][j].getId()) { // NORTHEAST(10)
-						tiles[i - 1][j + 1].setCornerId(tiles[i-1][j+1].getId()+1);
-						tiles[i - 1][j + 1].setElLeft(10);
-						tiles[i - 1][j + 1].setCorner(true);
-						tiles[i - 1][j + 1].setCornerType(0);
+					if (tile_ground[i][j + 1].getId() < tile_ground[i][j].getId()
+							&& tile_ground[i - 1][j].getId() < tile_ground[i][j].getId()) { // NORTHEAST(10)
+						corners[i - 1][j + 1].setId(tile_ground[i-1][j+1].getId()+1);
+						corners[i - 1][j + 1].setLeft(10);
+						corners[i - 1][j + 1].setType(0);
 					}
 					
-					if (tiles[i][j + 1].getId() < tiles[i][j].getId()
-							&& tiles[i + 1][j].getId() < tiles[i][j].getId()) { // NORTHWEST(1)
-						tiles[i + 1][j + 1].setCornerId(tiles[i+1][j+1].getId()+1);
-						tiles[i + 1][j + 1].setElRight(1);
-						tiles[i + 1][j + 1].setCorner(true);
-						tiles[i + 1][j + 1].setCornerType(0);
+					if (tile_ground[i][j + 1].getId() < tile_ground[i][j].getId()
+							&& tile_ground[i + 1][j].getId() < tile_ground[i][j].getId()) { // NORTHWEST(1)
+						corners[i + 1][j + 1].setId(tile_ground[i+1][j+1].getId()+1);
+						corners[i + 1][j + 1].setRight(1);
+						corners[i + 1][j + 1].setType(0);
 					}
 				}
 				//Elevated Corners
-				if (tiles[i][j].isElEdge()) {
-					if (tiles[i][j - 1].getElevation() < tiles[i][j].getElevation()
-					&&  tiles[i - 1][j].getElevation() < tiles[i][j].getElevation()) { // SOUTHEAST(100)
-						tiles[i - 1][j - 1].setCornerId(tiles[i][j].getId());
-						tiles[i - 1][j - 1].setElUp(100);
-						tiles[i - 1][j - 1].setCorner(true);
-						tiles[i - 1][j + 1].setTransition(false);
-						tiles[i - 1][j - 1].setCornerType(1);
+				if (tile_elevation[i][j].isEdge()) {
+					if (tile_elevation[i][j - 1].getId() < tile_elevation[i][j].getId()
+					&&  tile_elevation[i - 1][j].getId() < tile_elevation[i][j].getId()) { // SOUTHEAST(100)
+						corners[i - 1][j - 1].setId(tile_ground[i][j].getId());
+						corners[i - 1][j - 1].setUp(100);
+						corners[i - 1][j - 1].setType(1);
 					}
 
-					if (tiles[i][j - 1].getElevation() < tiles[i][j].getElevation()
-							&& tiles[i + 1][j].getElevation() < tiles[i][j].getElevation()) { // SOUTHWEST(1000)
-						tiles[i + 1][j - 1].setCornerId(tiles[i][j].getId());
-						tiles[i + 1][j - 1].setElDown(1000);
-						tiles[i + 1][j - 1].setCorner(true);
-						tiles[i - 1][j + 1].setTransition(false);
-						tiles[i + 1][j - 1].setCornerType(1);
+					if (tile_elevation[i][j - 1].getId() < tile_elevation[i][j].getId()
+					&& tile_elevation[i + 1][j].getId() < tile_elevation[i][j].getId()) { // SOUTHWEST(1000)
+						corners[i + 1][j - 1].setId(tile_ground[i][j].getId());
+						corners[i + 1][j - 1].setDown(1000);
+						corners[i + 1][j - 1].setType(1);
 					}
 					
-					if (tiles[i][j + 1].getElevation() < tiles[i][j].getElevation()
-							&& tiles[i - 1][j].getElevation() < tiles[i][j].getElevation()) { // NORTHEAST(10)
-						tiles[i - 1][j + 1].setCornerId(tiles[i][j].getId());
-						tiles[i - 1][j + 1].setElLeft(10);
-						tiles[i - 1][j + 1].setCorner(true);
-						tiles[i - 1][j + 1].setTransition(false);
-						tiles[i - 1][j + 1].setCornerType(1);
+					if (tile_elevation[i][j + 1].getId() < tile_elevation[i][j].getId()
+					&& tile_elevation[i - 1][j].getId() < tile_elevation[i][j].getId()) { // NORTHEAST(10)
+						corners[i - 1][j + 1].setId(tile_ground[i][j].getId());
+						corners[i - 1][j + 1].setLeft(10);
+						corners[i - 1][j + 1].setType(1);
 					}
 					
-					if (tiles[i][j + 1].getElevation() < tiles[i][j].getElevation()
-							&& tiles[i + 1][j].getElevation() < tiles[i][j].getElevation()) { // NORTHWEST(1)
-						tiles[i + 1][j + 1].setCornerId(tiles[i][j].getId());
-						tiles[i + 1][j + 1].setElRight(1);
-						tiles[i + 1][j + 1].setCorner(true);
-						tiles[i - 1][j + 1].setTransition(false);
-						tiles[i + 1][j + 1].setCornerType(1);
+					if (tile_elevation[i][j + 1].getId() < tile_elevation[i][j].getId()
+					&& tile_elevation[i + 1][j].getId() < tile_elevation[i][j].getId()) { // NORTHWEST(1)
+						corners[i + 1][j + 1].setId(tile_ground[i][j].getId());
+						corners[i + 1][j + 1].setRight(1);
+						corners[i + 1][j + 1].setType(1);
 					}
 				}
 			}
@@ -529,6 +517,7 @@ public class Game extends Canvas implements Runnable {
 			return x;
 	}
 
+	
 	public float map(float x, float a, float b, float c, float d) {
 		return (x - a) / (b - a) * (d - c);
 	}
