@@ -24,6 +24,7 @@ public class KeyInput extends KeyAdapter {
 				if(key == KeyEvent.VK_S) tempObject.vel.y = 5; 
 				if(key == KeyEvent.VK_A) tempObject.vel.x = -5; 
 				if(key == KeyEvent.VK_D) tempObject.vel.x = 5; 
+				if(key == KeyEvent.VK_SPACE) tempObject.hp -= 1;
 			}
 		}
 		
@@ -45,6 +46,7 @@ public class KeyInput extends KeyAdapter {
 				if(key == KeyEvent.VK_S) tempObject.vel.y = 0; 
 				if(key == KeyEvent.VK_A) tempObject.vel.x = 0; 
 				if(key == KeyEvent.VK_D) tempObject.vel.x = 0; 
+				//if(key == KeyEvent.VK_SPACE) tempObject.hp -=0 ;
 			}
 		}
 	}

@@ -8,11 +8,17 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import Object.Player;
+import UI.ActionBar;
+import UI.ActionSlots;
+import UI.HealthBar;
+import UI.ManaBar;
 import mapGenerator.Handler;
 import mapGenerator.ObjectId;
 import mapGenerator.SimplexNoise;
 import mapGenerator.TileSets;
 import mapGenerator.Tiles;
+import mapGenerator.UIHandler;
+import mapGenerator.UIid;
 import mapGenerator.Window;
 
 public class Game extends Canvas implements Runnable {
@@ -45,6 +51,7 @@ public class Game extends Canvas implements Runnable {
 	int x, y;
 	boolean update = true;
 	Handler handler;
+	UIHandler uiHandler;
 	
 	public static int WIDTH, HEIGHT;
 	// -----------------------------------||----------------------------//
@@ -74,11 +81,23 @@ public class Game extends Canvas implements Runnable {
 		
 		cam = new Camera();
 		handler = new Handler();
+		uiHandler = new UIHandler();
 		handler.addObject(new Player(100,100,ObjectId.Player));
+		
 		this.addKeyListener(new KeyInput(handler));
 		
 		WIDTH = getWidth();
 		HEIGHT = getHeight();
+		
+		uiHandler.addObject(new ActionBar(100, HEIGHT-60, 600, 60,true, UIid.ActionBar));
+		uiHandler.addObject(new HealthBar(695 - 200, HEIGHT-55, 200, 23, true, UIid.HealthBar));
+		uiHandler.addObject(new ManaBar(695 - 200, HEIGHT-28, 200, 23, true, UIid.ManaBar));
+		int i = 0;
+		for(UIid id:UIid.actionSlots){
+			uiHandler.addObject(new ActionSlots(i*55 + 105, HEIGHT-55, 50, 50, true, id));
+			i++;
+			System.out.println(i);
+		}
 		
 		//tiles = new Tiles[mapSize][mapSize];
 		tile_ground = new Tiles[mapSize][mapSize];
@@ -86,14 +105,17 @@ public class Game extends Canvas implements Runnable {
 		details = new Tiles[mapSize][mapSize];
 		corners = new Tiles[mapSize][mapSize];
 		transition = new Tiles[mapSize][mapSize];
+		
 		surface.setImg("src/resources/surface.png");
 		biome.setImg("src/resources/biome.png");
 		baseTiles.setImg("src/resources/basetiles.png");
 		transitionTiles.setImg("src/resources/transitions.png");
 		elTiles.setImg("src/resources/elevation.png");
+		
 		mapArray = generateNoise(mapSize, mapSize, 0, 2,0.003f);
 		// noiseDetail = generateNoise(chunk,chunk,0,1);
 		noiseEl = generateNoise(mapSize, mapSize, 0, 5,0.0003f);
+		
 		addTiles();
 		addProperties();
 		loadImages();
@@ -136,9 +158,17 @@ public class Game extends Canvas implements Runnable {
 	private void tick() {
 		for(int i = 0; i < handler.object.size(); i++){
 			GameObject temp = handler.object.get(i);
-			if(temp.getId() == ObjectId.Player) cam.tick(temp);
+			if(temp.getId() == ObjectId.Player){
+				cam.tick(temp);
+				for(int j = 0; j < uiHandler.object.size(); j++){
+					UIObject uiTemp = uiHandler.object.get(j);
+					if(uiTemp.id == UIid.HealthBar) uiTemp.size.x = uiTemp.fullSize.x * temp.hp/temp.maxHp;
+					if(uiTemp.id == UIid.ManaBar) uiTemp.size.x = uiTemp.fullSize.x * temp.mana/temp.maxMana;
+				}
+			}
 		}
-		
+		uiPos();
+		uiHandler.tick();
 		handler.tick();
 	}
 
@@ -158,6 +188,7 @@ public class Game extends Canvas implements Runnable {
 
 		updateTiles(g2d, Math.abs(cam.pos.x), Math.abs(cam.pos.y), this.getWidth() + Math.abs(cam.pos.x),
 				this.getHeight() + Math.abs(cam.pos.y), 1);
+		uiHandler.render(g);
 		handler.render(g);
 		// --Affected by the camera--//
 		g2d.translate(-cam.pos.x, -cam.pos.y);
@@ -199,7 +230,7 @@ public class Game extends Canvas implements Runnable {
 
 	}
 
-	void updateTiles(Graphics2D g, int w0, int h0, int w, int h, double s) {
+	public void updateTiles(Graphics2D g, int w0, int h0, int w, int h, double s) {
 		int a = (int) Math.floor(map(w0, 0, mapSize * 32, 0, mapSize));
 		int b = (int) Math.floor(map(w, 0, mapSize * 32, 0, mapSize));
 
@@ -244,7 +275,17 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
+	public void uiPos(){
+		for(int i = 0; i < uiHandler.object.size(); i++){
+			UIObject tempObject = uiHandler.object.get(i);
+			
 
+			tempObject.pos.x = tempObject.abspos.x + Math.abs(cam.pos.x);
+			tempObject.pos.y = tempObject.abspos.y + Math.abs(cam.pos.y);
+		}
+	}
+	
+	
 	public void addTiles() {
 		for (int i = 0; i < mapSize; i++) {
 			for (int j = 0; j < mapSize; j++) {

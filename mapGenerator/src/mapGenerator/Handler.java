@@ -8,7 +8,6 @@ import framework.GameObject;
 public class Handler {
 
 		public LinkedList<GameObject> object = new LinkedList<GameObject>();
-		
 		private GameObject tempObject;
 		
 		public void tick(){
@@ -17,12 +16,12 @@ public class Handler {
 				
 				tempObject.tick(object);
 			}
+
 		}
 		
 		public void render(Graphics g){
 			for(int i = 0; i < object.size(); i++){
 				tempObject = object.get(i);
-				
 				tempObject.render(g);
 			}
 		}
@@ -34,6 +33,5 @@ public class Handler {
 		public void removeObject(GameObject object){
 			this.object.remove(object);
 		}
-		
-		
+	
 }

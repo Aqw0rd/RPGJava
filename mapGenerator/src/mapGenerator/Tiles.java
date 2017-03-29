@@ -69,7 +69,4 @@ public class Tiles {
 	public void setEdge(boolean edge) {
 		this.edge = edge;
 	}
-	
-	
-	
 }

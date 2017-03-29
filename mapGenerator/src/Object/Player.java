@@ -12,9 +12,12 @@ public class Player extends GameObject {
 	
 	private float width = 32, height =32;
 	
+	
 	public Player(float x, float y, ObjectId id) {
 		super(x, y, id);
 		// TODO Auto-generated constructor stub
+		hp = 100; 	maxHp = 100;
+		mana = 100; maxMana = 100;
 	}
 
 	@Override
@@ -35,6 +38,19 @@ public class Player extends GameObject {
 	public Rectangle getBounds() {
 		// TODO Auto-generated method stub
 		return new Rectangle((int)pos.x,(int)pos.y,32,32);
+	}
+	
+	public float getMaxHp(){
+		return maxHp;
+	}
+	public float getMaxMana(){
+		return maxMana;
+	}
+	public float getHp(){
+		return maxHp;
+	}
+	public float getMana(){
+		return mana;
 	}
 
 }

@@ -11,6 +11,10 @@ public abstract class GameObject {
 	protected Vector2f pos = new Vector2f(0,0);
 	protected ObjectId id;
 	protected Vector2f vel = new Vector2f(0,0);
+	protected float hp;
+	protected float mana;
+	protected float maxHp;
+	protected float maxMana;
 	
 	public GameObject(float x, float y, ObjectId id){
 		this.pos.x = x;
@@ -38,5 +42,18 @@ public abstract class GameObject {
 	
 	public  ObjectId getId(){
 		return id;
+	}
+	
+	public float getMaxHp(){
+		return maxHp;
+	}
+	public float getMaxMana(){
+		return maxMana;
+	}
+	public float getHp(){
+		return maxHp;
+	}
+	public float getMana(){
+		return mana;
 	}
 }
