@@ -5,12 +5,16 @@ import java.awt.event.KeyEvent;
 
 import mapGenerator.Handler;
 import mapGenerator.ObjectId;
+import mapGenerator.UIHandler;
+import mapGenerator.UIid;
 
 public class KeyInput extends KeyAdapter {
 	Handler handler;
+	UIHandler uiHandler;
 	
-	public KeyInput(Handler handler){
+	public KeyInput(Handler handler, UIHandler uiHandler){
 		this.handler = handler;
+		this.uiHandler = uiHandler;
 	}
 	
 	public void keyPressed(KeyEvent e){
@@ -30,6 +34,14 @@ public class KeyInput extends KeyAdapter {
 		
 		if(key == KeyEvent.VK_ESCAPE){
 			System.exit(1);
+		}
+		
+		if(key == KeyEvent.VK_I){
+			
+			for(int j = 0; j < uiHandler.object.size(); j++){
+				UIObject ui = uiHandler.object.get(j);
+				if(ui.id == UIid.Inventory) ui.visible = (!ui.visible);
+			}
 		}
 		
 		

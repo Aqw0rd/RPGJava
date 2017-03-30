@@ -9,6 +9,15 @@ public enum UIid {
 	ActionSlots3(),
 	ActionSlots4(),
 	Inventory(),
+	InvSlots1(),
+	InvSlots2(),
+	InvSlots3(),
+	InvSlots4(),
+	InvSlots5(),
+	InvSlots6(),
+	InvSlots7(),
+	InvSlots8(),
+	InvSlots9(),
 	InGameMenu(),
 	HealthBar(),
 	ManaBar(),
@@ -18,4 +27,10 @@ public enum UIid {
 																ActionSlots2,
 																ActionSlots3,
 																ActionSlots4);
+	
+	public static final EnumSet<UIid> invSlots = EnumSet.of(	InvSlots1, InvSlots2,
+																InvSlots3, InvSlots4,
+																InvSlots5, InvSlots6,
+																InvSlots7, InvSlots8,
+																InvSlots9);
 }

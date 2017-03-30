@@ -11,6 +11,8 @@ import Object.Player;
 import UI.ActionBar;
 import UI.ActionSlots;
 import UI.HealthBar;
+import UI.InvSlots;
+import UI.Inventory;
 import UI.ManaBar;
 import mapGenerator.Handler;
 import mapGenerator.ObjectId;
@@ -56,9 +58,6 @@ public class Game extends Canvas implements Runnable {
 	public static int WIDTH, HEIGHT;
 	// -----------------------------------||----------------------------//
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2413771048344743376L;
 
 	private boolean running = false;
@@ -84,19 +83,27 @@ public class Game extends Canvas implements Runnable {
 		uiHandler = new UIHandler();
 		handler.addObject(new Player(100,100,ObjectId.Player));
 		
-		this.addKeyListener(new KeyInput(handler));
+		this.addKeyListener(new KeyInput(handler, uiHandler));
 		
 		WIDTH = getWidth();
 		HEIGHT = getHeight();
 		
 		uiHandler.addObject(new ActionBar(100, HEIGHT-60, 600, 60,true, UIid.ActionBar));
-		uiHandler.addObject(new HealthBar(695 - 200, HEIGHT-55, 200, 23, true, UIid.HealthBar));
-		uiHandler.addObject(new ManaBar(695 - 200, HEIGHT-28, 200, 23, true, UIid.ManaBar));
+		uiHandler.addObject(new HealthBar(495, HEIGHT-55, 200, 23, true, UIid.HealthBar));
+		uiHandler.addObject(new ManaBar(495, HEIGHT-28, 200, 23, true, UIid.ManaBar));
+		uiHandler.addObject(new Inventory(530, HEIGHT-235, 170, 170,true,UIid.Inventory));
 		int i = 0;
 		for(UIid id:UIid.actionSlots){
 			uiHandler.addObject(new ActionSlots(i*55 + 105, HEIGHT-55, 50, 50, true, id));
 			i++;
 			System.out.println(i);
+		}
+		i=0;
+		for(UIid id:UIid.invSlots){
+				if(i<3) 		uiHandler.addObject(new InvSlots(i * 55 + 535, HEIGHT-230, 50, 50, true, id));
+				else if(i<6) 	uiHandler.addObject(new InvSlots((i-3) * 55 + 535, (HEIGHT-230)+55, 50, 50, true, id));
+				else 			uiHandler.addObject(new InvSlots((i-6) * 55 + 535, (HEIGHT-230)+110, 50, 50, true, id));
+		i++;
 		}
 		
 		//tiles = new Tiles[mapSize][mapSize];
@@ -279,12 +286,12 @@ public class Game extends Canvas implements Runnable {
 		for(int i = 0; i < uiHandler.object.size(); i++){
 			UIObject tempObject = uiHandler.object.get(i);
 			
-
-			tempObject.pos.x = tempObject.abspos.x + Math.abs(cam.pos.x);
-			tempObject.pos.y = tempObject.abspos.y + Math.abs(cam.pos.y);
+			//tempObject.size.x = tempObject.fullSize.x * this.getWidth()/WIDTH;
+			//tempObject.size.y = tempObject.fullSize.y * this.getHeight()/HEIGHT;
+			tempObject.pos.x = (tempObject.abspos.x + Math.abs(cam.pos.x));// * this.getWidth()/WIDTH;
+			tempObject.pos.y = (tempObject.abspos.y + Math.abs(cam.pos.y));// * this.getHeight()/HEIGHT;
 		}
 	}
-	
 	
 	public void addTiles() {
 		for (int i = 0; i < mapSize; i++) {
@@ -330,7 +337,6 @@ public class Game extends Canvas implements Runnable {
 
 		return noise;
 	}
-
 	
 	public void addProperties() {
 		for (int i = 1; i < mapSize - 1; i++) {
@@ -581,7 +587,6 @@ public class Game extends Canvas implements Runnable {
 			return x;
 	}
 
-	
 	public float map(float x, float a, float b, float c, float d) {
 		return (x - a) / (b - a) * (d - c);
 	}
@@ -597,7 +602,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public static void main(String args[]) {
-		new Window(800, 800, "Map generator", new Game());
+		new Window(800, 660, "Map generator", new Game());
 	}
 
 }

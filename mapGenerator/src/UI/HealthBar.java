@@ -15,8 +15,6 @@ public class HealthBar extends UIObject{
 	public HealthBar(float x, float y, float w, float h, boolean visible, UIid id) {
 		super(x, y, w, h, visible, id);
 		// TODO Auto-generated constructor stub
-		fullSize.x = w;
-		fullSize.y = h;
 	}
 
 	@Override

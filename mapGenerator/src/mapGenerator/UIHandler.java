@@ -22,7 +22,8 @@ public class UIHandler {
 	public void render(Graphics g){
 		for(int i = 0; i < object.size(); i++){
 			tempObject = object.get(i);
-			tempObject.render(g);
+			if(tempObject.isVisible())
+				tempObject.render(g);
 		}
 	}
 	

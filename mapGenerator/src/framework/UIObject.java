@@ -22,6 +22,8 @@ public abstract class UIObject {
 		this.size.y = h;
 		this.visible = visible;
 		this.id = id;
+		this.fullSize.x = w;
+		this.fullSize.y = h;
 	}
 	
 	public abstract void render(Graphics g);
@@ -32,5 +34,11 @@ public abstract class UIObject {
 	}
 	public  void setAbsPos(Vector2f pos){
 		this.abspos = pos;
+	}
+	public boolean isVisible(){
+		return visible;
+	}
+	public UIid getId(){
+		return id;
 	}
 }
