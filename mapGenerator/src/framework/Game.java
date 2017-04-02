@@ -275,14 +275,14 @@ public class Game extends Canvas implements Runnable {
 				g.drawImage(baseImages[tile_ground[i][j].getId()], null, i * 32, j * 32);
 				
 				if(details[i][j].getId() == 1) g.drawImage(grass[0], null, i * 32, j * 32);
-				if(details[i][j].getId() == 2) g.drawImage(rocks[1], null, i *32, j *32);
-				if(details[i][j].getId() == 3){
+				if(details[i][j].getId() >= 2 && details[i][j].getId() <= 4 ) g.drawImage(rocks[details[i][j].getId()-1], null, i *32, j *32);
+				if(details[i][j].getId() == 5){
 					g.drawImage(trees[1], null, i *32, j *32);
 					g.drawImage(trees[0], null, (i-1) *32, j *32);
 					g.drawImage(trees[2], null, (i-1) *32, (j-1) *32);
 					g.drawImage(trees[3], null, i *32, (j-1) *32);
-					g.drawImage(trees[4], null, (i-2) *32, (j-2) *32);
-					g.drawImage(trees[5], null, i *32, (j-2) *32);
+					g.drawImage(trees[4], null, (i-1) *32, (j-2) *32);
+					g.drawImage(trees[5], null, i * 32, (j-2) *32);
 				}
 				
 				int dec = binaryToDec(transition[i][j].getUp() + transition[i][j].getDown() + transition[i][j].getLeft()
@@ -338,7 +338,7 @@ public class Game extends Canvas implements Runnable {
 					tile_ground[i][j].setId(1);
 					tile_elevation[i][j].setId(0
 							/*noiseEl[i][j]*/);
-					details[i][j].setId((treeArray[i][j]==1) ? 3 : 0);
+					//details[i][j].setId((treeArray[i][j]==1) ? 3 : 0);
 					
 				} else {
 					tile_ground[i][j].setId(0);
@@ -613,20 +613,24 @@ public class Game extends Canvas implements Runnable {
 
 	public void addDetails(){
 		Random rg = new Random();
+		int r = 0;
 		for (int i = 1; i < mapSize-1; i++) {
 			for (int j = 1; j < mapSize-1; j++) {
-				int r = rg.nextInt(6);
-				if(tile_ground[i][j].getId() == 1 && details[i][j].getId() != 3){
-					int g1 = (details[i-1][j].getId() == 1) ? 1 : 0;
-					int g2 = (details[i][j-1].getId() == 1) ? 1 : 0;
-					r += g2 + g1;
-					if(r > 4) details[i][j].setId(1);
+				if(tile_ground[i][j].getId() == 1 /*&& details[i][j].getId() != 3*/){
+					r = rg.nextInt(100)+1;
+					if(r > 99) details[i][j].setId(5);
 					else{
-						details[i][j].setId(0);
-						r = rg.nextInt(100);
-						if(r>98) details[i][j].setId(2);
+						r = rg.nextInt(6);
+						int g1 = (details[i-1][j].getId() == 1) ? 1 : 0;
+						int g2 = (details[i][j-1].getId() == 1) ? 1 : 0;
+						r += g2 + g1;
+						if(r > 4) details[i][j].setId(1);
+						else{
+							details[i][j].setId(0);
+							r = rg.nextInt(100);
+							if(r>98) details[i][j].setId(rg.nextInt(3)+2);
+						}
 					}
-					
 				}
 			}
 		}
