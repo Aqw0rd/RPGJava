@@ -28,6 +28,7 @@ public class Game extends Canvas implements Runnable {
 	// float[][] noiseDetail;
 	int[][] noiseEl;
 	int[][] mapArray;
+	int[][] treeArray;
 	//Tiles[][] tiles;
 	
 	Tiles[][] tile_ground;
@@ -40,15 +41,22 @@ public class Game extends Canvas implements Runnable {
 	BufferedImage[] baseImages;
 	BufferedImage[][] transitions;
 	BufferedImage[][] elevation;
+	BufferedImage[] rocks;
+	BufferedImage[] grass;
+	BufferedImage[] trees; 
 	
 	Camera cam;
 	int mapSize;
 	
+	TileSets treeTiles = new TileSets();
+	TileSets rockTiles = new TileSets();
 	TileSets surface = new TileSets();
 	TileSets baseTiles = new TileSets();
 	TileSets elTiles = new TileSets();
 	TileSets biome = new TileSets();
 	TileSets transitionTiles = new TileSets();
+	TileSets grassTiles = new TileSets();
+	
 	
 	int x, y;
 	boolean update = true;
@@ -91,7 +99,7 @@ public class Game extends Canvas implements Runnable {
 		uiHandler.addObject(new ActionBar(100, HEIGHT-60, 600, 60,true, UIid.ActionBar));
 		uiHandler.addObject(new HealthBar(495, HEIGHT-55, 200, 23, true, UIid.HealthBar));
 		uiHandler.addObject(new ManaBar(495, HEIGHT-28, 200, 23, true, UIid.ManaBar));
-		uiHandler.addObject(new Inventory(530, HEIGHT-235, 170, 170,true,UIid.Inventory));
+		uiHandler.addObject(new Inventory(530, HEIGHT-235, 170, 170,false,UIid.Inventory));
 		int i = 0;
 		for(UIid id:UIid.actionSlots){
 			uiHandler.addObject(new ActionSlots(i*55 + 105, HEIGHT-55, 50, 50, true, id));
@@ -118,14 +126,20 @@ public class Game extends Canvas implements Runnable {
 		baseTiles.setImg("src/resources/basetiles.png");
 		transitionTiles.setImg("src/resources/transitions.png");
 		elTiles.setImg("src/resources/elevation.png");
+		rockTiles.setImg("src/resources/rocks.png");
+		grassTiles.setImg("src/resources/grass.png");
+		treeTiles.setImg("src/resources/tree.png");
+		
 		
 		mapArray = generateNoise(mapSize, mapSize, 0, 2,0.003f);
 		// noiseDetail = generateNoise(chunk,chunk,0,1);
 		noiseEl = generateNoise(mapSize, mapSize, 0, 5,0.0003f);
+		treeArray = generateNoise(mapSize, mapSize, 0, 1, 0.003f);
 		
 		addTiles();
 		addProperties();
 		loadImages();
+		addDetails();
 
 	}
 
@@ -206,14 +220,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void loadImages() {
-		/*
-		 * biome_images = new
-		 * BufferedImage[biome.getImg().getWidth()/32][biome.getImg().getHeight(
-		 * )/32]; for (int i = 0; i < biome.getImg().getWidth()/32; i++) { for
-		 * (int j = 0; j < biome.getImg().getHeight()/32; j++) {
-		 * biome_images[i][j] = biome.getImg().getSubimage(i*32, j*32, 32, 32);
-		 * } }
-		 */
+
 		baseImages = new BufferedImage[baseTiles.getImg().getWidth() / 32];
 		for (int i = 0; i < baseTiles.getImg().getWidth() / 32; i++) {
 			baseImages[i] = baseTiles.getImg().getSubimage(i * 32, 0, 32, 32);
@@ -232,9 +239,22 @@ public class Game extends Canvas implements Runnable {
 			for (int j = 0; j < elTiles.getImg().getHeight() / 32; j++) {
 				elevation[i][j] = elTiles.getImg().getSubimage(i * 32, j * 32, 32, 32);
 			}
-
 		}
-
+		
+		rocks = new BufferedImage[rockTiles.getImg().getWidth() / 32];
+		for(int i = 0; i < rockTiles.getImg().getWidth() / 32; i++){
+			rocks[i] = rockTiles.getImg().getSubimage(i * 32, 0, 32, 32);
+		}
+		
+		grass = new BufferedImage[grassTiles.getImg().getWidth() / 32];
+		for(int i = 0; i < grassTiles.getImg().getWidth() / 32; i++){
+			grass[i] = grassTiles.getImg().getSubimage(i * 32, 0, 32, 32);
+		}
+		
+		trees = new BufferedImage[treeTiles.getImg().getWidth() / 32];
+		for (int i = 0; i < treeTiles.getImg().getWidth() / 32; i++) {
+			trees[i] = treeTiles.getImg().getSubimage(i * 32, 0, 32, 32);
+		}
 	}
 
 	public void updateTiles(Graphics2D g, int w0, int h0, int w, int h, double s) {
@@ -253,6 +273,17 @@ public class Game extends Canvas implements Runnable {
 		for (int i = a; i < b; i++) {
 			for (int j = c; j < d; j++) {
 				g.drawImage(baseImages[tile_ground[i][j].getId()], null, i * 32, j * 32);
+				
+				if(details[i][j].getId() == 1) g.drawImage(grass[0], null, i * 32, j * 32);
+				if(details[i][j].getId() == 2) g.drawImage(rocks[1], null, i *32, j *32);
+				if(details[i][j].getId() == 3){
+					g.drawImage(trees[1], null, i *32, j *32);
+					g.drawImage(trees[0], null, (i-1) *32, j *32);
+					g.drawImage(trees[2], null, (i-1) *32, (j-1) *32);
+					g.drawImage(trees[3], null, i *32, (j-1) *32);
+					g.drawImage(trees[4], null, (i-2) *32, (j-2) *32);
+					g.drawImage(trees[5], null, i *32, (j-2) *32);
+				}
 				
 				int dec = binaryToDec(transition[i][j].getUp() + transition[i][j].getDown() + transition[i][j].getLeft()
 						+ transition[i][j].getRight());
@@ -307,6 +338,8 @@ public class Game extends Canvas implements Runnable {
 					tile_ground[i][j].setId(1);
 					tile_elevation[i][j].setId(0
 							/*noiseEl[i][j]*/);
+					details[i][j].setId((treeArray[i][j]==1) ? 3 : 0);
+					
 				} else {
 					tile_ground[i][j].setId(0);
 					tile_elevation[i][j].setId(0);
@@ -578,6 +611,27 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
+	public void addDetails(){
+		Random rg = new Random();
+		for (int i = 1; i < mapSize-1; i++) {
+			for (int j = 1; j < mapSize-1; j++) {
+				int r = rg.nextInt(6);
+				if(tile_ground[i][j].getId() == 1 && details[i][j].getId() != 3){
+					int g1 = (details[i-1][j].getId() == 1) ? 1 : 0;
+					int g2 = (details[i][j-1].getId() == 1) ? 1 : 0;
+					r += g2 + g1;
+					if(r > 4) details[i][j].setId(1);
+					else{
+						details[i][j].setId(0);
+						r = rg.nextInt(100);
+						if(r>98) details[i][j].setId(2);
+					}
+					
+				}
+			}
+		}
+	}
+	
 	public float clamp(float x, float min, float max) {
 		if (x < min)
 			return min;
