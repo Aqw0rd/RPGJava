@@ -24,10 +24,10 @@ public class KeyInput extends KeyAdapter {
 			GameObject tempObject = handler.object.get(i);
 			
 			if(tempObject.getId() == ObjectId.Player){
-				if(key == KeyEvent.VK_W) tempObject.vel.y = -5; 
-				if(key == KeyEvent.VK_S) tempObject.vel.y = 5; 
-				if(key == KeyEvent.VK_A) tempObject.vel.x = -5; 
-				if(key == KeyEvent.VK_D) tempObject.vel.x = 5; 
+				if(key == KeyEvent.VK_W) tempObject.vel.y = -20; 
+				if(key == KeyEvent.VK_S) tempObject.vel.y = 20; 
+				if(key == KeyEvent.VK_A) tempObject.vel.x = -20; 
+				if(key == KeyEvent.VK_D) tempObject.vel.x = 20; 
 				if(key == KeyEvent.VK_SPACE) tempObject.hp -= 1;
 			}
 		}

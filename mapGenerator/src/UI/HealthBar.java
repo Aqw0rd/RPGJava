@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
 
-
 import framework.UIObject;
 import mapGenerator.UIid;
 
