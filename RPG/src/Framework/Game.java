@@ -221,8 +221,9 @@ public class Game
             }
             if (System.currentTimeMillis() - timer > 1000L) {
                 timer += 1000L;
-                System.out.println("FPS: " + frames + " TICKS: " + updates);
-                System.out.println("X: " + this.x + "Y: " + this.y);
+                //System.out.println("FPS: " + frames + " TICKS: " + updates);
+                //System.out.println("X: " + this.x + "Y: " + this.y);
+                System.out.println("WIDTH: " + this.getWidth() + ", HEIGHT: " + this.getHeight());
                 frames = 0;
                 updates = 0;
             }
@@ -237,7 +238,7 @@ public class Game
         for (int i = 0; i < this.handler.object.size(); i++) {
             GameObject temp = (GameObject) this.handler.object.get(i);
             if (temp.getId() == ObjectId.Player) {
-                this.cam.tick(temp);
+                this.cam.tick(temp, this.getWidth(), this.getHeight());
                 for (int j = 0; j < this.uiHandler.object.size(); j++) {
                     UIObject uiTemp = (UIObject) this.uiHandler.object.get(j);
                     if (uiTemp.id == UIid.HealthBar) {
@@ -384,8 +385,8 @@ public class Game
         for (int i = 0; i < this.uiHandler.object.size(); i++) {
             UIObject tempObject = (UIObject) this.uiHandler.object.get(i);
 
-            tempObject.pos.x = (tempObject.abspos.x - this.cam.pos.x);
-            tempObject.pos.y = (tempObject.abspos.y - this.cam.pos.y);
+            tempObject.pos.x = (tempObject.abspos.x - this.cam.pos.x) + (float)(this.getWidth() - WIDTH)/2;
+            tempObject.pos.y = (tempObject.abspos.y - this.cam.pos.y) + (float)(this.getHeight() - HEIGHT);
         }
     }
 
