@@ -1,4 +1,4 @@
-class GameObject():
+class GameObject:
     def __init__(self):
         self.vel = [0, 0]
         self.pos = [100, 100]
@@ -10,6 +10,14 @@ class GameObject():
         self.left = 0
         self.right = 0
         self.time = 0
-    def update(self):
-        self.pos[0] += self.vel[0]
-        self.pos[1] += self.vel[1]
+        self.img = ""
+
+    def object_orientation(self):
+        if (self.vel[0] > 0):
+            self.orientation = self.right
+        elif (self.vel[0] < 0):
+            self.orientation = self.left
+        if (self.vel[1] > 0):
+            self.orientation = self.down
+        elif (self.vel[1] < 0):
+            self.orientation = self.up
