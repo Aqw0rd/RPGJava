@@ -1,8 +1,8 @@
 import GameObject
 
 class Player(GameObject.GameObject):
-    def __init__(self):
-        super(Player, self).__init__()
+    def __init__(self,x,y):
+        super(Player, self).__init__(x,y)
 
     def update(self):
         self.pos[0] += self.vel[0]

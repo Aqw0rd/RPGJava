@@ -7,8 +7,10 @@ import random
 
 
 t = []
-p = Player.Player()
-bat = Bat.Bat()
+p = Player.Player(200, 100)
+bat = []
+for x in range(0, 50):
+    bat.append(Bat.Bat(random.randint(0,640),random.randint(0,480)))
 
 
 def generate_tiles(w,h, list):
@@ -49,12 +51,15 @@ if __name__ == '__main__':
     #############LOAD IMAGE TILESET FOR GAMEOBJECT #############
 
     p.img = load_tileset('link.jpg', 64, 96, 0.5)
-    bat.img = load_tileset('bat.png', 32,32,1.5)
+    for x in bat:
+        x.img = load_tileset('bat.png', 32,32,1.5)
+
 
     ############################################################
     #bat.running = True
     p.up, p.down, p.left, p.right = 2,3,0,1
-    bat.up, bat.down, bat.left, bat.right = 2, 0, 3, 1
+    for x in bat:
+        x.up, x.down, x.left, x.right = 2, 0, 3, 1
     keys = [False, False, False, False]         #List of which movement key is pressed
 
     generate_tiles(width//32,height // 32, t)
@@ -74,7 +79,8 @@ if __name__ == '__main__':
         ################### DRAW THE SCREEN ELEMENTS #################
 
         screen.blit(p.img[p.mov_animation][p.orientation], p.pos)
-        screen.blit(bat.img[bat.mov_animation][bat.orientation], bat.pos)
+        for x in bat:
+            screen.blit(x.img[x.mov_animation][x.orientation], x.pos)
 
         ############################################################
 
@@ -94,15 +100,19 @@ if __name__ == '__main__':
 
         p.update()
         p.movement(keys)
-        bat.update(p)
+        for x in bat:
+            x.update(p)
+            x.object_orientation()
+            x.time += milliseconds
+            x.anim(130)
+
 
         ######################################################
 
         p.object_orientation()
-        bat.object_orientation()
+
 
         p.time +=milliseconds
-        bat.time +=milliseconds
         p.anim(80)
-        bat.anim(130)
+
         #object_animation(bat, 130)
