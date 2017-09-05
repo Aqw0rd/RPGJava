@@ -6,14 +6,14 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 
 public class Handler {
-    public LinkedList<GameObject> object = new LinkedList();
+    public LinkedList<GameObject> object = new LinkedList<GameObject>();
     private GameObject tempObject;
 
-    public void tick() {
+    public void tick(double gametick) {
         for (int i = 0; i < this.object.size(); i++) {
             this.tempObject = ((GameObject) this.object.get(i));
 
-            this.tempObject.tick(this.object);
+            this.tempObject.tick(this.object, gametick);
         }
     }
 

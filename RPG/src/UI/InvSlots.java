@@ -20,7 +20,7 @@ public class InvSlots
         g.fillRect((int) this.pos.x, (int) this.pos.y, (int) this.size.x, (int) this.size.y);
     }
 
-    public void tick(LinkedList<UIObject> object) {
+    public void tick(LinkedList<UIObject> object, double gametick) {
         for (UIObject o : object) {
             if (o.getId() == UIid.Inventory) {
                 this.visible = o.isVisible();

@@ -28,7 +28,7 @@ public abstract class UIObject {
 
     public abstract void render(Graphics paramGraphics);
 
-    public abstract void tick(LinkedList<UIObject> paramLinkedList);
+    public abstract void tick(LinkedList<UIObject> paramLinkedList, double gametick);
 
     public Vector2f getAbsPos() {
         return this.abspos;

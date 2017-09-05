@@ -9,7 +9,9 @@ public class Tiles {
     private int right = 0;
     private boolean edge = false;
     private int binary = 0;
-
+    private int animation = 0;
+    private int animationSpeed = 0;
+    private int animationTime = 0;
     public int getBinary() {
         return this.binary;
     }
@@ -27,6 +29,18 @@ public class Tiles {
     private Tiles bl = null;
     private Tiles br = null;
 
+    public int getAnimation() { return this.animation; }
+    public void setAnimationSpeed(int speed) { this.animationSpeed = speed; }
+
+    public void animate(double tick, int maxlength) {
+        this.animationTime += tick;
+        if(this.animationTime>= this.animationSpeed) {
+            this.animation++;
+            this.animationTime = 0;
+            if(this.animation >= maxlength) this.animation = 0;
+        }
+
+    }
     public Tiles getTl() {
         return this.tl;
     }

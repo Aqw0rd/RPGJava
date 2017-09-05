@@ -81,6 +81,7 @@ public class Map {
                     this.tile_elevation[i][j].setId(0);
                 } else {
                     this.tile_ground[i][j].setId(0);
+                    this.tile_ground[i][j].setAnimationSpeed(9);
                     this.tile_elevation[i][j].setId(0);
                 }
             }
