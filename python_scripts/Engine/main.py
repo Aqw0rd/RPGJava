@@ -1,15 +1,17 @@
 import pygame
 import pygame.locals
 import Tile as tile
-import GameObject
+import Player, Bat
 import KeyInput
 import random
 
-p = GameObject.GameObject()
-p.__init__()
+
 t = []
-bat = GameObject.GameObject()
-bat.__init__()
+p = Player.Player(200, 100)
+bat = []
+for x in range(0, 50):
+    bat.append(Bat.Bat(random.randint(0,640),random.randint(0,480)))
+
 
 def generate_tiles(w,h, list):
     for x in range(0, w):
@@ -17,7 +19,7 @@ def generate_tiles(w,h, list):
         for y in range(0, h):
             tx.append(tile.Tile())
             tx[y].pos = [x*32,y*32]
-            tx[y].col = [random.randint(0,255),random.randint(0,255),random.randint(0,255)]
+            tx[y].col = [255,255,255]
         list.append(tx)
 
 def load_tileset(filename, width, height, scale):
@@ -35,39 +37,6 @@ def load_tileset(filename, width, height, scale):
     #print(len(tile_table))
     return tile_table
 
-def movement():
-    if keys[0]:# UP
-        p.vel[1] = -3
-    elif keys[2]:#DOWN
-        p.vel[1] = 3
-    if keys[1]:#LEFT
-        p.vel[0] = -3
-    elif keys[3]:#RIGHT
-        p.vel[0] = 3
-    p.vel[0] = 0 if not keys[1] and not keys[3] else p.vel[0]
-    p.vel[1] = 0 if not keys[0] and not keys[2] else p.vel[1]
-    #p.pos[0] += p.vel[0]
-    #p.pos[1] += p.vel[1]
-
-def object_orientation(obj):
-    if (obj.vel[0] > 0):
-        obj.orientation = obj.right
-    elif (obj.vel[0] < 0):
-        obj.orientation = obj.left
-    if (obj.vel[1] > 0):
-        obj.orientation = obj.down
-    elif (obj.vel[1] < 0):
-        obj.orientation = obj.up
-
-def object_animation(obj,time):
-    if obj.time >= time:
-        obj.time = 0
-        if obj.vel[1] != 0 or obj.vel[0] != 0 or obj.running:
-            obj.mov_animation += 1
-            if obj.mov_animation == len(obj.img) : obj.mov_animation = 0
-
-
-
 if __name__ == '__main__':
     pygame.init()
     width = 640
@@ -82,12 +51,15 @@ if __name__ == '__main__':
     #############LOAD IMAGE TILESET FOR GAMEOBJECT #############
 
     p.img = load_tileset('link.jpg', 64, 96, 0.5)
-    bat.img = load_tileset('bat.png', 32,32,1.5)
+    for x in bat:
+        x.img = load_tileset('bat.png', 32,32,1.5)
+
 
     ############################################################
-    bat.running = True
+    #bat.running = True
     p.up, p.down, p.left, p.right = 2,3,0,1
-    bat.up, bat.down, bat.left, bat.right = 2, 0, 3, 1
+    for x in bat:
+        x.up, x.down, x.left, x.right = 2, 0, 3, 1
     keys = [False, False, False, False]         #List of which movement key is pressed
 
     generate_tiles(width//32,height // 32, t)
@@ -107,7 +79,8 @@ if __name__ == '__main__':
         ################### DRAW THE SCREEN ELEMENTS #################
 
         screen.blit(p.img[p.mov_animation][p.orientation], p.pos)
-        screen.blit(bat.img[bat.mov_animation][bat.orientation], bat.pos)
+        for x in bat:
+            screen.blit(x.img[x.mov_animation][x.orientation], x.pos)
 
         ############################################################
 
@@ -122,19 +95,24 @@ if __name__ == '__main__':
                 exit(0)
 
             KeyInput.KeyCheck(event,keys) #Key events
-        movement()
 
         ######## CALL UPDATE FUNCTION FOR GAMEOBJECTS ########
 
         p.update()
-        bat.update()
+        p.movement(keys)
+        for x in bat:
+            x.update(p)
+            x.object_orientation()
+            x.time += milliseconds
+            x.anim(130)
+
 
         ######################################################
 
-        object_orientation(p)
-        object_orientation(bat)
+        p.object_orientation()
+
 
         p.time +=milliseconds
-        bat.time +=milliseconds
-        object_animation(p, 80)
-        object_animation(bat, 130)
+        p.anim(80)
+
+        #object_animation(bat, 130)
