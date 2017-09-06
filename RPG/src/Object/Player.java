@@ -1,6 +1,6 @@
 package Object;
 
-import Maths.Vector2f;
+import Maths.*;
 import Framework.GameObject;
 
 import java.awt.*;
@@ -23,15 +23,16 @@ public class Player
         this.mana = 100.0F;
         this.maxMana = 100.0F;
         this.orientation = 0;
-        this.animation = 1;
+        this.animation = 0;
         this.animationTime = 0;
-        this.speed = 5.0f;
+        this.speed = 3.0f;
         this.tileSets = new TileSets();
         this.tileSets.setImg(imgPath);
-        this.img = new BufferedImage[this.tileSets.getImg().getWidth() / 32][this.tileSets.getImg().getHeight() / 32];
-        for (int i = 0; i < this.tileSets.getImg().getWidth() / 32; i++) {
-            for (int j = 0; j < this.tileSets.getImg().getHeight() / 32; j++) {
-                this.img[i][j] = this.tileSets.getImg().getSubimage(i * 32, j * 32, 32, 32);
+        this.img = new BufferedImage[this.tileSets.getImg().getWidth() / 64][this.tileSets.getImg().getHeight() / 64];
+        for (int i = 0; i < this.tileSets.getImg().getWidth() / 64; i++) {
+            for (int j = 0; j < this.tileSets.getImg().getHeight() / 64; j++) {
+                //this.img[i][j] = this.tileSets.getImg().getSubimage(i * 64, j * 64, 64, 64);
+                this.img[i][j] = new Maths().getScaledImage(this.tileSets.getImg().getSubimage(i * 64, j * 64, 64, 64),42,42);
             }
         }
     }
@@ -45,7 +46,7 @@ public class Player
 
     public void tick(LinkedList<GameObject> object, double gametick) {
         float[] vel = new float[] {this.vel.x, this.vel.y};
-        switch (Arrays.toString(vel)){
+        /*switch (Arrays.toString(vel)){
             case "[0.0, 0.0]":
                 this.animation = 1;
                 break;
@@ -73,7 +74,7 @@ public class Player
             case "[-5.0, -5.0]":
                 this.orientation = 1;
                 break;
-        }
+        }*/
         //if(Math.abs(this.vel.x) == this.speed && Math.abs(this.vel.y) > 0) this.vel.x =this.vel.x/(float)Math.sqrt(2);
         //if(Math.abs(this.vel.y) == this.speed && Math.abs(this.vel.x) > 0) this.vel.y =this.vel.y/(float)Math.sqrt(2);
 
@@ -82,12 +83,12 @@ public class Player
 
         if(Math.abs(this.vel.x) > 0 || Math.abs(this.vel.y) > 0 ) this.animationTime ++;
         else {
-            this.animation = 1;
+            this.animation = 0;
             this.animationTime = 0;
         }
         if(this.animationTime>=10) {
             this.animation ++;
-            if(this.animation>=this.tileSets.getImg().getWidth() / 32) this.animation = 0;
+            if(this.animation>=this.tileSets.getImg().getWidth() / 64) this.animation = 0;
             this.animationTime = 0;
         }
         //If the player crosses the 0 or max position, recalculate the position
@@ -117,4 +118,9 @@ public class Player
     public float getMana() {
         return this.mana;
     }
+
+
+
 }
+
+

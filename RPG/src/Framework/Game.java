@@ -254,34 +254,19 @@ public class Game
             }
         }
 
-        int a = (int) Math.floor(new Maths().map(-this.cam.pos.x, -getWidth(), this.mapSize * 32, -(getWidth()/32), this.mapSize));
-        int b = (int) Math.floor(new Maths().map(getWidth() + (-this.cam.pos.x), -getWidth(), this.mapSize * 32, -(getWidth()/32), this.mapSize));
+        for (int i = 0; i < this.mapSize; i++) {
+            for (int j = 0; j < this.mapSize; j++) {
+                Tiles tile = this.map.tile_ground[i][j];
+                if(tile.getId() == 0){
+                    if(tile.getL().getId() == tile.getId()) {
+                        if (tile.getAnimation() + 2 < tile.getL().getAnimation() || tile.getAnimation() >= 7) {
+                            this.map.tile_ground[i][j].animate(gametick, this.water.length);
+                        }
+                    }else{
+                        this.map.tile_ground[i][j].animate(gametick, this.water.length);
+                    }
+                }
 
-        int c = (int) Math.floor(new Maths().map( -this.cam.pos.y,  -getHeight(), this.mapSize * 32, -(getHeight()/32), this.mapSize));
-        int d = (int) Math.floor(new Maths().map(getHeight() + (-this.cam.pos.y),  -getHeight(), this.mapSize * 32, -(getHeight()/32), this.mapSize));
-        a--;
-        b++;
-        c--;
-        d++;
-        int xpos, ypos;
-        for (int i = a; i < b; i++) {
-            for (int j = c; j < d; j++) {
-                xpos = i;
-                ypos = j;
-                if (i < 0) {
-                    xpos = mapSize+i;
-                }
-                if (i >= mapSize) {
-                    xpos = i - mapSize;
-                }
-                if (j < 0) {
-                    ypos = mapSize+j;
-                }
-                if (j >= mapSize) {
-                    ypos= j - mapSize;
-                }
-                if(this.map.tile_ground[xpos][ypos].getId() == 0)
-                    this.map.tile_ground[xpos][ypos].animate(gametick,this.water.length);
             }
         }
 
