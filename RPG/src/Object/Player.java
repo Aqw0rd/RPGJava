@@ -13,8 +13,8 @@ import mapGenerator.TileSets;
 
 public class Player
         extends GameObject {
-    private float height = 32.0F;
-    private float width = 32.0F;
+    private int width = 42;
+    private int height = 42;
 
     public Player(float x, float y, ObjectId id, String imgPath) {
         super(x, y, id, imgPath);
@@ -32,7 +32,7 @@ public class Player
         for (int i = 0; i < this.tileSets.getImg().getWidth() / 64; i++) {
             for (int j = 0; j < this.tileSets.getImg().getHeight() / 64; j++) {
                 //this.img[i][j] = this.tileSets.getImg().getSubimage(i * 64, j * 64, 64, 64);
-                this.img[i][j] = new Maths().getScaledImage(this.tileSets.getImg().getSubimage(i * 64, j * 64, 64, 64),42,42);
+                this.img[i][j] = new Maths().getScaledImage(this.tileSets.getImg().getSubimage(i * 64, j * 64, 64, 64),width,height);
             }
         }
     }
@@ -42,9 +42,16 @@ public class Player
         //g.fillRect((int) this.pos.x, (int) this.pos.y, (int) this.width, (int) this.height);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(this.img[this.animation][this.orientation],null, (int)this.pos.x, (int)this.pos.y);
+        g.setColor(Color.RED);
+        g2d.draw(getBoundsTop());
+        g2d.draw(getBoundsLeft());
+        g2d.draw(getBoundsRight());
+        g2d.draw(getBoundsBottom());
+
     }
 
     public void tick(LinkedList<GameObject> object, double gametick) {
+        Collision(object);
         float[] vel = new float[] {this.vel.x, this.vel.y};
         /*switch (Arrays.toString(vel)){
             case "[0.0, 0.0]":
@@ -99,9 +106,35 @@ public class Player
 
     }
 
-    public Rectangle getBounds() {
-        return new Rectangle((int) this.pos.x, (int) this.pos.y, 32, 32);
+    public void Collision(LinkedList<GameObject> object){
+        for(GameObject o: object){
+            if(!o.equals(this)){
+                if(getBoundsTop().intersects(o.getBounds())){
+                    this.pos.y = o.getPos().y + 34;
+                    //this.vel.y = 0;
+                }
+                if(getBoundsBottom().intersects(o.getBounds())){
+                    this.pos.y = o.getPos().y - height;
+                    //this.vel.y = 0;
+                }
+                if(getBoundsRight().intersects(o.getBounds())){
+                    this.pos.x = o.getPos().x - width;
+                    //this.vel.x = 0;
+                }
+                if(getBoundsLeft().intersects(o.getBounds())){
+                    this.pos.x = o.getPos().x + 34;
+                    //this.vel.x = 0;
+                }
+            }
+        }
     }
+
+    public Rectangle getBounds()        { return new Rectangle( (int) this.pos.x, (int) this.pos.y, 42, height); }
+    public Rectangle getBoundsTop()     { return new Rectangle((int) this.pos.x + 8, (int) this.pos.y, 26, height/2); }
+    public Rectangle getBoundsBottom()  { return new Rectangle((int) this.pos.x + 8, (int) this.pos.y + height/2, 26, height/2); }
+    public Rectangle getBoundsLeft()    { return new Rectangle((int) this.pos.x, (int) this.pos.y + 8, 8, height - 16); }
+    public Rectangle getBoundsRight()   { return new Rectangle((int) this.pos.x + this.width - 8, (int) this.pos.y + 8, 8, height - 16); }
+
 
     public float getMaxHp() {
         return this.maxHp;

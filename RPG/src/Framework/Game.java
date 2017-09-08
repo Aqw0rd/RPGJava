@@ -4,6 +4,9 @@ import Maths.Maths;
 import Maths.Vector2f;
 import Maths.Vector2i;
 import Object.Player;
+import Object.Rocks.Stone2;
+import Object.Rocks.Stone3;
+import Object.Rocks.Stone4;
 import UI.ActionBar;
 import UI.ActionSlots;
 import UI.HealthBar;
@@ -137,7 +140,7 @@ public class Game
         this.grassTiles.setImg("src/resources/grass.png");
         this.treeTiles.setImg("src/resources/tree.png");
 
-        this.mapArray = generateNoise(this.mapSize, this.mapSize, 0, 2, 0.003F);    //Array of noise, which inself is the map
+        this.mapArray = generateNoise(this.mapSize, this.mapSize, 0, 2, 0.0009F);    //Array of noise, which inself is the map
 
         this.noiseEl = generateNoise(this.mapSize, this.mapSize, 0, 5, 3.0E-4F);    //Not used
         this.treeArray = generateNoise(this.mapSize, this.mapSize, 0, 1, 0.003F);   //Not used
@@ -199,6 +202,23 @@ public class Game
             System.out.println("Error: " + e);
         }
         loadImages();
+
+
+        for (i = 1; i < mapSize - 1; i++) {
+            for (int j = 1; j < mapSize - 1; j++) {
+                switch (this.map.details[i][j].getId()) {
+                    case 2:
+                        this.handler.addObject(new Stone2(i*32,j*32,ObjectId.Stone2,"src/resources/stone_1.png"));
+                        break;
+                    case 3:
+                        this.handler.addObject(new Stone3(i*32,j*32,ObjectId.Stone3,"src/resources/stone_2.png"));
+                        break;
+                    case 4:
+                        this.handler.addObject(new Stone4(i*32,j*32,ObjectId.Stone4,"src/resources/stone_3.png"));
+                        break;
+                }
+            }
+        }
     }
 
     public void run() {
@@ -292,8 +312,9 @@ public class Game
         updateTiles(g2d, -this.cam.pos.x, -this.cam.pos.y, getWidth() + (-this.cam.pos.x),
                 getHeight() + (-this.cam.pos.y));
 
-        this.uiHandler.render(g);
+
         this.handler.render(g);
+        this.uiHandler.render(g);
         //--------------AFFECTED BY CAMERA-----------------//
         g2d.translate(-this.cam.pos.x, -this.cam.pos.y);
         //--------------DRAW HERE-----------------//
@@ -389,7 +410,7 @@ public class Game
                         g.drawImage(this.transitions[(((Tiles[][]) this.map.cornerArray.get(Integer.valueOf(t)))[xpos][ypos].getBinary() - 1)][t], null, i * 32, j * 32);
                     }
                 }
-                if ((this.map.details[xpos][ypos].getId() >= 2) && (this.map.details[xpos][ypos].getId() <= 4)) {
+               /* if ((this.map.details[xpos][ypos].getId() >= 2) && (this.map.details[xpos][ypos].getId() <= 4)) {
                     g.drawImage(this.rocks[(this.map.details[xpos][ypos].getId() - 1)], null, i * 32, j * 32);
                 }
                 if (this.map.details[xpos][ypos].getId() == 5) {
@@ -399,7 +420,7 @@ public class Game
                     g.drawImage(this.trees[3], null, i * 32, (j - 1) * 32);
                     g.drawImage(this.trees[4], null, (i - 1) * 32, (j - 2) * 32);
                     g.drawImage(this.trees[5], null, i * 32, (j - 2) * 32);
-                }
+                }*/
             }
         }
     }
