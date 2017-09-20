@@ -1,7 +1,9 @@
 class GameObject:
-    def __init__(self,x,y):
+    def __init__(self,x,y,w,h):
         self.vel = [0, 0]
         self.pos = [x, y]
+        self.width = w
+        self.height = h
         self.orientation = 0
         self.mov_animation = 0
         self.running = False
