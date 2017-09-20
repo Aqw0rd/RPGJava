@@ -2,8 +2,8 @@ import GameObject
 import FSM
 import math
 class Bat(GameObject.GameObject):
-    def __init__(self, x, y):
-        super(Bat, self).__init__(x,y)
+    def __init__(self, x, y, w, h, img):
+        super(Bat, self).__init__(x,y,w,h)
         self.playerRange = 0
         self.target = [0,0]
         self.agressive = True
@@ -14,6 +14,7 @@ class Bat(GameObject.GameObject):
         self.threat = 0
         self.brain = FSM.FSM(self.idle)
         self.speed = 3
+        self.img = img
 
     def idle(self):
         #print(self.playerRange)

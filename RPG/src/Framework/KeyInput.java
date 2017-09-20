@@ -24,19 +24,17 @@ public class KeyInput
         for (int i = 0; i < this.handler.object.size(); i++) {
             GameObject tempObject = (GameObject) this.handler.object.get(i);
             if (tempObject.getId() == ObjectId.Player) {
-                if (key == 87) {
-                    tempObject.vel.y = -5;
+                if (key == 87) { //UP
+                    tempObject.vel.y = -tempObject.speed;
                 }
-                if (key == 83) {
-                    tempObject.vel.y = 5;
+                if (key == 83) { //DOWN
+                    tempObject.vel.y = tempObject.speed;
                 }
-                if (key == 65) {
-
-                    tempObject.vel.x = -5;
-
+                if (key == 65) { //LEFT
+                    tempObject.vel.x = -tempObject.speed;
                 }
-                if (key == 68) {
-                    tempObject.vel.x = 5;
+                if (key == 68) { //RIGHT
+                    tempObject.vel.x = tempObject.speed;
                 }
                 if (key == 32) {
                     tempObject.hp -= 1.0F;

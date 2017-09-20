@@ -4,6 +4,9 @@ import Maths.Maths;
 import Maths.Vector2f;
 import Maths.Vector2i;
 import Object.Player;
+import Object.Rocks.Stone2;
+import Object.Rocks.Stone3;
+import Object.Rocks.Stone4;
 import UI.ActionBar;
 import UI.ActionSlots;
 import UI.HealthBar;
@@ -50,9 +53,11 @@ public class Game
     BufferedImage[] rocks;
     BufferedImage[] grass;
     BufferedImage[] trees;
+    BufferedImage[] water;
+
     Camera cam;
 
-
+    TileSets waterTiles = new TileSets();
     TileSets treeTiles = new TileSets();
     TileSets rockTiles = new TileSets();
     TileSets surface = new TileSets();
@@ -94,7 +99,7 @@ public class Game
         this.cam = new Camera();            //Camera object
         this.handler = new Handler();       //Handler object
         this.uiHandler = new UIHandler();   //UIHandler object
-        this.handler.addObject(new Player(100.0F, 100.0F, ObjectId.Player));    //Adding the playerobject to the handler
+        this.handler.addObject(new Player(100.0F, 100.0F, ObjectId.Player, "src/resources/player.png"));    //Adding the playerobject to the handler
 
         addKeyListener(new KeyInput(this.handler, this.uiHandler)); //Focusing keylistener to an object of KeyInput which tracks the handler and uihandler
 
@@ -125,6 +130,7 @@ public class Game
         }
 
         //loading all the tilesets/images
+        this.waterTiles.setImg("src/resources/wateranimation.png");
         this.surface.setImg("src/resources/surface.png");
         this.biome.setImg("src/resources/biome.png");
         this.baseTiles.setImg("src/resources/basetiles.png");
@@ -134,7 +140,7 @@ public class Game
         this.grassTiles.setImg("src/resources/grass.png");
         this.treeTiles.setImg("src/resources/tree.png");
 
-        this.mapArray = generateNoise(this.mapSize, this.mapSize, 0, 2, 0.003F);    //Array of noise, which inself is the map
+        this.mapArray = generateNoise(this.mapSize, this.mapSize, 0, 2, 0.0009F);    //Array of noise, which inself is the map
 
         this.noiseEl = generateNoise(this.mapSize, this.mapSize, 0, 5, 3.0E-4F);    //Not used
         this.treeArray = generateNoise(this.mapSize, this.mapSize, 0, 1, 0.003F);   //Not used
@@ -196,15 +202,32 @@ public class Game
             System.out.println("Error: " + e);
         }
         loadImages();
+
+
+        for (i = 1; i < mapSize - 1; i++) {
+            for (int j = 1; j < mapSize - 1; j++) {
+                switch (this.map.details[i][j].getId()) {
+                    case 2:
+                        this.handler.addObject(new Stone2(i*32,j*32,ObjectId.Stone2,"src/resources/stone_1.png"));
+                        break;
+                    case 3:
+                        this.handler.addObject(new Stone3(i*32,j*32,ObjectId.Stone3,"src/resources/stone_2.png"));
+                        break;
+                    case 4:
+                        this.handler.addObject(new Stone4(i*32,j*32,ObjectId.Stone4,"src/resources/stone_3.png"));
+                        break;
+                }
+            }
+        }
     }
 
     public void run() {
         setUp();
         requestFocus();
         long lastTime = System.nanoTime();
-        double amountOfTicks = 60.0D;
-        double ns = 1.0E9D / amountOfTicks;
-        double delta = 0.0D;
+        double amountOfTicks = 60.0;
+        double ns = 1.0E9 / amountOfTicks;
+        double delta = 0.0;
         long timer = System.currentTimeMillis();
         int updates = 0;
         int frames = 0;
@@ -213,7 +236,7 @@ public class Game
             delta += (now - lastTime) / ns;
             lastTime = now;
             while (delta >= 1.0D) {
-                tick();
+                tick(delta);
                 updates++;
                 delta -= 1.0D;
                 render();
@@ -221,9 +244,9 @@ public class Game
             }
             if (System.currentTimeMillis() - timer > 1000L) {
                 timer += 1000L;
-                //System.out.println("FPS: " + frames + " TICKS: " + updates);
+                System.out.println("FPS: " + frames + " TICKS: " + updates);
                 //System.out.println("X: " + this.x + "Y: " + this.y);
-                System.out.println("WIDTH: " + this.getWidth() + ", HEIGHT: " + this.getHeight());
+                //System.out.println("WIDTH: " + this.getWidth() + ", HEIGHT: " + this.getHeight());
                 frames = 0;
                 updates = 0;
             }
@@ -234,7 +257,7 @@ public class Game
      *  Handling the gametick, and calling
      *  the tick functions of objects that need to be updated
      */
-    private void tick() {
+    private void tick(double gametick) {
         for (int i = 0; i < this.handler.object.size(); i++) {
             GameObject temp = (GameObject) this.handler.object.get(i);
             if (temp.getId() == ObjectId.Player) {
@@ -250,9 +273,26 @@ public class Game
                 }
             }
         }
+
+        for (int i = 0; i < this.mapSize; i++) {
+            for (int j = 0; j < this.mapSize; j++) {
+                Tiles tile = this.map.tile_ground[i][j];
+                if(tile.getId() == 0){
+                    if(tile.getL().getId() == tile.getId()) {
+                        if (tile.getAnimation() + 2 < tile.getL().getAnimation() || tile.getAnimation() >= 7) {
+                            this.map.tile_ground[i][j].animate(gametick, this.water.length);
+                        }
+                    }else{
+                        this.map.tile_ground[i][j].animate(gametick, this.water.length);
+                    }
+                }
+
+            }
+        }
+
         uiPos();
-        this.uiHandler.tick();
-        this.handler.tick();
+        this.uiHandler.tick(gametick);
+        this.handler.tick(gametick);
     }
 
     /**
@@ -272,8 +312,9 @@ public class Game
         updateTiles(g2d, -this.cam.pos.x, -this.cam.pos.y, getWidth() + (-this.cam.pos.x),
                 getHeight() + (-this.cam.pos.y));
 
-        this.uiHandler.render(g);
+
         this.handler.render(g);
+        this.uiHandler.render(g);
         //--------------AFFECTED BY CAMERA-----------------//
         g2d.translate(-this.cam.pos.x, -this.cam.pos.y);
         //--------------DRAW HERE-----------------//
@@ -314,6 +355,10 @@ public class Game
         for (int i = 0; i < this.treeTiles.getImg().getWidth() / 32; i++) {
             this.trees[i] = this.treeTiles.getImg().getSubimage(i * 32, 0, 32, 32);
         }
+        this.water = new BufferedImage[this.waterTiles.getImg().getWidth() / 32];
+        for (int i = 0; i < this.waterTiles.getImg().getWidth() / 32; i++) {
+            this.water[i] = this.waterTiles.getImg().getSubimage(i * 32, 0, 32, 32);
+        }
     }
 
     /**
@@ -351,7 +396,9 @@ public class Game
                 if (j >= mapSize) {
                     ypos= j - mapSize;
                 }
-                g.drawImage(this.baseImages[this.map.tile_ground[xpos][ypos].getId()], null, i * 32, j * 32);
+                if(this.map.tile_ground[xpos][ypos].getId() == 0)
+                    g.drawImage(this.water[this.map.tile_ground[xpos][ypos].getAnimation()], null, i * 32, j * 32);
+                else g.drawImage(this.baseImages[this.map.tile_ground[xpos][ypos].getId()], null, i * 32, j * 32);
                 if (this.map.details[xpos][ypos].getId() == 1) {
                     g.drawImage(this.grass[0], null, i * 32, j * 32);
                 }
@@ -363,7 +410,7 @@ public class Game
                         g.drawImage(this.transitions[(((Tiles[][]) this.map.cornerArray.get(Integer.valueOf(t)))[xpos][ypos].getBinary() - 1)][t], null, i * 32, j * 32);
                     }
                 }
-                if ((this.map.details[xpos][ypos].getId() >= 2) && (this.map.details[xpos][ypos].getId() <= 4)) {
+               /* if ((this.map.details[xpos][ypos].getId() >= 2) && (this.map.details[xpos][ypos].getId() <= 4)) {
                     g.drawImage(this.rocks[(this.map.details[xpos][ypos].getId() - 1)], null, i * 32, j * 32);
                 }
                 if (this.map.details[xpos][ypos].getId() == 5) {
@@ -373,7 +420,7 @@ public class Game
                     g.drawImage(this.trees[3], null, i * 32, (j - 1) * 32);
                     g.drawImage(this.trees[4], null, (i - 1) * 32, (j - 2) * 32);
                     g.drawImage(this.trees[5], null, i * 32, (j - 2) * 32);
-                }
+                }*/
             }
         }
     }

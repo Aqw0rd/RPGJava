@@ -1,16 +1,19 @@
 import pygame
 import pygame.locals
 import Tile as tile
-import Player, Bat
+import Player
 import KeyInput
+import BatSpawner
 import random
 
 
 t = []
-p = Player.Player(200, 100)
-bat = []
-for x in range(0, 50):
-    bat.append(Bat.Bat(random.randint(0,640),random.randint(0,480)))
+p = Player.Player(200, 100, 32, 32)
+
+batSpawners = []
+
+#for x in range(0, 50):
+#    bat.append(Bat.Bat(random.randint(0,640),random.randint(0,480)))
 
 
 def generate_tiles(w,h, list):
@@ -47,22 +50,24 @@ if __name__ == '__main__':
     gameloop = True
     time = 0
     screen = pygame.display.set_mode((width, height))
+    batImg = load_tileset('bat.png', 32,32,1.5)
+    batSpawners.append(BatSpawner.BatSpawner(100, 200, 32, 32, batImg))
+    batSpawners.append(BatSpawner.BatSpawner(500, 200, 32, 32, batImg))
 
     #############LOAD IMAGE TILESET FOR GAMEOBJECT #############
 
     p.img = load_tileset('link.jpg', 64, 96, 0.5)
-    for x in bat:
-        x.img = load_tileset('bat.png', 32,32,1.5)
 
 
     ############################################################
     #bat.running = True
     p.up, p.down, p.left, p.right = 2,3,0,1
-    for x in bat:
-        x.up, x.down, x.left, x.right = 2, 0, 3, 1
+    for b in batSpawners:
+        for bat in b.entities:
+           bat.up, bat.down, bat.left, bat.right = 2, 0, 3, 1
     keys = [False, False, False, False]         #List of which movement key is pressed
 
-    generate_tiles(width//32,height // 32, t)
+    generate_tiles(width//32, height // 32, t)
     while gameloop:
         milliseconds = clock.tick(FPS)
         playtime += milliseconds / 1000.0
@@ -76,12 +81,22 @@ if __name__ == '__main__':
             for j in i:
                 pygame.draw.rect(screen, (j.col[0], j.col[1], j.col[2]), (j.pos[0], j.pos[1], 32, 32))
 
+
         ################### DRAW THE SCREEN ELEMENTS #################
+        for b in batSpawners:
+            pygame.draw.rect(screen, (140, 66, 244), (b.pos[0], b.pos[1], 32, 32))
+            pygame.draw.circle(screen, (0, 0, 0), (b.pos[0] + 16, b.pos[1] + 16), b.radius, 1)
+            b.time += milliseconds
+            b.update()
+            for bat in b.entities:
+                screen.blit(bat.img[bat.mov_animation][bat.orientation], bat.pos)
+                bat.update(p)
+                bat.object_orientation()
+                bat.time += milliseconds
+                bat.anim(130)
+
 
         screen.blit(p.img[p.mov_animation][p.orientation], p.pos)
-        for x in bat:
-            screen.blit(x.img[x.mov_animation][x.orientation], x.pos)
-
         ############################################################
 
         #update the screen
@@ -94,17 +109,21 @@ if __name__ == '__main__':
                 pygame.quit()
                 exit(0)
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouserect = pygame.Rect(pygame.mouse.get_pos(), (32, 32))
+                pygame.draw.rect(screen,(0,0,0),mouserect)
+                for b in batSpawners:
+                   for bat in b.entities:
+                        batrect = pygame.Rect(bat.pos,(bat.width,bat.height))
+                        if mouserect.colliderect(batrect):
+                            b.entities.remove(bat)
+
             KeyInput.KeyCheck(event,keys) #Key events
 
         ######## CALL UPDATE FUNCTION FOR GAMEOBJECTS ########
 
         p.update()
         p.movement(keys)
-        for x in bat:
-            x.update(p)
-            x.object_orientation()
-            x.time += milliseconds
-            x.anim(130)
 
 
         ######################################################
@@ -114,5 +133,3 @@ if __name__ == '__main__':
 
         p.time +=milliseconds
         p.anim(80)
-
-        #object_animation(bat, 130)

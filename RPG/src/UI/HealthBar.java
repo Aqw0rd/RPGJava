@@ -25,6 +25,6 @@ public class HealthBar
         g.fillRect((int) this.pos.x, (int) this.pos.y, (int) this.size.x, (int) this.size.y);
     }
 
-    public void tick(LinkedList<UIObject> object) {
+    public void tick(LinkedList<UIObject> object,double gametick) {
     }
 }

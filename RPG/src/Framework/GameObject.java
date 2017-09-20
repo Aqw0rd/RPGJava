@@ -4,9 +4,11 @@ import Maths.Vector2f;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import mapGenerator.ObjectId;
+import mapGenerator.TileSets;
 
 public abstract class GameObject {
     protected Vector2f pos = new Vector2f(0.0F, 0.0F);
@@ -16,6 +18,13 @@ public abstract class GameObject {
     protected float mana;
     protected float maxHp;
     protected float maxMana;
+    protected String imgPath;
+    protected int orientation;
+    protected int animation;
+    protected float speed;
+    protected int animationTime;
+    protected TileSets tileSets;
+    protected BufferedImage[][] img;
 
     /**
      * GameObject constructor
@@ -23,10 +32,11 @@ public abstract class GameObject {
      * @param y
      * @param id
      */
-    public GameObject(float x, float y, ObjectId id) {
+    public GameObject(float x, float y, ObjectId id, String imgPath) {
         this.pos.x = x;
         this.pos.y = y;
         this.id = id;
+        this.imgPath = imgPath;
     }
 
     /**
@@ -39,7 +49,8 @@ public abstract class GameObject {
      *
      * @param paramLinkedList
      */
-    public abstract void tick(LinkedList<GameObject> LinkedList);
+    public abstract void tick(LinkedList<GameObject> LinkedList, double gametick);
+
 
     /**
      *
