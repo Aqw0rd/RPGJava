@@ -5,7 +5,9 @@ import Maths.Vector2f;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.function.Function;
 
 import mapGenerator.ObjectId;
 import mapGenerator.TileSets;
@@ -18,13 +20,13 @@ public abstract class GameObject {
     protected float mana;
     protected float maxHp;
     protected float maxMana;
-    protected String imgPath;
     protected int orientation;
     protected int animation;
     protected float speed;
     protected int animationTime;
     protected TileSets tileSets;
     protected BufferedImage[][] img;
+    protected boolean solid = false;
 
     /**
      * GameObject constructor
@@ -32,11 +34,10 @@ public abstract class GameObject {
      * @param y
      * @param id
      */
-    public GameObject(float x, float y, ObjectId id, String imgPath) {
+    public GameObject(float x, float y, ObjectId id) {
         this.pos.x = x;
         this.pos.y = y;
         this.id = id;
-        this.imgPath = imgPath;
     }
 
     /**
@@ -129,4 +130,9 @@ public abstract class GameObject {
     public float getMana() {
         return this.mana;
     }
+
+    public boolean isSolid() {
+        return this.solid;
+    }
+
 }

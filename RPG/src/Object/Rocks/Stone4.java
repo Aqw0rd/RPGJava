@@ -13,7 +13,8 @@ import mapGenerator.TileSets;
 public class Stone4
         extends GameObject {
     public Stone4(float x, float y, ObjectId id, String imgPath) {
-        super(x, y, id, imgPath);
+        super(x, y, id);
+        this.solid = true;
         this.tileSets = new TileSets();
         this.tileSets.setImg(imgPath);
         this.img = new BufferedImage[this.tileSets.getImg().getWidth() / 32][this.tileSets.getImg().getHeight() / 32];

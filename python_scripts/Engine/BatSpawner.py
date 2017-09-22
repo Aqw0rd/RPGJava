@@ -7,6 +7,10 @@ class BatSpawner(GameObject.GameObject):
         self.entities = []
         self.respawnTime = 5000
         self.img = img
+        for i in range(self.maxEntities):
+            self.entities.append(Bat.Bat(random.randint(self.pos[0] - self.radius // 2, self.pos[0] + self.radius // 2),
+                                         random.randint(self.pos[1] - self.radius // 2, self.pos[1] + self.radius // 2),
+                                         32, 32, self.img))
 
     def update(self):
         if len(self.entities) < self.maxEntities:

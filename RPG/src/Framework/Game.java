@@ -4,6 +4,7 @@ import Maths.Maths;
 import Maths.Vector2f;
 import Maths.Vector2i;
 import Object.Player;
+import Object.Bat;
 import Object.Rocks.Stone2;
 import Object.Rocks.Stone3;
 import Object.Rocks.Stone4;
@@ -100,6 +101,7 @@ public class Game
         this.handler = new Handler();       //Handler object
         this.uiHandler = new UIHandler();   //UIHandler object
         this.handler.addObject(new Player(100.0F, 100.0F, ObjectId.Player, "src/resources/player.png"));    //Adding the playerobject to the handler
+        this.handler.addObject(new Bat(150.0F, 100.0F, ObjectId.Bat, "src/resources/bat.png"));
 
         addKeyListener(new KeyInput(this.handler, this.uiHandler)); //Focusing keylistener to an object of KeyInput which tracks the handler and uihandler
 
@@ -403,11 +405,11 @@ public class Game
                     g.drawImage(this.grass[0], null, i * 32, j * 32);
                 }
                 for (int t = 0; t < this.map.transArray.size(); t++) {
-                    if (((Tiles[][]) this.map.transArray.get(Integer.valueOf(t)))[xpos][ypos].getBinary() > 0) {
-                        g.drawImage(this.transitions[(((Tiles[][]) this.map.transArray.get(Integer.valueOf(t)))[xpos][ypos].getBinary() - 1)][t], null, i * 32, j * 32);
+                    if ((this.map.transArray.get(t))[xpos][ypos].getBinary() > 0) {
+                        g.drawImage(this.transitions[(((Tiles[][]) this.map.transArray.get(t))[xpos][ypos].getBinary() - 1)][t], null, i * 32, j * 32);
                     }
-                    if (((Tiles[][]) this.map.cornerArray.get(Integer.valueOf(t)))[xpos][ypos].getBinary() > 0) {
-                        g.drawImage(this.transitions[(((Tiles[][]) this.map.cornerArray.get(Integer.valueOf(t)))[xpos][ypos].getBinary() - 1)][t], null, i * 32, j * 32);
+                    if ((this.map.cornerArray.get(t))[xpos][ypos].getBinary() > 0) {
+                        g.drawImage(this.transitions[(((Tiles[][]) this.map.cornerArray.get(t))[xpos][ypos].getBinary() - 1)][t], null, i * 32, j * 32);
                     }
                 }
                /* if ((this.map.details[xpos][ypos].getId() >= 2) && (this.map.details[xpos][ypos].getId() <= 4)) {

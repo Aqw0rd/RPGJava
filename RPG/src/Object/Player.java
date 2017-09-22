@@ -17,7 +17,7 @@ public class Player
     private int height = 42;
 
     public Player(float x, float y, ObjectId id, String imgPath) {
-        super(x, y, id, imgPath);
+        super(x, y, id);
         this.hp = 100.0F;
         this.maxHp = 100.0F;
         this.mana = 100.0F;
@@ -108,7 +108,7 @@ public class Player
 
     public void Collision(LinkedList<GameObject> object){
         for(GameObject o: object){
-            if(!o.equals(this)){
+            if(!o.equals(this) && o.isSolid()){
                 if(getBoundsTop().intersects(o.getBounds())){
                     this.pos.y = o.getPos().y + 34;
                     //this.vel.y = 0;
@@ -129,9 +129,9 @@ public class Player
         }
     }
 
-    public Rectangle getBounds()        { return new Rectangle( (int) this.pos.x, (int) this.pos.y, 42, height); }
-    public Rectangle getBoundsTop()     { return new Rectangle((int) this.pos.x + 8, (int) this.pos.y, 26, height/2); }
-    public Rectangle getBoundsBottom()  { return new Rectangle((int) this.pos.x + 8, (int) this.pos.y + height/2, 26, height/2); }
+    public Rectangle getBounds()        { return new Rectangle( (int) this.pos.x, (int) this.pos.y, width, height); }
+    public Rectangle getBoundsTop()     { return new Rectangle((int) this.pos.x + 8, (int) this.pos.y, width-16, height/2); }
+    public Rectangle getBoundsBottom()  { return new Rectangle((int) this.pos.x + 8, (int) this.pos.y + height/2, width-16, height/2); }
     public Rectangle getBoundsLeft()    { return new Rectangle((int) this.pos.x, (int) this.pos.y + 8, 8, height - 16); }
     public Rectangle getBoundsRight()   { return new Rectangle((int) this.pos.x + this.width - 8, (int) this.pos.y + 8, 8, height - 16); }
 
