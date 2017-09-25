@@ -15,6 +15,8 @@ public class Player
         extends GameObject {
     private int width = 42;
     private int height = 42;
+    private boolean idle = true;
+    private boolean right = true;
 
     public Player(float x, float y, ObjectId id, String imgPath) {
         super(x, y, id);
@@ -41,7 +43,14 @@ public class Player
         //g.setColor(Color.gray);
         //g.fillRect((int) this.pos.x, (int) this.pos.y, (int) this.width, (int) this.height);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(this.img[this.animation][this.orientation],null, (int)this.pos.x, (int)this.pos.y);
+        if(this.idle){
+            if(right) g2d.drawImage(this.img[this.animation][0],null, (int)this.pos.x, (int)this.pos.y);
+            else g2d.drawImage(this.img[this.animation][0], (int)this.pos.x + width, (int)this.pos.y, -width, height, null);
+        }
+        else{
+            if(right) g2d.drawImage(this.img[this.animation][1],null, (int)this.pos.x, (int)this.pos.y);
+            else g2d.drawImage(this.img[this.animation][1], (int)this.pos.x + width, (int)this.pos.y, -width, height, null);
+        }
         g.setColor(Color.RED);
         g2d.draw(getBoundsTop());
         g2d.draw(getBoundsLeft());
@@ -53,51 +62,25 @@ public class Player
     public void tick(LinkedList<GameObject> object, double gametick) {
         Collision(object);
         float[] vel = new float[] {this.vel.x, this.vel.y};
-        /*switch (Arrays.toString(vel)){
-            case "[0.0, 0.0]":
-                this.animation = 1;
-                break;
-            case "[5.0, 0.0]":
-                this.orientation = 3;
-                break;
-            case "[-5.0, 0.0]":
-                this.orientation = 2;
-                break;
-            case "[5.0, 5.0]":
-                this.orientation = 0;
-                break;
-            case "[5.0, -5.0]":
-                this.orientation = 1;
-                break;
-            case "[0.0, 5.0]":
-                this.orientation = 0;
-                break;
-            case "[0.0, -5.0]":
-                this.orientation = 1;
-                break;
-            case "[-5.0, 5.0]":
-                this.orientation = 0;
-                break;
-            case "[-5.0, -5.0]":
-                this.orientation = 1;
-                break;
-        }*/
-        //if(Math.abs(this.vel.x) == this.speed && Math.abs(this.vel.y) > 0) this.vel.x =this.vel.x/(float)Math.sqrt(2);
-        //if(Math.abs(this.vel.y) == this.speed && Math.abs(this.vel.x) > 0) this.vel.y =this.vel.y/(float)Math.sqrt(2);
+        if(this.vel.x == 0 && this.vel.y == 0) this.idle = true;
+        else this.idle = false;
+        if(this.vel.x != 0) this.right = (this.vel.x>0);
+
 
         this.pos.x += this.vel.x;
         this.pos.y += this.vel.y;
 
-        if(Math.abs(this.vel.x) > 0 || Math.abs(this.vel.y) > 0 ) this.animationTime ++;
+        /*if(Math.abs(this.vel.x) > 0 || Math.abs(this.vel.y) > 0 ) this.animationTime ++;
         else {
             this.animation = 0;
             this.animationTime = 0;
-        }
-        if(this.animationTime>=10) {
+        }*/
+        if(this.animationTime>=6) {
             this.animation ++;
             if(this.animation>=this.tileSets.getImg().getWidth() / 64) this.animation = 0;
             this.animationTime = 0;
         }
+        this.animationTime++;
         //If the player crosses the 0 or max position, recalculate the position
         if(this.pos.x < 0) this.pos.x = 500*32 + this.pos.x;
         if(this.pos.y < 0 ) this.pos.y = 500*32 + this.pos.y;
@@ -151,7 +134,6 @@ public class Player
     public float getMana() {
         return this.mana;
     }
-
 
 
 }

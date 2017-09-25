@@ -34,14 +34,14 @@ public class Map {
         this.transArray = new HashMap();
         this.cornerArray = new HashMap();
         for (int i = 0; i < 10; i++) {
-            this.transArray.put(Integer.valueOf(i), new Tiles[mapSize][mapSize]);
-            this.cornerArray.put(Integer.valueOf(i), new Tiles[mapSize][mapSize]);
-            for (int j = 0; j < ((Tiles[][]) this.transArray.get(Integer.valueOf(i))).length; j++) {
-                for (int j2 = 0; j2 < ((Tiles[][]) this.transArray.get(Integer.valueOf(i))).length; j2++) {
-                    ((Tiles[][]) this.transArray.get(Integer.valueOf(i)))[j][j2] = new Tiles();
-                    ((Tiles[][]) this.transArray.get(Integer.valueOf(i)))[j][j2].setId(-1);
-                    ((Tiles[][]) this.cornerArray.get(Integer.valueOf(i)))[j][j2] = new Tiles();
-                    ((Tiles[][]) this.cornerArray.get(Integer.valueOf(i)))[j][j2].setId(-1);
+            this.transArray.put(i, new Tiles[mapSize][mapSize]);
+            this.cornerArray.put(i, new Tiles[mapSize][mapSize]);
+            for (int j = 0; j < (this.transArray.get(i)).length; j++) {
+                for (int j2 = 0; j2 < (this.transArray.get(i)).length; j2++) {
+                    (this.transArray.get(i))[j][j2] = new Tiles();
+                    (this.transArray.get(i))[j][j2].setId(-1);
+                    (this.cornerArray.get(i))[j][j2] = new Tiles();
+                    (this.cornerArray.get(i))[j][j2].setId(-1);
                 }
             }
         }

@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
+
 import mapGenerator.Handler;
 import mapGenerator.ObjectId;
 import mapGenerator.SimplexNoise;
@@ -47,6 +48,7 @@ public class Game
     int[][] treeArray;
 
     Map map;
+    JSON intro;
     BufferedImage[][] biome_images;
     BufferedImage[] baseImages;
     BufferedImage[][] transitions;
@@ -55,10 +57,17 @@ public class Game
     BufferedImage[] grass;
     BufferedImage[] trees;
     BufferedImage[] water;
+    BufferedImage[][] gameobjects;
+    BufferedImage[][] house;
+    BufferedImage[] path;
+
 
     Camera cam;
 
     TileSets waterTiles = new TileSets();
+    TileSets gameObjectTiles = new TileSets();
+    TileSets houseTiles = new TileSets();
+    TileSets pathTiles = new TileSets();
     TileSets treeTiles = new TileSets();
     TileSets rockTiles = new TileSets();
     TileSets surface = new TileSets();
@@ -100,7 +109,7 @@ public class Game
         this.cam = new Camera();            //Camera object
         this.handler = new Handler();       //Handler object
         this.uiHandler = new UIHandler();   //UIHandler object
-        this.handler.addObject(new Player(100.0F, 100.0F, ObjectId.Player, "src/resources/player.png"));    //Adding the playerobject to the handler
+        this.handler.addObject(new Player(550, 100.0F, ObjectId.Player, "src/resources/player.png"));    //Adding the playerobject to the handler
         this.handler.addObject(new Bat(150.0F, 100.0F, ObjectId.Bat, "src/resources/bat.png"));
 
         addKeyListener(new KeyInput(this.handler, this.uiHandler)); //Focusing keylistener to an object of KeyInput which tracks the handler and uihandler
@@ -141,86 +150,25 @@ public class Game
         this.rockTiles.setImg("src/resources/rocks.png");
         this.grassTiles.setImg("src/resources/grass.png");
         this.treeTiles.setImg("src/resources/tree.png");
+        this.gameObjectTiles.setImg("src/resources/gameobjects.png");
+        this.houseTiles.setImg("src/resources/house.png");
+        this.pathTiles.setImg("src/resources/path.png");
 
         this.mapArray = generateNoise(this.mapSize, this.mapSize, 0, 2, 0.0009F);    //Array of noise, which inself is the map
 
         this.noiseEl = generateNoise(this.mapSize, this.mapSize, 0, 5, 3.0E-4F);    //Not used
         this.treeArray = generateNoise(this.mapSize, this.mapSize, 0, 1, 0.003F);   //Not used
 
-        this.map = new Map(this.mapSize, this.mapArray);
-        BufferedImage img = new BufferedImage(this.mapSize * 2, this.mapSize * 2, 2);
-        File f = null;
+        //this.map = new Map(this.mapSize, this.mapArray);
+        this.intro = new JSON("src/Campaign/intro level.json");
+
 
         //creating an image of pixels based on the mapArray, (Basically a minimap)
-        for (int x = 0; x < this.mapSize * 2; x += 2) {
-            for (int y = 0; y < this.mapSize * 2; y += 2) {
-                int a = 255;
-                int r = 0;
-                int g = 0;
-                int b = 0;
-                switch (this.map.tile_ground[(x / 2)][(y / 2)].getId()) {
-                    case 0:
-                        r = 66;
-                        g = 119;
-                        b = 244;
-                        break;
-                    case 1:
-                        r = 80;
-                        g = 244;
-                        b = 66;
-                        break;
-                    case 2:
-                        r = 99;
-                        g = 63;
-                        b = 25;
-                        break;
-                    case 3:
-                        r = 231;
-                        g = 189;
-                        b = 88;
-                        break;
-                    case 4:
-                        r = 91;
-                        g = 91;
-                        b = 91;
-                        break;
-                    case 5:
-                        r = 220;
-                        g = 153;
-                        b = 75;
-                }
-                int p = a << 24 | r << 16 | g << 8 | b;
-                img.setRGB(x, y, p);
-                img.setRGB(x + 1, y, p);
-                img.setRGB(x, y + 1, p);
-                img.setRGB(x + 1, y + 1, p);
-            }
-        }
-
-        try {
-            f = new File(".\\Output.png");
-            ImageIO.write(img, "png", f);
-        } catch (IOException e) {
-            System.out.println("Error: " + e);
-        }
+        //createMiniMap(this.mapSize, this.mapSize, this.map.tile_ground);
         loadImages();
 
 
-        for (i = 1; i < mapSize - 1; i++) {
-            for (int j = 1; j < mapSize - 1; j++) {
-                switch (this.map.details[i][j].getId()) {
-                    case 2:
-                        this.handler.addObject(new Stone2(i*32,j*32,ObjectId.Stone2,"src/resources/stone_1.png"));
-                        break;
-                    case 3:
-                        this.handler.addObject(new Stone3(i*32,j*32,ObjectId.Stone3,"src/resources/stone_2.png"));
-                        break;
-                    case 4:
-                        this.handler.addObject(new Stone4(i*32,j*32,ObjectId.Stone4,"src/resources/stone_3.png"));
-                        break;
-                }
-            }
-        }
+        //createGameObjects()
     }
 
     public void run() {
@@ -261,11 +209,11 @@ public class Game
      */
     private void tick(double gametick) {
         for (int i = 0; i < this.handler.object.size(); i++) {
-            GameObject temp = (GameObject) this.handler.object.get(i);
+            GameObject temp = this.handler.object.get(i);
             if (temp.getId() == ObjectId.Player) {
-                this.cam.tick(temp, this.getWidth(), this.getHeight());
+                this.cam.tick(temp, this.getWidth(), this.getHeight(), this.intro.width*32, this.intro.height*32);
                 for (int j = 0; j < this.uiHandler.object.size(); j++) {
-                    UIObject uiTemp = (UIObject) this.uiHandler.object.get(j);
+                    UIObject uiTemp =  this.uiHandler.object.get(j);
                     if (uiTemp.id == UIid.HealthBar) {
                         uiTemp.size.x = (uiTemp.fullSize.x * temp.hp / temp.maxHp);
                     }
@@ -276,7 +224,7 @@ public class Game
             }
         }
 
-        for (int i = 0; i < this.mapSize; i++) {
+        /*for (int i = 0; i < this.mapSize; i++) {
             for (int j = 0; j < this.mapSize; j++) {
                 Tiles tile = this.map.tile_ground[i][j];
                 if(tile.getId() == 0){
@@ -290,7 +238,7 @@ public class Game
                 }
 
             }
-        }
+        }*/
 
         uiPos();
         this.uiHandler.tick(gametick);
@@ -311,8 +259,11 @@ public class Game
         //------------DRAW HERE---------------------//
         g2d.translate(this.cam.pos.x, this.cam.pos.y);
         //--------------AFFECTED BY CAMERA-----------------//
-        updateTiles(g2d, -this.cam.pos.x, -this.cam.pos.y, getWidth() + (-this.cam.pos.x),
-                getHeight() + (-this.cam.pos.y));
+        //updateTiles(g2d, -this.cam.pos.x, -this.cam.pos.y, getWidth() + (-this.cam.pos.x),
+                //getHeight() + (-this.cam.pos.y));
+
+        drawTiles(g2d, Math.abs(cam.pos.x), Math.abs(cam.pos.y),
+                this.getWidth() + Math.abs(cam.pos.x), this.getHeight() + Math.abs(cam.pos.y));
 
 
         this.handler.render(g);
@@ -361,6 +312,23 @@ public class Game
         for (int i = 0; i < this.waterTiles.getImg().getWidth() / 32; i++) {
             this.water[i] = this.waterTiles.getImg().getSubimage(i * 32, 0, 32, 32);
         }
+        this.gameobjects = new BufferedImage[this.gameObjectTiles.getImg().getWidth() / 32][this.gameObjectTiles.getImg().getHeight() / 32];
+        for (int i = 0; i < this.gameObjectTiles.getImg().getWidth() / 32; i++) {
+            for (int j = 0; j < this.gameObjectTiles.getImg().getHeight() / 32; j++) {
+                this.gameobjects[i][j] = this.gameObjectTiles.getImg().getSubimage(i * 32, j * 32, 32, 32);
+            }
+        }
+        this.house = new BufferedImage[this.houseTiles.getImg().getWidth() / 32][this.houseTiles.getImg().getHeight() / 32];
+        for (int i = 0; i < this.houseTiles.getImg().getWidth() / 32; i++) {
+            for (int j = 0; j < this.houseTiles.getImg().getHeight() / 32; j++) {
+                this.house[i][j] = this.houseTiles.getImg().getSubimage(i * 32, j * 32, 32, 32);
+            }
+        }
+        this.path = new BufferedImage[this.pathTiles.getImg().getWidth() / 32];
+        for (int i = 0; i < this.pathTiles.getImg().getWidth() / 32; i++) {
+            this.path[i] = this.pathTiles.getImg().getSubimage(i * 32, 0, 32, 32);
+        }
+
     }
 
     /**
@@ -427,6 +395,58 @@ public class Game
         }
     }
 
+
+    public void drawTiles(Graphics2D g, int x0, int y0, int x, int y){
+
+        for(int k = 0; k < intro.map.length; k++) {
+            int a = (int) Math.floor(new Maths().map(x0, 0, this.intro.width * 32, 0, this.intro.width));
+            int b = (int) Math.floor(new Maths().map(x, 0, this.intro.width * 32, 0, this.intro.width));
+
+            int c = (int) Math.floor(new Maths().map(y0,  0, this.intro.height * 32, 0, this.intro.height));
+            int d = (int) Math.floor(new Maths().map(y,  0, this.intro.height * 32, 0, this.intro.height));
+            if(a>0) a--;
+            if(b<this.intro.width) b++;
+            if(c>0) c--;
+            if(d<this.intro.height) d++;
+            Tiles[][] temp = intro.map[k];
+            for (int i = a; i < b; i++) {
+                for (int j = c; j < d; j++) {
+                    if(temp[i][j].getId()>=0){
+                        int xpos, ypos;
+                        switch (temp[i][j].getTileset()){
+                            case ("gameobjects"):
+                                xpos = temp[i][j].getId() % (this.gameObjectTiles.getImg().getWidth() / 32);
+                                ypos = (int) Math.floor(temp[i][j].getId() / (this.gameObjectTiles.getImg().getWidth() / 32));
+                                if(ypos == 30){
+                                    System.out.println("Stop");
+                                }
+                                g.drawImage(this.gameobjects[xpos][ypos], null, i * 32, j * 32);
+                            break;
+                            case ("basetiles"):
+                                xpos = temp[i][j].getId();
+                                g.drawImage(this.baseImages[xpos], null, i * 32, j * 32);
+                                break;
+                            case ("path"):
+                                xpos = temp[i][j].getId();
+                                g.drawImage(this.path[xpos], null, i * 32, j * 32);
+                                break;
+                            case ("house"):
+                                xpos = temp[i][j].getId() % (this.houseTiles.getImg().getWidth() / 32);
+                                ypos = temp[i][j].getId() / ((this.houseTiles.getImg().getWidth() / 32));
+                                g.drawImage(this.house[xpos][ypos], null, i * 32, j * 32);
+                                break;
+                            case ("transitions"):
+                                xpos = temp[i][j].getId() % (this.transitionTiles.getImg().getWidth() / 32);
+                                ypos = temp[i][j].getId() / ((this.transitionTiles.getImg().getWidth() / 32));
+                                g.drawImage(this.transitions[xpos][ypos], null, i * 32, j * 32);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Function for updating the UI position
      */
@@ -466,6 +486,80 @@ public class Game
             weight *= 0.5F;
         }
         return noise;
+    }
+
+    public void createMiniMap(int width, int height, Tiles[][] map){
+        BufferedImage img = new BufferedImage(width * 2, height * 2, 2);
+        File f = null;
+        for (int x = 0; x < width * 2; x += 2) {
+            for (int y = 0; y < height * 2; y += 2) {
+                int a = 255;
+                int r = 0;
+                int g = 0;
+                int b = 0;
+                switch (map[(x / 2)][(y / 2)].getId()) {
+                    case 0:
+                        r = 66;
+                        g = 119;
+                        b = 244;
+                        break;
+                    case 1:
+                        r = 80;
+                        g = 244;
+                        b = 66;
+                        break;
+                    case 2:
+                        r = 99;
+                        g = 63;
+                        b = 25;
+                        break;
+                    case 3:
+                        r = 231;
+                        g = 189;
+                        b = 88;
+                        break;
+                    case 4:
+                        r = 91;
+                        g = 91;
+                        b = 91;
+                        break;
+                    case 5:
+                        r = 220;
+                        g = 153;
+                        b = 75;
+                }
+                int p = a << 24 | r << 16 | g << 8 | b;
+                img.setRGB(x, y, p);
+                img.setRGB(x + 1, y, p);
+                img.setRGB(x, y + 1, p);
+                img.setRGB(x + 1, y + 1, p);
+            }
+        }
+
+        try {
+            f = new File(".\\Output.png");
+            ImageIO.write(img, "png", f);
+        } catch (IOException e) {
+            System.out.println("Error: " + e);
+        }
+    }
+
+    public void createGameObjects(){
+        for (int i = 1; i < mapSize - 1; i++) {
+            for (int j = 1; j < mapSize - 1; j++) {
+                switch (this.map.details[i][j].getId()) {
+                    case 2:
+                        this.handler.addObject(new Stone2(i*32,j*32,ObjectId.Stone2,"src/resources/stone_1.png"));
+                        break;
+                    case 3:
+                        this.handler.addObject(new Stone3(i*32,j*32,ObjectId.Stone3,"src/resources/stone_2.png"));
+                        break;
+                    case 4:
+                        this.handler.addObject(new Stone4(i*32,j*32,ObjectId.Stone4,"src/resources/stone_3.png"));
+                        break;
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {

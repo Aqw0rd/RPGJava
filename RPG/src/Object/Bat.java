@@ -104,7 +104,7 @@ public class Bat extends GameObject {
         return this.maxHp;
     }
     public float getHp() {
-        return this.maxHp;
+        return this.hp;
     }
 
 
