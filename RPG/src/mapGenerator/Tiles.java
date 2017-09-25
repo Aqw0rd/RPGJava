@@ -1,5 +1,7 @@
 package mapGenerator;
 
+import Maths.Vector2i;
+
 public class Tiles {
     private int id = 0;
     private int type = 0;
@@ -12,6 +14,16 @@ public class Tiles {
     private int animation = 0;
     private int animationSpeed = 0;
     private int animationTime = 0;
+    private String tileset = "";
+    private Vector2i pos = new Vector2i(0,0);
+
+    public Vector2i getPos() { return this.pos; }
+    public void setPos(int x, int y) { this.pos.x = x; this.pos.y = y;}
+
+    public String getTileset() { return this.tileset; }
+
+    public void setTileset(String tileset) { this.tileset = tileset; }
+
     public int getBinary() {
         return this.binary;
     }
@@ -41,6 +53,7 @@ public class Tiles {
         }
 
     }
+
     public Tiles getTl() {
         return this.tl;
     }

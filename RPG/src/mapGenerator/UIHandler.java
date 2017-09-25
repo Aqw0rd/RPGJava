@@ -11,7 +11,7 @@ public class UIHandler {
 
     public void tick(double gametick) {
         for (int i = 0; i < this.object.size(); i++) {
-            this.tempObject = ((UIObject) this.object.get(i));
+            this.tempObject = this.object.get(i);
 
             this.tempObject.tick(this.object, gametick);
         }
