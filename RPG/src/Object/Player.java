@@ -27,7 +27,8 @@ public class Player
         this.orientation = 0;
         this.animation = 0;
         this.animationTime = 0;
-        this.speed = 3.0f;
+        this.speed = 1.5f;
+        this.animationSpeed = 6;
         this.tileSets = new TileSets();
         this.tileSets.setImg(imgPath);
         this.img = new BufferedImage[this.tileSets.getImg().getWidth() / 64][this.tileSets.getImg().getHeight() / 64];
@@ -61,6 +62,15 @@ public class Player
 
     public void tick(LinkedList<GameObject> object, double gametick) {
         Collision(object);
+        if(this.running && !this.idle) {
+            this.speed = 3.0F;
+            this.animationSpeed = 4;
+        }
+        else {
+            this.speed = 1.5F;
+            this.animationSpeed = 6;
+        }
+
         float[] vel = new float[] {this.vel.x, this.vel.y};
         if(this.vel.x == 0 && this.vel.y == 0) this.idle = true;
         else this.idle = false;
@@ -75,7 +85,7 @@ public class Player
             this.animation = 0;
             this.animationTime = 0;
         }*/
-        if(this.animationTime>=6) {
+        if(this.animationTime>=this.animationSpeed) {
             this.animation ++;
             if(this.animation>=this.tileSets.getImg().getWidth() / 64) this.animation = 0;
             this.animationTime = 0;

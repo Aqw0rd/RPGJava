@@ -20,38 +20,9 @@
       <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Framework/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3196">
-              <caret line="398" column="69" lean-forward="false" selection-start-line="398" selection-start-column="69" selection-end-line="398" selection-end-column="69" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#start#0;class#Game#0" expanded="false" />
-                <element signature="method#setUp#0;class#Game#0" expanded="false" />
-                <element signature="method#run#0;class#Game#0" expanded="false" />
-                <element signature="docComment;method#tick#0;class#Game#0" expanded="false" />
-                <element signature="docComment;method#render#0;class#Game#0" expanded="false" />
-                <element signature="docComment;method#loadImages#0;class#Game#0" expanded="false" />
-                <element signature="method#loadImages#0;class#Game#0" expanded="false" />
-                <element signature="docComment;method#updateTiles#0;class#Game#0" expanded="false" />
-                <element signature="method#drawTiles#0;class#Game#0" expanded="false" />
-                <element signature="method#uiPos#0;class#Game#0" expanded="false" />
-                <element signature="docComment;method#generateNoise#0;class#Game#0" expanded="false" />
-                <element signature="method#generateNoise#0;class#Game#0" expanded="false" />
-                <element signature="method#createMiniMap#0;class#Game#0" expanded="false" />
-                <element signature="method#createGameObjects#0;class#Game#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JSON.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Framework/JSON.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="893">
-              <caret line="71" column="5" lean-forward="true" selection-start-line="71" selection-start-column="5" selection-end-line="71" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#readFile#0;class#JSON#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="142">
+              <caret line="366" column="38" lean-forward="false" selection-start-line="366" selection-start-column="38" selection-end-line="366" selection-end-column="38" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -59,7 +30,7 @@
       <file leaf-file-name="Maths.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Maths/Maths.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
+            <state relative-caret-position="450">
               <caret line="40" column="35" lean-forward="false" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
               <folding>
                 <element signature="method#clamp#0;class#Maths#0" expanded="false" />
@@ -69,39 +40,36 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Tiles.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/mapGenerator/Tiles.java">
+      <file leaf-file-name="GameObject.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Framework/GameObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="45" lean-forward="false" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
+            <state relative-caret-position="199">
+              <caret line="26" column="35" lean-forward="false" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
               <folding>
-                <element signature="method#animate#0;class#Tiles#0" expanded="false" />
+                <element signature="docComment;method#GameObject#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#render#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#tick#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getBounds#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getPos#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#setPos#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getVel#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#setVel#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getId#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getMaxHp#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getMaxMana#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getHp#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getMana#0;class#GameObject#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Intro level.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Campaign/Intro level.json">
+      <file leaf-file-name="Tiles.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/mapGenerator/Tiles.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="609">
-              <caret line="166" column="19" lean-forward="true" selection-start-line="166" selection-start-column="19" selection-end-line="166" selection-end-column="30" />
-              <folding>
-                <marker date="1506293024757" expanded="true" signature="0:46915" ph="{&quot;height&quot;: 50...}" />
-                <marker date="1506293024757" expanded="true" signature="25:45137" ph="[...]" />
-                <marker date="1506293024757" expanded="true" signature="15737:21126" ph="{&quot;name&quot;: &quot;misc_transitions&quot;...}" />
-                <marker date="1506293024757" expanded="true" signature="21137:26017" ph="{&quot;name&quot;: &quot;misc_gameobjects&quot;...}" />
-                <marker date="1506293024757" expanded="true" signature="26028:30833" ph="{&quot;name&quot;: &quot;floor1_house&quot;...}" />
-                <marker date="1506293024757" expanded="true" signature="30844:35627" ph="{&quot;name&quot;: &quot;floor2_house&quot;...}" />
-                <marker date="1506293024757" expanded="true" signature="35638:40399" ph="{&quot;name&quot;: &quot;trees1_gameobjects&quot;...}" />
-                <marker date="1506293024757" expanded="true" signature="40410:45136" ph="{&quot;name&quot;: &quot;trees2_gameobjects&quot;...}" />
-                <marker date="1506293024757" expanded="true" signature="45271:46854" ph="[...]" />
-                <marker date="1506293024757" expanded="true" signature="45281:45592" ph="{&quot;name&quot;: &quot;gameobjects&quot;...}" />
-                <marker date="1506293024757" expanded="true" signature="45603:45909" ph="{&quot;name&quot;: &quot;basetiles&quot;...}" />
-                <marker date="1506293024757" expanded="true" signature="45920:46215" ph="{&quot;name&quot;: &quot;path&quot;...}" />
-                <marker date="1506293024757" expanded="true" signature="46226:46527" ph="{&quot;name&quot;: &quot;house&quot;...}" />
-                <marker date="1506293024757" expanded="true" signature="46538:46853" ph="{&quot;name&quot;: &quot;transitions&quot;...}" />
-              </folding>
+            <state relative-caret-position="62">
+              <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -109,11 +77,44 @@
       <file leaf-file-name="Player.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Object/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="66" column="28" lean-forward="false" selection-start-line="66" selection-start-column="28" selection-end-line="66" selection-end-column="28" />
+            <state relative-caret-position="-620">
+              <caret line="58" column="36" lean-forward="false" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Map.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Framework/Map.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="21" column="4" lean-forward="true" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="50" />
               <folding>
-                <element signature="method#Collision#0;class#Player#0" expanded="false" />
+                <element signature="method#addTiles#0;class#Map#0" expanded="false" />
+                <element signature="method#checkCorners#0;class#Map#0" expanded="false" />
+                <element signature="method#properties#0;class#Map#0" expanded="false" />
+                <element signature="method#addDetails#0;class#Map#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="KeyInput.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Framework/KeyInput.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="100">
+              <caret line="42" column="46" lean-forward="true" selection-start-line="42" selection-start-column="46" selection-end-line="42" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JSON.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Framework/JSON.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -121,18 +122,8 @@
       <file leaf-file-name="TileSets.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/mapGenerator/TileSets.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
+            <state relative-caret-position="165">
               <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BatSpawner.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Object/BatSpawner.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="23" lean-forward="false" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -141,15 +132,11 @@
       <file leaf-file-name="Bat.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Object/Bat.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="901">
+            <state relative-caret-position="780">
               <caret line="106" column="23" lean-forward="false" selection-start-line="106" selection-start-column="23" selection-end-line="106" selection-end-column="23" />
               <folding>
                 <element signature="class#State#0;class#Bat#0" expanded="false" />
-                <element signature="method#tick#0;class#Bat#0" expanded="false" />
-                <element signature="method#idle#0;class#Bat#0" expanded="false" />
-                <element signature="method#chase#0;class#Bat#0" expanded="false" />
-                <element signature="e#3592#3593#0" expanded="true" />
-                <element signature="e#3622#3623#0" expanded="true" />
+                <marker date="1506337347000" expanded="false" signature="3617:3623" ph=" }" />
               </folding>
             </state>
           </provider>
@@ -224,9 +211,7 @@
         <option value="$PROJECT_DIR$/src/Object/Rocks/Stone5.java" />
         <option value="$PROJECT_DIR$/src/Object/Rocks/Stone6.java" />
         <option value="$PROJECT_DIR$/src/Framework/FSM.java" />
-        <option value="$PROJECT_DIR$/src/Framework/GameObject.java" />
         <option value="$PROJECT_DIR$/src/Object/Bat.java" />
-        <option value="$PROJECT_DIR$/src/Framework/KeyInput.java" />
         <option value="$PROJECT_DIR$/src/mapGenerator/UIHandler.java" />
         <option value="$PROJECT_DIR$/src/Framework/JSONMap.java" />
         <option value="$PROJECT_DIR$/src/mapGenerator/Tiles.java" />
@@ -235,6 +220,8 @@
         <option value="$PROJECT_DIR$/src/Framework/JSON.java" />
         <option value="$PROJECT_DIR$/src/Campaign/Intro level.json" />
         <option value="$PROJECT_DIR$/src/Framework/Game.java" />
+        <option value="$PROJECT_DIR$/src/Framework/KeyInput.java" />
+        <option value="$PROJECT_DIR$/src/Framework/GameObject.java" />
         <option value="$PROJECT_DIR$/src/Object/Player.java" />
       </list>
     </option>
@@ -245,10 +232,9 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="95" />
-    <option name="y" value="-19" />
-    <option name="width" value="1280" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="640" />
     <option name="height" value="713" />
   </component>
   <component name="ProjectView">
@@ -266,6 +252,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -276,23 +263,33 @@
             <path>
               <item name="RPG" type="b2602c69:ProjectViewProjectNode" />
               <item name="RPG" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RPG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RPG" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RPG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RPG" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Framework" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.14941406" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/JSON-java-master" />
@@ -465,43 +462,45 @@
       <workItem from="1505386131410" duration="19000" />
       <workItem from="1505508618152" duration="613000" />
       <workItem from="1506026466788" duration="41856000" />
+      <workItem from="1506337378401" duration="1835000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="94342000" />
+    <option name="totallyTimeSpent" value="96177000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="0" y="23" width="640" height="713" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32767764" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32761312" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21528861" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21633086" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.116145834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40093604" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40190881" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -636,22 +635,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Object/Enemy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Object/Entities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="12" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Object/Enemy.java" />
+    <entry file="file://$PROJECT_DIR$/src/Object/Entities.java" />
     <entry file="file://$PROJECT_DIR$/src/mapGenerator/ObjectId.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -702,51 +687,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Framework/FSM.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="8" lean-forward="false" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Framework/GameObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="26" column="32" lean-forward="false" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
-          <folding>
-            <element signature="docComment;method#GameObject#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#render#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#tick#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getBounds#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getPos#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#setPos#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getVel#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#setVel#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getId#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getMaxHp#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getMaxMana#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getHp#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getMana#0;class#GameObject#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Framework/FSM.java" />
     <entry file="file://$PROJECT_DIR$/src/Object/Rocks/Stone1.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="16" column="8" lean-forward="false" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="26" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Framework/KeyInput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="39" column="21" lean-forward="false" selection-start-line="39" selection-start-column="21" selection-end-line="39" selection-end-column="42" />
-          <folding>
-            <element signature="method#keyReleased#0;class#KeyInput#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -771,40 +717,12 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/mapGenerator/JSONTiles.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="22" lean-forward="false" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Resources/gameobjects.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mapGenerator/JSONTiles.java" />
+    <entry file="file://$PROJECT_DIR$/src/Resources/gameobjects.png" />
     <entry file="file://$PROJECT_DIR$/src/mapGenerator/PathTile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="493">
           <caret line="43" column="5" lean-forward="false" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
-          <folding>
-            <element signature="e#713#714#0" expanded="false" />
-            <element signature="e#739#740#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Framework/Map.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="21" column="4" lean-forward="true" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="50" />
-          <folding>
-            <element signature="method#addTiles#0;class#Map#0" expanded="false" />
-            <element signature="method#checkCorners#0;class#Map#0" expanded="false" />
-            <element signature="method#properties#0;class#Map#0" expanded="false" />
-            <element signature="method#addDetails#0;class#Map#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -816,52 +734,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Resources/path.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Resources/path.png" />
     <entry file="file://$PROJECT_DIR$/src/Resources/transitions.png">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/mapGenerator/Tiles.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="45" lean-forward="false" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
-          <folding>
-            <element signature="method#animate#0;class#Tiles#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Campaign/Intro level.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="609">
-          <caret line="166" column="19" lean-forward="true" selection-start-line="166" selection-start-column="19" selection-end-line="166" selection-end-column="30" />
-          <folding>
-            <marker date="1506293024757" expanded="true" signature="0:46915" ph="{&quot;height&quot;: 50...}" />
-            <marker date="1506293024757" expanded="true" signature="25:45137" ph="[...]" />
-            <marker date="1506293024757" expanded="true" signature="15737:21126" ph="{&quot;name&quot;: &quot;misc_transitions&quot;...}" />
-            <marker date="1506293024757" expanded="true" signature="21137:26017" ph="{&quot;name&quot;: &quot;misc_gameobjects&quot;...}" />
-            <marker date="1506293024757" expanded="true" signature="26028:30833" ph="{&quot;name&quot;: &quot;floor1_house&quot;...}" />
-            <marker date="1506293024757" expanded="true" signature="30844:35627" ph="{&quot;name&quot;: &quot;floor2_house&quot;...}" />
-            <marker date="1506293024757" expanded="true" signature="35638:40399" ph="{&quot;name&quot;: &quot;trees1_gameobjects&quot;...}" />
-            <marker date="1506293024757" expanded="true" signature="40410:45136" ph="{&quot;name&quot;: &quot;trees2_gameobjects&quot;...}" />
-            <marker date="1506293024757" expanded="true" signature="45271:46854" ph="[...]" />
-            <marker date="1506293024757" expanded="true" signature="45281:45592" ph="{&quot;name&quot;: &quot;gameobjects&quot;...}" />
-            <marker date="1506293024757" expanded="true" signature="45603:45909" ph="{&quot;name&quot;: &quot;basetiles&quot;...}" />
-            <marker date="1506293024757" expanded="true" signature="45920:46215" ph="{&quot;name&quot;: &quot;path&quot;...}" />
-            <marker date="1506293024757" expanded="true" signature="46226:46527" ph="{&quot;name&quot;: &quot;house&quot;...}" />
-            <marker date="1506293024757" expanded="true" signature="46538:46853" ph="{&quot;name&quot;: &quot;transitions&quot;...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Campaign/Intro level.json" />
     <entry file="file://$PROJECT_DIR$/src/Object/BatSpawner.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
+        <state relative-caret-position="30">
           <caret line="2" column="23" lean-forward="false" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
           <folding />
         </state>
@@ -869,22 +751,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Object/Bat.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
+        <state relative-caret-position="780">
           <caret line="106" column="23" lean-forward="false" selection-start-line="106" selection-start-column="23" selection-end-line="106" selection-end-column="23" />
           <folding>
             <element signature="class#State#0;class#Bat#0" expanded="false" />
-            <element signature="method#tick#0;class#Bat#0" expanded="false" />
-            <element signature="method#idle#0;class#Bat#0" expanded="false" />
-            <element signature="method#chase#0;class#Bat#0" expanded="false" />
-            <element signature="e#3592#3593#0" expanded="true" />
-            <element signature="e#3622#3623#0" expanded="true" />
+            <marker date="1506337347000" expanded="false" signature="3617:3623" ph=" }" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Maths/Maths.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
+        <state relative-caret-position="450">
           <caret line="40" column="35" lean-forward="false" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
           <folding>
             <element signature="method#clamp#0;class#Maths#0" expanded="false" />
@@ -893,56 +771,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Framework/Game.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3196">
-          <caret line="398" column="69" lean-forward="false" selection-start-line="398" selection-start-column="69" selection-end-line="398" selection-end-column="69" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#start#0;class#Game#0" expanded="false" />
-            <element signature="method#setUp#0;class#Game#0" expanded="false" />
-            <element signature="method#run#0;class#Game#0" expanded="false" />
-            <element signature="docComment;method#tick#0;class#Game#0" expanded="false" />
-            <element signature="docComment;method#render#0;class#Game#0" expanded="false" />
-            <element signature="docComment;method#loadImages#0;class#Game#0" expanded="false" />
-            <element signature="method#loadImages#0;class#Game#0" expanded="false" />
-            <element signature="docComment;method#updateTiles#0;class#Game#0" expanded="false" />
-            <element signature="method#drawTiles#0;class#Game#0" expanded="false" />
-            <element signature="method#uiPos#0;class#Game#0" expanded="false" />
-            <element signature="docComment;method#generateNoise#0;class#Game#0" expanded="false" />
-            <element signature="method#generateNoise#0;class#Game#0" expanded="false" />
-            <element signature="method#createMiniMap#0;class#Game#0" expanded="false" />
-            <element signature="method#createGameObjects#0;class#Game#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Framework/JSON.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="893">
-          <caret line="71" column="5" lean-forward="true" selection-start-line="71" selection-start-column="5" selection-end-line="71" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#readFile#0;class#JSON#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/mapGenerator/TileSets.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
+        <state relative-caret-position="165">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Framework/JSON.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Framework/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="366" column="38" lean-forward="false" selection-start-line="366" selection-start-column="38" selection-end-line="366" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Framework/Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="21" column="4" lean-forward="true" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="50" />
+          <folding>
+            <element signature="method#addTiles#0;class#Map#0" expanded="false" />
+            <element signature="method#checkCorners#0;class#Map#0" expanded="false" />
+            <element signature="method#properties#0;class#Map#0" expanded="false" />
+            <element signature="method#addDetails#0;class#Map#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Framework/KeyInput.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="42" column="46" lean-forward="true" selection-start-line="42" selection-start-column="46" selection-end-line="42" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mapGenerator/Tiles.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Framework/GameObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="26" column="35" lean-forward="false" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
+          <folding>
+            <element signature="docComment;method#GameObject#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#render#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#tick#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getBounds#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getPos#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#setPos#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getVel#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#setVel#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getId#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getMaxHp#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getMaxMana#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getHp#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getMana#0;class#GameObject#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Object/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="66" column="28" lean-forward="false" selection-start-line="66" selection-start-column="28" selection-end-line="66" selection-end-column="28" />
-          <folding>
-            <element signature="method#Collision#0;class#Player#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="-620">
+          <caret line="58" column="36" lean-forward="false" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -957,7 +865,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -989,7 +896,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8_144</last-edited>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1026,7 +933,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>org.json:json:20170516</last-edited>
+          <last-edited>json-20170516</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

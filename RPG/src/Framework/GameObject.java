@@ -24,9 +24,11 @@ public abstract class GameObject {
     protected int animation;
     protected float speed;
     protected int animationTime;
+    protected float animationSpeed;
     protected TileSets tileSets;
     protected BufferedImage[][] img;
     protected boolean solid = false;
+    protected boolean running = false;
 
     /**
      * GameObject constructor

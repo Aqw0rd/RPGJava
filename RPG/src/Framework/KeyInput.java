@@ -22,7 +22,7 @@ public class KeyInput
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         for (int i = 0; i < this.handler.object.size(); i++) {
-            GameObject tempObject = (GameObject) this.handler.object.get(i);
+            GameObject tempObject =  this.handler.object.get(i);
             if (tempObject.getId() == ObjectId.Player) {
                 if (key == 87) { //UP
                     tempObject.vel.y = -tempObject.speed;
@@ -38,6 +38,9 @@ public class KeyInput
                 }
                 if (key == 32) {
                     tempObject.hp -= 1.0F;
+                }
+                if (key == KeyEvent.VK_SHIFT){
+                    tempObject.running = true;
                 }
             }
         }
@@ -70,6 +73,9 @@ public class KeyInput
                 }
                 if (key == 68) {
                     tempObject.vel.x = 0.0F;
+                }
+                if (key == KeyEvent.VK_SHIFT){
+                    tempObject.running = false;
                 }
             }
         }
