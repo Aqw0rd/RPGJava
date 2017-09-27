@@ -13,8 +13,8 @@ import mapGenerator.TileSets;
 
 public class Player
         extends GameObject {
-    private int width = 42;
-    private int height = 42;
+    private int width = 64;
+    private int height = 64;
     private boolean idle = true;
     private boolean right = true;
 
@@ -53,15 +53,14 @@ public class Player
             else g2d.drawImage(this.img[this.animation][1], (int)this.pos.x + width, (int)this.pos.y, -width, height, null);
         }
         g.setColor(Color.RED);
-        g2d.draw(getBoundsTop());
+        /*g2d.draw(getBoundsTop());
         g2d.draw(getBoundsLeft());
         g2d.draw(getBoundsRight());
-        g2d.draw(getBoundsBottom());
+        g2d.draw(getBoundsBottom());*/
 
     }
 
     public void tick(LinkedList<GameObject> object, double gametick) {
-        Collision(object);
         if(this.running && !this.idle) {
             this.speed = 3.0F;
             this.animationSpeed = 4;
@@ -70,6 +69,8 @@ public class Player
             this.speed = 1.5F;
             this.animationSpeed = 6;
         }
+        Collision(object);
+
 
         float[] vel = new float[] {this.vel.x, this.vel.y};
         if(this.vel.x == 0 && this.vel.y == 0) this.idle = true;
@@ -91,11 +92,6 @@ public class Player
             this.animationTime = 0;
         }
         this.animationTime++;
-        //If the player crosses the 0 or max position, recalculate the position
-        if(this.pos.x < 0) this.pos.x = 500*32 + this.pos.x;
-        if(this.pos.y < 0 ) this.pos.y = 500*32 + this.pos.y;
-        if(this.pos.x >= 500*32) this.pos.x = this.pos.x - 500*32;
-        if(this.pos.y >= 500*32) this.pos.y = this.pos.y - 500*32;
 
     }
 

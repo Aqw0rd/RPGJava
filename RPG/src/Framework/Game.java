@@ -1,9 +1,8 @@
 package Framework;
 
 import Maths.Maths;
-import Maths.Vector2f;
-import Maths.Vector2i;
 import Object.Player;
+import Object.Segment;
 import Object.Bat;
 import Object.Rocks.Stone2;
 import Object.Rocks.Stone3;
@@ -14,17 +13,12 @@ import UI.HealthBar;
 import UI.InvSlots;
 import UI.Inventory;
 import UI.ManaBar;
-
-import java.awt.Canvas;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
@@ -49,6 +43,8 @@ public class Game
 
     Map map;
     JSON intro;
+    Light light;
+    AffineTransform at;
     BufferedImage[][] biome_images;
     BufferedImage[] baseImages;
     BufferedImage[][] transitions;
@@ -101,18 +97,20 @@ public class Game
     }
 
     public void setUp() {
+        this.createBufferStrategy(3);
         this.mapSize = 500;
+        at = new AffineTransform();
 
         this.x = 0;
         this.y = 0;
 
         this.cam = new Camera();            //Camera object
+        at.scale(this.cam.pos.z,this.cam.pos.z);
         this.handler = new Handler();       //Handler object
         this.uiHandler = new UIHandler();   //UIHandler object
         this.handler.addObject(new Player(550, 100.0F, ObjectId.Player, "src/resources/player.png"));    //Adding the playerobject to the handler
         this.handler.addObject(new Bat(150.0F, 100.0F, ObjectId.Bat, "src/resources/bat.png"));
-
-        addKeyListener(new KeyInput(this.handler, this.uiHandler)); //Focusing keylistener to an object of KeyInput which tracks the handler and uihandler
+        addKeyListener(new KeyInput(this.handler, this.uiHandler, this.cam)); //Focusing keylistener to an object of KeyInput which tracks the handler and uihandler
 
         WIDTH = getWidth();
         HEIGHT = getHeight();
@@ -161,7 +159,11 @@ public class Game
 
         //this.map = new Map(this.mapSize, this.mapArray);
         this.intro = new JSON("src/Campaign/intro level.json");
-
+        this.intro.seg.add(new Segment(0,0,0,0, WIDTH,0));
+        this.intro.seg.add(new Segment(0,0, WIDTH,0, WIDTH, HEIGHT));
+        this.intro.seg.add(new Segment(0,0, WIDTH, HEIGHT, 0, HEIGHT));
+        this.intro.seg.add(new Segment(0,0,0, HEIGHT, 0, HEIGHT));
+        this.light = new Light(50, this.handler.getObject(ObjectId.Player), this.getWidth(), this.getHeight(), this.intro.seg);
 
         //creating an image of pixels based on the mapArray, (Basically a minimap)
         //createMiniMap(this.mapSize, this.mapSize, this.map.tile_ground);
@@ -191,6 +193,7 @@ public class Game
                 delta -= 1.0D;
                 render();
                 frames++;
+
             }
             if (System.currentTimeMillis() - timer > 1000L) {
                 timer += 1000L;
@@ -223,7 +226,7 @@ public class Game
                 }
             }
         }
-
+        this.light.tick(this.handler.object, this.intro.seg);
         /*for (int i = 0; i < this.mapSize; i++) {
             for (int j = 0; j < this.mapSize; j++) {
                 Tiles tile = this.map.tile_ground[i][j];
@@ -239,7 +242,7 @@ public class Game
 
             }
         }*/
-
+        at.scale(this.cam.pos.z/at.getScaleX(),this.cam.pos.z/at.getScaleY());
         uiPos();
         this.uiHandler.tick(gametick);
         this.handler.tick(gametick);
@@ -249,29 +252,47 @@ public class Game
      * render function
      */
     private void render() {
-        BufferStrategy bs = getBufferStrategy();
-        if (bs == null) {
-            createBufferStrategy(3); //Triplebuffering
-            return;
-        }
+        BufferStrategy bs = this.getBufferStrategy();
+
+
+
         Graphics g = bs.getDrawGraphics();  //Graphics object
         Graphics2D g2d = (Graphics2D) g;    //converting graphics to Graphics2D
+
+        g2d.transform(at);
         //------------DRAW HERE---------------------//
         g2d.translate(this.cam.pos.x, this.cam.pos.y);
         //--------------AFFECTED BY CAMERA-----------------//
         //updateTiles(g2d, -this.cam.pos.x, -this.cam.pos.y, getWidth() + (-this.cam.pos.x),
                 //getHeight() + (-this.cam.pos.y));
+        g2d.setColor(Color.BLACK);
 
         drawTiles(g2d, Math.abs(cam.pos.x), Math.abs(cam.pos.y),
-                this.getWidth() + Math.abs(cam.pos.x), this.getHeight() + Math.abs(cam.pos.y));
+                (int) (this.getWidth()/this.cam.pos.z) + Math.abs(cam.pos.x), (int)(this.getHeight()/this.cam.pos.z) + Math.abs(cam.pos.y));
+
+        for(LightRay ray:this.light.rays){
+            g2d.drawLine((int)ray.x, (int)ray.y, (int)ray.xDest, (int)ray.yDest);
+        }
+
+        /*for(Segment seg:this.intro.seg){
+            Color col = new Color(new Random().nextInt(256),new Random().nextInt(256),new Random().nextInt(256));
+            g2d.setColor(col);
+            g2d.drawLine(seg.a.x, seg.a.y, seg.b.x, seg.b.y);
+        }*/
 
 
+        for(Polygon p: this.light.shadow){
+            g2d.fill(p);
+        }
+
+
+        //g2d.drawImage(this.light.shadow, null, Math.abs(this.cam.pos.x), Math.abs(this.cam.pos.y));
         this.handler.render(g);
         this.uiHandler.render(g);
         //--------------AFFECTED BY CAMERA-----------------//
         g2d.translate(-this.cam.pos.x, -this.cam.pos.y);
         //--------------DRAW HERE-----------------//
-        g.dispose();
+        g2d.dispose();
         bs.show();
     }
 
@@ -395,51 +416,49 @@ public class Game
         }
     }
 
-
     public void drawTiles(Graphics2D g, int x0, int y0, int x, int y){
+        int a = (int) Math.floor(new Maths().map(x0, 0, this.intro.width * 32, 0, this.intro.width));
+        int b = (int) Math.floor(new Maths().map(x, 0, this.intro.width * 32, 0, this.intro.width));
+
+        int c = (int) Math.floor(new Maths().map(y0,  0, this.intro.height * 32, 0, this.intro.height));
+        int d = (int) Math.floor(new Maths().map(y,  0, this.intro.height * 32, 0, this.intro.height));
+        if(a>0) a--;
+        if(b<this.intro.width) b++;
+        if(c>0) c--;
+        if(d<this.intro.height) d++;
 
         for(int k = 0; k < intro.map.length; k++) {
-            int a = (int) Math.floor(new Maths().map(x0, 0, this.intro.width * 32, 0, this.intro.width));
-            int b = (int) Math.floor(new Maths().map(x, 0, this.intro.width * 32, 0, this.intro.width));
-
-            int c = (int) Math.floor(new Maths().map(y0,  0, this.intro.height * 32, 0, this.intro.height));
-            int d = (int) Math.floor(new Maths().map(y,  0, this.intro.height * 32, 0, this.intro.height));
-            if(a>0) a--;
-            if(b<this.intro.width) b++;
-            if(c>0) c--;
-            if(d<this.intro.height) d++;
             Tiles[][] temp = intro.map[k];
             for (int i = a; i < b; i++) {
                 for (int j = c; j < d; j++) {
-                    if(temp[i][j].getId()>=0){
-                        int xpos, ypos;
-                        switch (temp[i][j].getTileset()){
-                            case ("gameobjects"):
-                                xpos = temp[i][j].getId() % (this.gameObjectTiles.getImg().getWidth() / 32);
-                                ypos = (int) Math.floor(temp[i][j].getId() / (this.gameObjectTiles.getImg().getWidth() / 32));
-                                if(ypos == 30){
-                                    System.out.println("Stop");
-                                }
-                                g.drawImage(this.gameobjects[xpos][ypos], null, i * 32, j * 32);
-                            break;
-                            case ("basetiles"):
-                                xpos = temp[i][j].getId();
-                                g.drawImage(this.baseImages[xpos], null, i * 32, j * 32);
-                                break;
-                            case ("path"):
-                                xpos = temp[i][j].getId();
-                                g.drawImage(this.path[xpos], null, i * 32, j * 32);
-                                break;
-                            case ("house"):
-                                xpos = temp[i][j].getId() % (this.houseTiles.getImg().getWidth() / 32);
-                                ypos = temp[i][j].getId() / ((this.houseTiles.getImg().getWidth() / 32));
-                                g.drawImage(this.house[xpos][ypos], null, i * 32, j * 32);
-                                break;
-                            case ("transitions"):
-                                xpos = temp[i][j].getId() % (this.transitionTiles.getImg().getWidth() / 32);
-                                ypos = temp[i][j].getId() / ((this.transitionTiles.getImg().getWidth() / 32));
-                                g.drawImage(this.transitions[xpos][ypos], null, i * 32, j * 32);
-                                break;
+                    if (!(i < 0 || i >= temp.length || j < 0 || j > temp[i].length)) {
+                        if (temp[i][j].getId() >= 0) {
+                            int xpos, ypos;
+                            switch (temp[i][j].getTileset()) {
+                                case ("gameobjects"):
+                                    xpos = temp[i][j].getId() % (this.gameObjectTiles.getImg().getWidth() / 32);
+                                    ypos = (int) Math.floor(temp[i][j].getId() / (this.gameObjectTiles.getImg().getWidth() / 32));
+                                    g.drawImage(this.gameobjects[xpos][ypos], null, i * 32, j * 32);
+                                    break;
+                                case ("basetiles"):
+                                    xpos = temp[i][j].getId();
+                                    g.drawImage(this.baseImages[xpos], null, i * 32, j * 32);
+                                    break;
+                                case ("path"):
+                                    xpos = temp[i][j].getId();
+                                    g.drawImage(this.path[xpos], null, i * 32, j * 32);
+                                    break;
+                                case ("house"):
+                                    xpos = temp[i][j].getId() % (this.houseTiles.getImg().getWidth() / 32);
+                                    ypos = temp[i][j].getId() / ((this.houseTiles.getImg().getWidth() / 32));
+                                    g.drawImage(this.house[xpos][ypos], null, i * 32, j * 32);
+                                    break;
+                                case ("transitions"):
+                                    xpos = temp[i][j].getId() % (this.transitionTiles.getImg().getWidth() / 32);
+                                    ypos = temp[i][j].getId() / ((this.transitionTiles.getImg().getWidth() / 32));
+                                    g.drawImage(this.transitions[xpos][ypos], null, i * 32, j * 32);
+                                    break;
+                            }
                         }
                     }
                 }
@@ -452,7 +471,7 @@ public class Game
      */
     public void uiPos() {
         for (int i = 0; i < this.uiHandler.object.size(); i++) {
-            UIObject tempObject = (UIObject) this.uiHandler.object.get(i);
+            UIObject tempObject = this.uiHandler.object.get(i);
 
             tempObject.pos.x = (tempObject.abspos.x - this.cam.pos.x) + (float)(this.getWidth() - WIDTH)/2;
             tempObject.pos.y = (tempObject.abspos.y - this.cam.pos.y) + (float)(this.getHeight() - HEIGHT);

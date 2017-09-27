@@ -28,6 +28,14 @@ public class Handler {
         this.object.add(object);
     }
 
+    public GameObject getObject(ObjectId id) {
+        for (int i = 0; i < this.object.size(); i++) {
+            if(this.object.get(i).getId() == id)
+                return this.object.get(i);
+        }
+        return null;
+    }
+
     public void removeObject(GameObject object) {
         this.object.remove(object);
     }
