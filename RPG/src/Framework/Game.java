@@ -15,6 +15,7 @@ import UI.Inventory;
 import UI.ManaBar;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -159,11 +160,11 @@ public class Game
 
         //this.map = new Map(this.mapSize, this.mapArray);
         this.intro = new JSON("src/Campaign/intro level.json");
-        this.intro.seg.add(new Segment(0,0,0,0, WIDTH,0));
-        this.intro.seg.add(new Segment(0,0, WIDTH,0, WIDTH, HEIGHT));
-        this.intro.seg.add(new Segment(0,0, WIDTH, HEIGHT, 0, HEIGHT));
-        this.intro.seg.add(new Segment(0,0,0, HEIGHT, 0, HEIGHT));
-        this.light = new Light(50, this.handler.getObject(ObjectId.Player), this.getWidth(), this.getHeight(), this.intro.seg);
+        this.intro.seg.add(new Segment(0,0,0,0, this.intro.width*32,0));
+        this.intro.seg.add(new Segment(0,0, this.intro.width*32,0, this.intro.width*32, this.intro.height*32));
+        this.intro.seg.add(new Segment(0,0, this.intro.width*32, this.intro.height*32, 0, this.intro.height*32));
+        this.intro.seg.add(new Segment(0,0,0, this.intro.height*32, 0, 0));
+        this.light = new Light(50, this.handler.getObject(ObjectId.Player), this.intro.width, this.intro.height, this.intro.seg);
 
         //creating an image of pixels based on the mapArray, (Basically a minimap)
         //createMiniMap(this.mapSize, this.mapSize, this.map.tile_ground);
@@ -270,9 +271,6 @@ public class Game
         drawTiles(g2d, Math.abs(cam.pos.x), Math.abs(cam.pos.y),
                 (int) (this.getWidth()/this.cam.pos.z) + Math.abs(cam.pos.x), (int)(this.getHeight()/this.cam.pos.z) + Math.abs(cam.pos.y));
 
-        for(LightRay ray:this.light.rays){
-            g2d.drawLine((int)ray.x, (int)ray.y, (int)ray.xDest, (int)ray.yDest);
-        }
 
         /*for(Segment seg:this.intro.seg){
             Color col = new Color(new Random().nextInt(256),new Random().nextInt(256),new Random().nextInt(256));
@@ -281,12 +279,23 @@ public class Game
         }*/
 
 
-        for(Polygon p: this.light.shadow){
-            g2d.fill(p);
+        //g2d.fill(this.light.light);
+        /*g2d.setColor(Color.BLUE);
+        for(int i = 0; i < this.light.light.xpoints.length - 1; i++){
+            g2d.drawLine(this.light.light.xpoints[i], this.light.light.ypoints[i], this.light.light.xpoints[i+1], this.light.light.ypoints[i+1]);
         }
 
+        for(LightRay ray:this.light.rays){
+            //
+            g2d.setColor(Color.RED);
+            g2d.drawLine((int)ray.x, (int)ray.y, (int)ray.xDest, (int)ray.yDest);
+            g2d.setColor(Color.PINK);
+            //g2d.fillArc((int) ray.xDest,(int) ray.yDest, 4, 0, 0,(int)(2*Math.PI));
+            g2d.fillRect((int) ray.xDest,(int) ray.yDest, 4,4);
 
-        //g2d.drawImage(this.light.shadow, null, Math.abs(this.cam.pos.x), Math.abs(this.cam.pos.y));
+        }*/
+        //Area outside = new Maths().calculateRectOutside(this.light.light,this.intro.width,this.intro.height);
+        g2d.drawImage(this.light.shadow,null,0,0);
         this.handler.render(g);
         this.uiHandler.render(g);
         //--------------AFFECTED BY CAMERA-----------------//

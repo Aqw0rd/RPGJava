@@ -2,8 +2,10 @@ package Maths;
 
 
 import java.awt.*;
+import java.awt.geom.Area;
 import java.util.Random;
 import java.awt.image.BufferedImage;
+import java.awt.geom.Rectangle2D;
 
 public class Maths {
     public int randomInt(int a, int b) {
@@ -71,5 +73,11 @@ public class Maths {
         g2.drawImage(srcImg, 0, 0, w, h, null);
         g2.dispose();
         return resizedImg;
+    }
+
+    public Area calculateRectOutside(Polygon p, int width, int height) {
+        Area outside = new Area(new Rectangle2D.Double(0, 0, width, height));
+        outside.subtract(new Area(p));
+        return outside;
     }
 }
