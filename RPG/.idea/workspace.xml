@@ -17,11 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Game.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Framework/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-770">
-              <caret line="297" column="50" lean-forward="false" selection-start-line="297" selection-start-column="50" selection-end-line="297" selection-end-column="50" />
+            <state relative-caret-position="2817">
+              <caret line="304" column="22" lean-forward="true" selection-start-line="303" selection-start-column="31" selection-end-line="304" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#start#0;class#Game#0" expanded="false" />
@@ -46,7 +46,7 @@
         <entry file="file://$PROJECT_DIR$/src/Maths/Maths.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="488">
-              <caret line="80" column="23" lean-forward="true" selection-start-line="80" selection-start-column="23" selection-end-line="80" selection-end-column="23" />
+              <caret line="80" column="23" lean-forward="false" selection-start-line="80" selection-start-column="23" selection-end-line="80" selection-end-column="23" />
               <folding>
                 <element signature="method#clamp#0;class#Maths#0" expanded="false" />
                 <element signature="e#1432#1433#0" expanded="true" />
@@ -57,11 +57,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Light.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Light.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Framework/Light.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="284">
-              <caret line="224" column="12" lean-forward="false" selection-start-line="224" selection-start-column="12" selection-end-line="224" selection-end-column="12" />
+            <state relative-caret-position="488">
+              <caret line="104" column="22" lean-forward="true" selection-start-line="104" selection-start-column="22" selection-end-line="104" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#createRays#0;class#Light#0" expanded="false" />
@@ -96,7 +96,7 @@
       <file leaf-file-name="Intro level.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Campaign/Intro level.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
+            <state relative-caret-position="357">
               <caret line="111" column="27" lean-forward="false" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="27" />
               <folding>
                 <element signature="e#35#4864#0" expanded="false" />
@@ -122,11 +122,36 @@
       <file leaf-file-name="JSON.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Framework/JSON.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="607">
-              <caret line="80" column="63" lean-forward="false" selection-start-line="80" selection-start-column="63" selection-end-line="80" selection-end-column="63" />
+            <state relative-caret-position="272">
+              <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#JSON#0;class#JSON#0" expanded="false" />
                 <element signature="method#readFile#0;class#JSON#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameObject.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Framework/GameObject.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-362">
+              <caret line="26" column="35" lean-forward="false" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
+              <folding>
+                <element signature="docComment;method#GameObject#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#render#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#tick#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getBounds#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getPos#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#setPos#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getVel#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#setVel#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getId#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getMaxHp#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getMaxMana#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getHp#0;class#GameObject#0" expanded="false" />
+                <element signature="docComment;method#getMana#0;class#GameObject#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -147,16 +172,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="221">
               <caret line="13" column="27" lean-forward="false" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Camera.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Framework/Camera.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -251,8 +266,8 @@
         <option value="$PROJECT_DIR$/src/Framework/LightRay.java" />
         <option value="$PROJECT_DIR$/src/Maths/CompareRays.java" />
         <option value="$PROJECT_DIR$/src/Maths/Maths.java" />
-        <option value="$PROJECT_DIR$/src/Framework/Game.java" />
         <option value="$PROJECT_DIR$/src/Framework/Light.java" />
+        <option value="$PROJECT_DIR$/src/Framework/Game.java" />
       </list>
     </option>
   </component>
@@ -263,8 +278,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="212" />
-    <option name="y" value="-18" />
+    <option name="x" value="484" />
+    <option name="y" value="83" />
     <option name="width" value="1280" />
     <option name="height" value="713" />
   </component>
@@ -284,6 +299,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -301,6 +317,19 @@
               <item name="RPG" type="b2602c69:ProjectViewProjectNode" />
               <item name="RPG" type="462c0819:PsiDirectoryNode" />
               <item name="out" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RPG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RPG" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RPG" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RPG" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+              <item name="RPG_jar" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RPG" type="b2602c69:ProjectViewProjectNode" />
@@ -335,7 +364,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="AndroidView" />
     </panes>
   </component>
@@ -517,16 +545,16 @@
       <workItem from="1505508618152" duration="613000" />
       <workItem from="1506026466788" duration="41856000" />
       <workItem from="1506337378401" duration="1835000" />
-      <workItem from="1506537024501" duration="17097000" />
+      <workItem from="1506537024501" duration="17245000" />
+      <workItem from="1506599445413" duration="3537000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="148825000" />
+    <option name="totallyTimeSpent" value="152510000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -535,7 +563,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26935312" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26935312" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15208334" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -631,7 +659,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -728,28 +755,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Framework/GameObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="26" column="35" lean-forward="false" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
-          <folding>
-            <element signature="docComment;method#GameObject#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#render#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#tick#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getBounds#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getPos#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#setPos#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getVel#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#setVel#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getId#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getMaxHp#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getMaxMana#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getHp#0;class#GameObject#0" expanded="false" />
-            <element signature="docComment;method#getMana#0;class#GameObject#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Maths/Vector2i.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -780,7 +785,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -863,14 +867,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Maths/CompareRays.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="13" lean-forward="true" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Maths/CompareRays.java" />
     <entry file="file://$PROJECT_DIR$/src/Maths/Vector3i.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -881,7 +878,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Campaign/Intro level.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
+        <state relative-caret-position="357">
           <caret line="111" column="27" lean-forward="false" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="27" />
           <folding>
             <element signature="e#35#4864#0" expanded="false" />
@@ -903,17 +900,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Framework/JSON.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="607">
-          <caret line="80" column="63" lean-forward="false" selection-start-line="80" selection-start-column="63" selection-end-line="80" selection-end-column="63" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#readFile#0;class#JSON#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Maths/Vector3f.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -922,10 +908,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Framework/Light.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="488">
+          <caret line="104" column="22" lean-forward="true" selection-start-line="104" selection-start-column="22" selection-end-line="104" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#createRays#0;class#Light#0" expanded="false" />
+            <element signature="method#getUnique#0;class#Light#0" expanded="false" />
+            <element signature="method#getAngles#0;class#Light#0" expanded="false" />
+            <element signature="method#getIntersection#0;class#Light#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Framework/JSON.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#JSON#0;class#JSON#0" expanded="false" />
+            <element signature="method#readFile#0;class#JSON#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Framework/GameObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-362">
+          <caret line="26" column="35" lean-forward="false" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
+          <folding>
+            <element signature="docComment;method#GameObject#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#render#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#tick#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getBounds#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getPos#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#setPos#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getVel#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#setVel#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getId#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getMaxHp#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getMaxMana#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getHp#0;class#GameObject#0" expanded="false" />
+            <element signature="docComment;method#getMana#0;class#GameObject#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Maths/Maths.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="488">
-          <caret line="80" column="23" lean-forward="true" selection-start-line="80" selection-start-column="23" selection-end-line="80" selection-end-column="23" />
+          <caret line="80" column="23" lean-forward="false" selection-start-line="80" selection-start-column="23" selection-end-line="80" selection-end-column="23" />
           <folding>
             <element signature="method#clamp#0;class#Maths#0" expanded="false" />
             <element signature="e#1432#1433#0" expanded="true" />
@@ -937,8 +971,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Framework/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-770">
-          <caret line="297" column="50" lean-forward="false" selection-start-line="297" selection-start-column="50" selection-end-line="297" selection-end-column="50" />
+        <state relative-caret-position="2817">
+          <caret line="304" column="22" lean-forward="true" selection-start-line="303" selection-start-column="31" selection-end-line="304" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#start#0;class#Game#0" expanded="false" />
@@ -954,20 +988,6 @@
             <element signature="method#generateNoise#0;class#Game#0" expanded="false" />
             <element signature="method#createMiniMap#0;class#Game#0" expanded="false" />
             <element signature="method#createGameObjects#0;class#Game#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Framework/Light.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="224" column="12" lean-forward="false" selection-start-line="224" selection-start-column="12" selection-end-line="224" selection-end-column="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#createRays#0;class#Light#0" expanded="false" />
-            <element signature="method#getUnique#0;class#Light#0" expanded="false" />
-            <element signature="method#getAngles#0;class#Light#0" expanded="false" />
-            <element signature="method#getIntersection#0;class#Light#0" expanded="false" />
           </folding>
         </state>
       </provider>

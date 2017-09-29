@@ -267,7 +267,8 @@ public class Game
         //updateTiles(g2d, -this.cam.pos.x, -this.cam.pos.y, getWidth() + (-this.cam.pos.x),
                 //getHeight() + (-this.cam.pos.y));
         g2d.setColor(Color.BLACK);
-
+        //g2d.fillRect(0,0, this.intro.width,this.intro.height);
+        //g2d.setClip(this.light.light);
         drawTiles(g2d, Math.abs(cam.pos.x), Math.abs(cam.pos.y),
                 (int) (this.getWidth()/this.cam.pos.z) + Math.abs(cam.pos.x), (int)(this.getHeight()/this.cam.pos.z) + Math.abs(cam.pos.y));
 

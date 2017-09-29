@@ -19,7 +19,7 @@ import java.util.*;
 
 public class Light {
     ArrayList<LightRay> rays;
-    int length = 200;
+    int length = 100;
     Polygon light;
     ArrayList<Vector2i> points;
     ArrayList<Float> angles;
