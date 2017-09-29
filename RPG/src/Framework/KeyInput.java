@@ -13,10 +13,12 @@ public class KeyInput
         extends KeyAdapter {
     Handler handler;
     UIHandler uiHandler;
+    Camera cam;
 
-    public KeyInput(Handler handler, UIHandler uiHandler) {
+    public KeyInput(Handler handler, UIHandler uiHandler, Camera cam) {
         this.handler = handler;
         this.uiHandler = uiHandler;
+        this.cam = cam;
     }
 
     public void keyPressed(KeyEvent e) {
@@ -39,7 +41,7 @@ public class KeyInput
                 if (key == 32) {
                     tempObject.hp -= 1.0F;
                 }
-                if (key == KeyEvent.VK_SHIFT){
+                if (key == 16){
                     tempObject.running = true;
                 }
             }
@@ -54,6 +56,15 @@ public class KeyInput
                     ui.visible = (!ui.visible);
                 }
             }
+        }
+
+        if(key == KeyEvent.VK_PLUS){
+            this.cam.pos.z+= 0.2f;
+            if(this.cam.pos.z >2.0f) this.cam.pos.z = 2.0f;
+        }
+        if(key == KeyEvent.VK_MINUS){
+            this.cam.pos.z-=0.2f;
+            if(this.cam.pos.z<=0) this.cam.pos.z = 0.2f;
         }
     }
 
@@ -74,7 +85,7 @@ public class KeyInput
                 if (key == 68) {
                     tempObject.vel.x = 0.0F;
                 }
-                if (key == KeyEvent.VK_SHIFT){
+                if (key == 16){
                     tempObject.running = false;
                 }
             }
